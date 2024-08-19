@@ -26,6 +26,11 @@ const userSchema = mongoose.Schema({
         required: [true, " firstName is required ."],
         minlength: [2, "firstName must be at least 2 charcters ."]
     },
+    birthday: {
+        type: Date,
+        required: true
+    },
+    gender: { type: String, enum: ['male', 'female'], required: true }
 }, {
     timetamps: true,
 })
