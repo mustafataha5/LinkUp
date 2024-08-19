@@ -15,7 +15,7 @@ const Home = () => {
       <h1 className='header'>LinkUp</h1>
       <div className="m-5">
       <button className='mx-4 btn  btn-dark border border-2 border-dark btn-lg'>Login</button>
-      <button className='mx-4 btn  btn-dark border border-2 border-dark btn-lg'>Register</button>
+      <button onClick={handleClick} className='mx-4 btn  btn-dark border border-2 border-dark btn-lg'>Register</button>
       </div>
     </div>
     <Footer/>
