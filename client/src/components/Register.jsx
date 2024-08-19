@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 
 const Register = () => {
     const [firstName, setFirstName] = useState([])
@@ -9,16 +10,30 @@ const Register = () => {
     const [birthday, setBirthday] = useState([])
     const [gender, setGender] = useState([])
 
-    const handleSubmit = e =>{
-        e.preventDefault()
-        setFirstName("")
-        setLastName("")
-        setEmail("")
-        setPassword("")
-        setConfirm("")
-        setBirthday("")
-        setGender("")
-    }
+    const handleSubmit = e => {
+        e.preventDefault();
+        axios.post('http://localhost:8000/api/register', {
+            firstName,
+            lastName,
+            email,
+            password,
+            confirmPassword,
+            birthday,
+            gender
+        })
+        .then(res => {
+            console.log(res);
+            // Reset form fields after successful submission
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+            setConfirm("");
+            setBirthday("");
+            setGender("");
+        })
+        .catch(err => console.log(err));
+    };
   return (
     <div class="form-container">
         <h1>Register</h1>
