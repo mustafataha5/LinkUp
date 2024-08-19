@@ -6,7 +6,11 @@ import Home from './views/Home'
 import { Route, Routes } from 'react-router-dom'
 import Register from './components/Register'
 import Login from './components/Login'
+<<<<<<< HEAD
 import Test from './components/Test'
+=======
+import MainPage from './views/MainPage'
+>>>>>>> master
 
 function App() {
   const [count, setCount] = useState(0)
@@ -15,9 +19,14 @@ function App() {
     <>
 <Routes>
     <Route path='/' element={<Home/>}/>
+    <Route path='/login' element={<Login/>}/>
     <Route path='/register' element={<Register/>}/>
+<<<<<<< HEAD
     <Route path='/login' element={<Login />}/>
     <Route path='/test' element={<Test />}/>
+=======
+    <Route path='/success' element={<MainPage/>}/>
+>>>>>>> master
 </Routes>
     </>
   )
