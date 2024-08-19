@@ -33,13 +33,20 @@ module.exports.checkauth = (req, res) => {
 
 //create 
 module.exports.register=async (req,res) => {
-    const user = await User.findOne({ email: req.body.email });
- 
-    if(user !== null) {
-        // email  found in users collection
-        return res.sendStatus(400).json({email:"Email already exits"});
-    }
+    try{
 
+        const user = await User.findOne({ email: req.body.email });
+        console.log(user)
+        if(user != null) {
+            console.log(">>>>>>>>>>>>>>>>")
+            // email  found in users collection
+            return res.status(400).json({ errors:{email:{ message:"Email already exists" }}});
+        }
+    }
+    catch(err){
+        return res.status(400).json({email:"Email already exits"});
+    }
+        
     User.create(req.body)
     .then(user => {
         const userToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
