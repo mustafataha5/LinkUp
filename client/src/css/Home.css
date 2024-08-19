@@ -1,0 +1,19 @@
+body{
+    background-image:url('https://media.istockphoto.com/id/1483179903/photo/social-network.jpg?s=1024x1024&w=is&k=20&c=1_61cA6A_u_WipBrOxhg-HuMkrTAobO6arxSdJzag1E=');
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0 auto;
+}
+.header{
+    color: #212529;
+}
+
+.homeFeatures {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers horizontally */
+    justify-content: center; /* Centers vertically */
+    height: 100vh; /* Full viewport height */
+  }
+
+  
