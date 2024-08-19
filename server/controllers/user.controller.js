@@ -2,7 +2,17 @@ const User= require('../models/user.model')
 const jwt = require("jsonwebtoken");
 
 
-
+//auth
+module.exports.authenticate = (req, res, next) => {
+    jwt.verify(req.cookies.usertoken, process.env.SECRET_KEY, (err, payload) => {
+      if (err) { 
+        res.status(401).json({verified: false});
+      } else {
+        next();
+      }
+    });
+  }
+  
 
 //create 
 module.exports.register= (req,res) => {
