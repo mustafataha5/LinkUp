@@ -3,36 +3,48 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
 
+//auth
+module.exports.authenticate = (req, res, next) => {
+    jwt.verify(req.cookies.usertoken, process.env.SECRET_KEY, (err, payload) => {
+      if (err) { 
+        res.status(401).json({verified: false});
+      } else {
+        next();
+      }
+    });
+  }
+  
 
+module.exports.checkauth = (req, res) => {
+    const token = req.cookies.usertoken; // Assuming you're using cookies to store the token
+
+    if (!token) {
+        return res.status(401).json({ authenticated: false, message: 'No token provided' });
+    }
+
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ authenticated: false, message: 'Invalid token' });
+        }
+
+        res.status(200).json({ authenticated: true, userId: decoded.id });
+    });
+}  
 
 //create 
 module.exports.register= (req,res) => {
     User.create(req.body)
     .then(user => {
-        res.json({ msg: "success!", user: user });
+        const userToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
+        res.cookie('usertoken', userToken, {
+            httpOnly: true,
+            // secure: process.env.NODE_ENV === 'production', // Uncomment for production
+        });
+        res.json({ msg: 'success!', user });
     })
-    .catch(err => res.json(err));
+    .catch(err => res.status(400).json(err));
 } 
-// module.exports.userCreate = (req,res) =>{
-//     User.create(req.body)
-//         .then(user => {
-//             // Fetch all existing games
-//             return Game.find({})
-//                 .then(games => {
-//                     // Create "inactive" UserGame entries for each game
-//                     const userGameEntries = games.map(game => ({
-//                         user: user._id,
-//                         game: game._id,
-//                         status: [false,false,true]
-//                     }));
-//                     // Insert UserGame entries
-//                     return UserGame.insertMany(userGameEntries)
-//                         .then(() => res.json({ user: user }))
-//                         .catch(err => res.status(400).json(err));
-//                 });
-//         })
-//         .catch(err => res.status(400).json(err)); 
-// }
+
 
 //login 
 module.exports.login = async (req,res) => {
@@ -63,6 +75,12 @@ module.exports.login = async (req,res) => {
             httpOnly: true
         })
         .json({ msg: "success!" });
+}
+
+//logout
+module.exports.logout = (req, res) => {
+    res.clearCookie('usertoken');
+    res.sendStatus(200);
 }
 
 //get 

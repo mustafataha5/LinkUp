@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -20,7 +21,7 @@ const Login = () => {
           console.log(res);
           setEmail("");
           setPassword("");
-          navigate("/success")
+          navigate("/test")
           
       })
       .catch(err => console.log(err));
