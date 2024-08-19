@@ -23,8 +23,8 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, " firstName is required ."],
-        minlength: [2, "firstName must be at least 2 charcters ."]
+        required: [true, "Password is required ."],
+        minlength: [8, "Password must be at least 8 charcters ."]
     },
     birthday: {
         type: Date,
@@ -40,8 +40,11 @@ userSchema.virtual('confirmPassword')
     .set(value => this._confirmPassword = value);
 
 userSchema.pre('validate', function (next) {
+    if(this.confirmPassword.length<8){
+        this.invalidate('confirmPassword', 'confirmPassword must be at least 8 characters');
+    }
     if (this.password !== this.confirmPassword) {
-        this.invalidate('confirmPassword', 'Password must match confirm password');
+        this.invalidate('confirmPassword', 'confirmPassword must match confirm password');
     }
     next();
 });
