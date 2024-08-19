@@ -22,34 +22,14 @@ module.exports.register= (req,res) => {
             id: user._id
         }, process.env.SECRET_KEY);
  
-        res
-            .cookie("usertoken", userToken, secret, {
+        res.cookie("usertoken", userToken, secret, {
                 httpOnly: true
-            })
-            .json({ msg: "success!", user: user });
+            });
+        res.json({ msg: "success!", user: user });
     })
     .catch(err => res.json(err));
 } 
-// module.exports.userCreate = (req,res) =>{
-//     User.create(req.body)
-//         .then(user => {
-//             // Fetch all existing games
-//             return Game.find({})
-//                 .then(games => {
-//                     // Create "inactive" UserGame entries for each game
-//                     const userGameEntries = games.map(game => ({
-//                         user: user._id,
-//                         game: game._id,
-//                         status: [false,false,true]
-//                     }));
-//                     // Insert UserGame entries
-//                     return UserGame.insertMany(userGameEntries)
-//                         .then(() => res.json({ user: user }))
-//                         .catch(err => res.status(400).json(err));
-//                 });
-//         })
-//         .catch(err => res.status(400).json(err)); 
-// }
+
 
 //login 
 module.exports.login = async (req,res) => {

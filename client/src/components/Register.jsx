@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
-    const [firstName, setFirstName] = useState([])
-    const [lastName, setLastName] = useState([])
-    const [email, setEmail] = useState([])
-    const [password, setPassword] = useState([])
-    const [confirmPassword, setConfirm] = useState([])
-    const [birthday, setBirthday] = useState([])
-    const [gender, setGender] = useState([])
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirm] = useState('')
+    const [birthday, setBirthday] = useState('')
+    const [gender, setGender] = useState('')
+
+    const navigate = useNavigate() ; 
 
     const handleSubmit = e => {
         e.preventDefault();
+        
         axios.post('http://localhost:8000/api/register', {
             firstName,
             lastName,
@@ -20,8 +24,9 @@ const Register = () => {
             confirmPassword,
             birthday,
             gender
-        })
+        },{withCredentials: true})
         .then(res => {
+            console.log("successful reg")
             console.log(res);
             // Reset form fields after successful submission
             setFirstName("");
@@ -31,11 +36,12 @@ const Register = () => {
             setConfirm("");
             setBirthday("");
             setGender("");
+            navigate("/test")
         })
         .catch(err => console.log(err));
     };
   return (
-    <div class="form-container">
+    <div className="form-container">
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
                 <div className="form-group">
