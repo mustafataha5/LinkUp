@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-import React from 'react'
 
-const Login = () => {
-  return (
-    <div>
-      
-=======
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -28,7 +21,7 @@ const Login = () => {
           console.log(res);
           setEmail("");
           setPassword("");
-          navigate("/success")
+          navigate("/test")
           
       })
       .catch(err => console.log(err));
@@ -60,7 +53,6 @@ const Login = () => {
                 </div>
                 <button type="submit" className="btn">Submit</button>
             </form>
->>>>>>> master
     </div>
   )
 }

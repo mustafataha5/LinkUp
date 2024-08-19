@@ -15,20 +15,34 @@ module.exports.authenticate = (req, res, next) => {
   }
   
 
+module.exports.checkauth = (req, res) => {
+    const token = req.cookies.usertoken; // Assuming you're using cookies to store the token
+
+    if (!token) {
+        return res.status(401).json({ authenticated: false, message: 'No token provided' });
+    }
+
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ authenticated: false, message: 'Invalid token' });
+        }
+
+        res.status(200).json({ authenticated: true, userId: decoded.id });
+    });
+}  
+
 //create 
 module.exports.register= (req,res) => {
     User.create(req.body)
     .then(user => {
-        const userToken = jwt.sign({
-            id: user._id
-        }, process.env.SECRET_KEY);
- 
-        res.cookie("usertoken", userToken, secret, {
-                httpOnly: true
-            });
-        res.json({ msg: "success!", user: user });
+        const userToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
+        res.cookie('usertoken', userToken, {
+            httpOnly: true,
+            // secure: process.env.NODE_ENV === 'production', // Uncomment for production
+        });
+        res.json({ msg: 'success!', user });
     })
-    .catch(err => res.json(err));
+    .catch(err => res.status(400).json(err));
 } 
 
 

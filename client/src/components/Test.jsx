@@ -1,31 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const Test = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = Cookies.get('usertoken');
-        console.log(">>>>>"+token)
-        if (token) {
-            setIsLoggedIn(false);
-        }
+        axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+            .then(response => {
+                setIsLoggedIn(response.data.authenticated);
+            })
+            .catch(error => {
+                console.error('Error checking authentication', error);
+                setIsLoggedIn(false);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }, []);
 
-
-    if(isLoggedIn){
-        console.log("not login")
-        return(
-        <div>
-            <h1>Need to login or register</h1>
-        </div>)
+    if (loading) {
+        return <div>Loading...</div>;
     }
-    console.log("you login")
-  return (
-    <div>
-            <h1> You are in </h1>
-    </div>
-  )
+
+    return (
+        <div>
+            {isLoggedIn ? <h1>You are logged in</h1> : <h1>Please log in</h1>}
+        </div>
+    );
 }
 
 export default Test
