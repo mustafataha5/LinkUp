@@ -2,17 +2,20 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
+
 const Login = () => {
     const [email, setEmail] = useState([])
     const [password, setPassword] = useState([])
     const navigate = useNavigate()
     const handleSubmit = e =>{
       e.preventDefault();
-      axios.post('http://localhost:8000/api/register', {
-
-          email,
-          password,
-      })
+      const payload = {
+        email: email,
+        password: password
+      }
+      axios.post('http://localhost:8000/api/login', payload, {withCredentials: true}, 
+        
+)
       .then(res => {
           console.log(res);
           setEmail("");

@@ -1,5 +1,6 @@
 const User= require('../models/user.model')
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 
 
 
@@ -58,7 +59,7 @@ module.exports.login = async (req,res) => {
  
     // note that the response object allows chained calls to cookie and json
     res
-        .cookie("usertoken", userToken, secret, {
+        .cookie("usertoken", userToken, {
             httpOnly: true
         })
         .json({ msg: "success!" });
