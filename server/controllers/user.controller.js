@@ -32,7 +32,14 @@ module.exports.checkauth = (req, res) => {
 }  
 
 //create 
-module.exports.register= (req,res) => {
+module.exports.register=async (req,res) => {
+    const user = await User.findOne({ email: req.body.email });
+ 
+    if(user !== null) {
+        // email  found in users collection
+        return res.sendStatus(400).json({email:"Email already exits"});
+    }
+
     User.create(req.body)
     .then(user => {
         const userToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
