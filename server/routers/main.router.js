@@ -8,6 +8,7 @@ module.exports = app => {
     //user
     app.post("/api/register",UserController.register) ; 
     app.post("/api/login",UserController.login) ; 
+    app.post("/api/logout",UserController.logout) ; 
 
     app.post("/api/users",UserController.userCreate);
     app.get("/api/users",UserController.userFindAll);

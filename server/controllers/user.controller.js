@@ -8,7 +8,15 @@ const jwt = require("jsonwebtoken");
 module.exports.register= (req,res) => {
     User.create(req.body)
     .then(user => {
-        res.json({ msg: "success!", user: user });
+        const userToken = jwt.sign({
+            id: user._id
+        }, process.env.SECRET_KEY);
+ 
+        res
+            .cookie("usertoken", userToken, secret, {
+                httpOnly: true
+            })
+            .json({ msg: "success!", user: user });
     })
     .catch(err => res.json(err));
 } 
@@ -62,6 +70,12 @@ module.exports.login = async (req,res) => {
             httpOnly: true
         })
         .json({ msg: "success!" });
+}
+
+//logout
+module.exports.logout = (req, res) => {
+    res.clearCookie('usertoken');
+    res.sendStatus(200);
 }
 
 //get 
