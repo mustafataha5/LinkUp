@@ -1,3 +1,4 @@
+
 const Message = require("../models/message.model");
 const User =require("../models/user.model") ; 
 
@@ -44,7 +45,5 @@ module.exports.deleteMessage = (req,res) => {
     .then(message => res.json({data:message}))
     .catch(err => res.json(err)) ; 
 }
-
-
 
 
