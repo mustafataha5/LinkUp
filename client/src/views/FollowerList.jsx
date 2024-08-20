@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Card, CardContent, Typography, Avatar, CardActions } from '@mui/material';
-import { styled } from '@mui/system';
+import {  Card, CardContent, Typography, Avatar, CardActions, IconButton } from '@mui/material';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+
+
+
 import './FollowerSidebar.css';
 
 // Sample data for followers
@@ -28,29 +32,35 @@ const FollowerList = () => {
       return newFollowing;
     });
   };
-
+  
   return (
-    <div style={{ padding: 20 }}>
-      {followers.map((follower) => (
-        <Card key={follower.id} style={{ marginBottom: 10 }}>
-          <CardContent class="flexMe" >
-            <Avatar src={follower.profilePic} alt={follower.name} style={{ marginRight: 10 }} />
-            <Typography variant="h6" component="div" style={{ display: 'inline' }}>
-                {follower.firstName} {follower.lastName}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button
-              variant="contained"
-              color={following.has(follower.id) ? 'secondary' : 'primary'}
-              onClick={() => handleFollowToggle(follower.id)}
+    <div>
+    <div className='border-end   border-secondary border-1' style={{ padding: 20, marginTop: 40  , width:'19rem' ,border:'1px black soild'}}>
+
+            <Typography
+            variant="h1"
+            sx={{ borderBottom: 2 , fontSize : 26, mb: 5, marginLeft: 1, textAlign: "center" }}
             >
-              {following.has(follower.id) ? 'Unfollow' : 'Follow'}
-            </Button>
+      Following
+    </Typography>
+      {followers.map((follower) => (
+        <Card key={follower.id} style={{ marginBottom: 16, width: '250px', borderBottom: "none" }} >
+        <CardContent className="flexMe" style={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar src={follower.profilePic} alt={follower.name} style={{ marginRight: 10 }} />
+          <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
+            {follower.firstName} {follower.lastName}
+          </Typography>
+          <CardActions style={{ padding: 0 }}>
+            <IconButton size="large" aria-label="follow" color="inherit" >
+            <PersonRemoveIcon/>
+            </IconButton>
           </CardActions>
-        </Card>
-      ))}
-    </div>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+  <div style={{ width: '2px', backgroundColor: 'black', height: '100%', marginLeft: 20 }}></div>
+</div>
   );
 };
 
