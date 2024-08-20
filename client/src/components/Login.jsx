@@ -8,7 +8,8 @@ import {
   InputLabel,
   OutlinedInput,
   Button,
-  FormHelperText
+  FormHelperText,
+  Typography
 } from  '@mui/material'
 
 
@@ -21,12 +22,13 @@ const styles = {
   },
   button: {
     width: "100%",
-    marginBottom: "1rem" // Add margin bottom to space buttons
+    marginBottom: "1rem" ,// Add margin bottom to space buttons
+    backgroundColor:"#fe520a"
   },
   button1: {
     width: "100%",
-    backgroundColor: "rgb(66 183 42)", // Replace with your desired color
-
+    backgroundColor: "#9b1fe9", // Replace with your desired color
+    
   }
 };
 const wrapperStyles = {
@@ -60,6 +62,12 @@ const Login = ({ onSubmitProp, errors }) => {
   return (
     <div style={wrapperStyles}>
     <Paper elevation={9} style={styles.paper}>
+    <Typography
+      variant="h1"
+      sx={{ textAlign: 'center', fontSize : 50 }}
+    >
+      LogIn
+    </Typography>
               <form onSubmit={handleSubmit}>
                 <FormControl variant="outlined"  fullWidth style={styles.input}>
                 <InputLabel>E-mail</InputLabel>

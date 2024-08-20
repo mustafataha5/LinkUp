@@ -9,7 +9,8 @@ import {
   OutlinedInput,
   Button,
   MenuItem,
-  Select
+  Select,
+  Typography
 } from '@mui/material';
 
 const styles = {
@@ -23,11 +24,12 @@ const styles = {
     },
     button: {
       width: '100%',
-      marginBottom: '1.00rem'
+      marginBottom: '1.00rem',
+      backgroundColor:"#fe520a"
     },
     button1: {
     width: "100%",
-    backgroundColor: "rgb(66 183 42)", // Replace with your desired color
+    backgroundColor: "#9b1fe9", // Replace with your desired color
 
   }
 
@@ -39,6 +41,7 @@ const styles = {
     alignItems: 'center',
     height: '100vh',
     backgroundColor: '#f0f0f0',
+    
   };
 
 const Register = () => {
@@ -93,7 +96,12 @@ const Register = () => {
   return (
     <div style={wrapperStyles}>
       <Paper elevation={10}  style={styles.paper}>
-        <h1>Register</h1>
+      <Typography
+      variant="h1"
+      sx={{ textAlign: 'center', fontSize : 50, mb: 2 }}
+    >
+      Register
+    </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
