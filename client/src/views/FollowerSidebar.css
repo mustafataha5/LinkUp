@@ -5,6 +5,10 @@
     border-right: 1px solid #ddd;
   }
   
+  .flexMe {
+    display: flex;
+  }
+  
   .follower-sidebar h2 {
     font-size: 1.2em;
     margin-bottom: 10px;
