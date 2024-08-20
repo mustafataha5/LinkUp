@@ -45,7 +45,7 @@ const userSchema = mongoose.Schema({
                 // Check if the birthday is not in the future and the user is at least 13 years old
                 return value < now && value <= thirteenYearsAgo;
             },
-            message: `The birthday must be a valid date, at least 13 years ago, and not in the future.`
+            message: `user must be above 13`
         }
     },
     gender: { type: String, enum: ['male', 'female'], required: true },
