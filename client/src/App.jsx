@@ -1,13 +1,35 @@
-import React from 'react';
-import FollowerList from './views/FollowerList';
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+// import './App.css'
+import Home from './views/Home'
+import { Route, Routes } from 'react-router-dom'
+import Register from './components/Register'
+import Login from './components/Login'
+import Test from './components/Test'
+import FollowerSidebar from './views/FollowerSidebar';
+import MainPage from './views/MainPage'
+import Page403 from './components/Page403'
 
-const App = () => {
+function App() {
+  const [count, setCount] = useState(0)
+
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto' }}>
-      <h1>Followers</h1>
-      <FollowerList />
-    </div>
-  );
-};
+    <>
+<Routes>
+    <Route path='/randatest' element={<FollowerSidebar/>}  />
+    <Route path='/' element={<Home/>}/>
+    <Route path='/login' element={<Login/>}/>
+    <Route path='/register' element={<Register/>}/>
 
-export default App;
+    <Route path='/login' element={<Login />}/>
+    <Route path='/test' element={<Test />}/>
+
+    <Route path='/success' element={<MainPage/>}/>
+    <Route path='/403' element={<Page403/>}/>
+</Routes>
+    </>
+  )
+}
+
+export default App
