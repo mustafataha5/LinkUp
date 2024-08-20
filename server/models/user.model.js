@@ -26,6 +26,10 @@ const userSchema = mongoose.Schema({
         required: [true, "Password is required ."],
         minlength: [8, "Password must be at least 8 charcters ."]
     },
+    imageUrl:{
+        type:String , 
+        default: "https://i.pinimg.com/originals/61/f7/5e/61f75ea9a680def2ed1c6929fe75aeee.jpg" 
+    }, 
     birthday: {
         type: Date,
         required: true
