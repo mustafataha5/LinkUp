@@ -1,38 +1,49 @@
-const { Message } = require('../models/message.model');
 
-module.exports.updateMessage = (request, response) => {
-    // {new: true}: returns the NEWLY updated document, not original one
-    Message.findOneAndUpdate({_id: request.params.id}, request.body, {new:true})
-        // handles & returns successful update:
-        .then(updatedMessage  => response.json(updatedMessage ))
-        // handles & returns any error during the process as JSON response
-        .catch(err => response.json(err))
+const Message = require("../models/message.model");
+const User =require("../models/user.model") ; 
+
+
+module.exports.sendMessage =  (req,res) => {
+        const {sender,reciver,content} = req.body ; 
+        Message.create(req.body)
+        .then(message => {
+            res.json({ message:message })
+        })
+        .catch(err => res.status(500).json({ message: 'An error occurred while sending the message.', err }));
+} 
+
+
+module.exports.getMessages = async (req,res) => {
+    try {
+
+        const {user1Id,user2Id} = req.params ; 
+        
+        const messages =await Message.find({$or:[
+            {sender:user1Id,reciver:user2Id},
+            {sender:user2Id,reciver:user1Id}
+        ]}).sort({timestamp: 1});
+        //console.log(messages)
+        res.status(200).json({ data: messages });
+    }
+    catch(err){
+        res.status(500).json({ message: 'An error occurred while retrieving messages.', err });
+    }
 }
 
-module.exports.deleteMessage  = (request, response) => {
-    Message.deleteOne({ _id: request.params.id })
-        .then(deleteConfirmation => response.json(deleteConfirmation))
-        .catch(err => response.json(err))
+module.exports.setMessageReaded = (req,res) => {
+    const messageId = req.params.messageId
+    Message.findByIdAndUpdate({_id:messageId},
+         { isRead: true },
+        {new:true})
+    .then(message => res.json({data:message}))
+    .catch(err => res.json(err)) ; 
 }
 
-module.exports.getAllMessages = (request, response) => {
-    Message.find({})
-        .then(Messages => response.json(Messages))
-        .catch(err => response.json(err))
+module.exports.deleteMessage = (req,res) => {
+    const messageId = req.params.messageId
+    Message.findByIdAndDelete({_id:messageId})
+    .then(message => res.json({data:message}))
+    .catch(err => res.json(err)) ; 
 }
 
-module.exports.getMessage  = (request, response) => {
-    Message.findOne({_id:request.params.id})
-        .then(Message  => response.json(Message))
-        .catch(err => response.json(err))
-}
 
-// The method below is new
-module.exports.createMessage  = (request, response) => {
-    const { message, sender, receiver } = request.body;
-    Message.create({ 
-        message, sender, receiver
-    })  
-        .then(Message  => response.json(Message ))   
-        .catch(err => response.status(400).json(err));
-}

@@ -1,4 +1,5 @@
-const express = require('express') ; 
+    const express = require('express') ; 
+const cookieParser = require('cookie-parser');
 
 const app = express() ; 
 
@@ -7,8 +8,10 @@ const cors = require('cors') // This is new
 const port = process.env.PORT;
 
 // Middleware
-app.use(cors({
-}));
+app.use(cookieParser());
+// Change the app.use(cors()) to the one below
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+
 app.use(express.json()); // This is new
 app.use(express.urlencoded({ extended: true })); // This is new
 

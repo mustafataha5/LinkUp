@@ -1,27 +1,100 @@
 const User= require('../models/user.model')
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 
 
+//auth
+module.exports.authenticate = (req, res, next) => {
+    jwt.verify(req.cookies.usertoken, process.env.SECRET_KEY, (err, payload) => {
+      if (err) { 
+        res.status(401).json({verified: false});
+      } else {
+        next();
+      }
+    });
+  }
+  
+
+module.exports.checkauth = (req, res) => {
+    const token = req.cookies.usertoken; // Assuming you're using cookies to store the token
+
+    if (!token) {
+        return res.status(401).json({ authenticated: false, message: 'No token provided' });
+    }
+
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ authenticated: false, message: 'Invalid token' });
+        }
+
+        res.status(200).json({ authenticated: true, userId: decoded.id });
+    });
+}  
 
 //create 
-module.exports.userCreate = (req,res) =>{
+module.exports.register=async (req,res) => {
+    try{
+
+        const user = await User.findOne({ email: req.body.email });
+        console.log(user)
+        if(user != null) {
+            console.log(">>>>>>>>>>>>>>>>")
+            // email  found in users collection
+            return res.status(400).json({ errors:{email:{ message:"Email already exists" }}});
+        }
+    }
+    catch(err){
+        return res.status(400).json({email:"Email already exits"});
+    }
+        
     User.create(req.body)
-        .then(user => {
-            // Fetch all existing games
-            return Game.find({})
-                .then(games => {
-                    // Create "inactive" UserGame entries for each game
-                    const userGameEntries = games.map(game => ({
-                        user: user._id,
-                        game: game._id,
-                        status: [false,false,true]
-                    }));
-                    // Insert UserGame entries
-                    return UserGame.insertMany(userGameEntries)
-                        .then(() => res.json({ user: user }))
-                        .catch(err => res.status(400).json(err));
-                });
+    .then(user => {
+        const userToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
+        res.cookie('usertoken', userToken, {
+            httpOnly: true,
+            // secure: process.env.NODE_ENV === 'production', // Uncomment for production
+        });
+        res.json({ msg: 'success!', user });
+    })
+    .catch(err => res.status(400).json(err));
+} 
+
+
+//login 
+module.exports.login = async (req,res) => {
+    const user = await User.findOne({ email: req.body.email });
+ 
+    if(user === null) {
+        // email not found in users collection
+        return res.sendStatus(400);
+    }
+ 
+    // if we made it this far, we found a user with this email address
+    // let's compare the supplied password to the hashed password in the database
+    const correctPassword = await bcrypt.compare(req.body.password, user.password);
+ 
+    if(!correctPassword) {
+        // password wasn't a match!
+        return res.sendStatus(400);
+    }
+ 
+    // if we made it this far, the password was correct
+    const userToken = jwt.sign({
+        id: user._id
+    }, process.env.SECRET_KEY);
+ 
+    // note that the response object allows chained calls to cookie and json
+    res
+        .cookie("usertoken", userToken, {
+            httpOnly: true
         })
-        .catch(err => res.status(400).json(err)); 
+        .json({ msg: "success!" });
+}
+
+//logout
+module.exports.logout = (req, res) => {
+    res.clearCookie('usertoken');
+    res.sendStatus(200);
 }
 
 //get 
