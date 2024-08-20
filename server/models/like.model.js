@@ -1,19 +1,12 @@
+const mongoose = require('mongoose')
+const bcrypt = require('bcrypt');
 
-
-// like take is a 3rd table: there shoudl NOT be any 
-
-const mongoose = require('mongoose');
-
-// this is the 3rd table as a product of Users-likes and Posts-likes tables 
-const LikeSchema = new mongoose.Schema({
-    users_id: { type: Integer,
-        required: [true, "A user is required to like a post."]
-    },
-    posts_id: { type: Integer,
-        required: [true, "A post is required."]
-    },
-}, 
-    { timestamps: true }
+const likeSchema = mongoose.Schema({
+    user:{type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    post:{type: mongoose.Schema.Types.ObjectId, ref: 'Post', required: true},
+    timestamp: { type: Date, default: Date.now }
+    }
 );
 
-module.exports.Like = mongoose.model('Like', LikeSchema);
+const Like = mongoose.model('Like', likeSchema);
+module.exports = Like; 
