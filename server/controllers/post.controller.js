@@ -2,7 +2,8 @@ const  Post= require('../models/post.model');
 
 module.exports.updatePost = (request, response) => {
     // {new: true}: returns the NEWLY updated document, not original one
-    Post.findOneAndUpdate({_id: request.params.id}, request.body, {new:true})
+    const {user,content} = request.body ;
+    Post.findOneAndUpdate({_id: request.params.id,user:user}, {content}, {new:true})
         // handles & returns successful update:
         .then(updatedPost  => response.json(updatedPost ))
         // handles & returns any error during the process as JSON response
@@ -10,8 +11,9 @@ module.exports.updatePost = (request, response) => {
 }
 
 module.exports.deletePost  = (request, response) => {
-    Post.deleteOne({ _id: request.params.id })
-        .then(deleteConfirmation => response.json(deleteConfirmation))
+    const {id} = request.params
+    Post.findByIdAndDelete({ _id:id  })
+        .then(post => response.json({post:post}))
         .catch(err => response.json(err))
 }
 

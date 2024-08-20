@@ -4,12 +4,13 @@
 // Like table is a 3rd table....
 
 
-const { Like } = require('../models/like.model');
+const  Like  = require('../models/like.model');
 
 
 module.exports.deleteLike = (request, response) => {
-    Like.deleteOne({ _id: request.params.id })
-        .then(deleteConfirmation => response.json(deleteConfirmation))
+    const like_id = request.params.id 
+    Like.findByIdAndDelete({ _id:like_id })
+        .then(like => response.json({like}))
         .catch(err => response.json(err))
 }
 
@@ -29,8 +30,8 @@ module.exports.getLike = (request, response) => {
 module.exports.createLike = (request, response) => {
     const { users_id, posts_id } = request.body;
     Like.create({ 
-        users_id, posts_id
+        user:users_id, post:posts_id
     })  
-        .then(Like => response.json(Like))   
+        .then(like => response.json({like}))   
         .catch(err => response.status(400).json(err));
 }

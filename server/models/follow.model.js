@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
 
 const followSchema = mongoose.Schema({
-    following:{type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    followed:{type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     follower:{type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     timestamp: { type: Date, default: Date.now }
     }
