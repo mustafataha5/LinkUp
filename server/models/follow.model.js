@@ -1,15 +1,13 @@
 
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+const bcrypt = require('bcrypt');
 
-// a self join is required: a follower and a followed are USERS in the same User table
-const FollowSchema = new mongoose.Schema({
-    follower: { type: Integer,
-        required: [true, "A follower user is required."]
-    },
-    followed: { type: Integer,
-        required: [true, "A followed user is required."]
+const followSchema = mongoose.Schema({
+    following:{type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    follower:{type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    timestamp: { type: Date, default: Date.now }
     }
-}, 
-    { timestamps: true }
-);
-module.exports.Follow = mongoose.model('Follow', FollowSchema);
+)
+const Follow = mongoose.model('Follow', followSchema);
+module.exports = Follow; 
+
