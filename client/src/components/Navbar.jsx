@@ -95,6 +95,10 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const peopleClick = () => {
+    navigate("/people");
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -196,6 +200,7 @@ export default function PrimarySearchAppBar() {
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
+              onClick={peopleClick}
             >
               <Badge  color="error">
                 <PeopleIcon/>
