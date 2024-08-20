@@ -7,10 +7,9 @@ import { Route, Routes } from 'react-router-dom'
 import Register from './components/Register'
 import Login from './components/Login'
 import Test from './components/Test'
-
+import FollowerSidebar from './views/FollowerSidebar';
 import MainPage from './views/MainPage'
 import Page403 from './components/Page403'
-
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,6 +17,7 @@ function App() {
   return (
     <>
 <Routes>
+    <Route path='/randatest' element={<FollowerSidebar/>}  />
     <Route path='/' element={<Home/>}/>
     <Route path='/login' element={<Login/>}/>
     <Route path='/register' element={<Register/>}/>
