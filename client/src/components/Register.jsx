@@ -20,7 +20,7 @@ const styles = {
       maxWidth: '500px',  // Reduced maxWidth
     },
     input: {
-      marginBottom: '0.75rem',  // Reduced margin between input fields
+      marginBottom: '0.5rem',  // Reduced margin between input fields
     },
     button: {
       width: '100%',
@@ -52,6 +52,8 @@ const Register = () => {
   const [confirmPassword, setConfirm] = useState('');
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState('');
+
+  const [errors,setErrors] = useState({}) ; 
 
   const navigate = useNavigate();
 
@@ -89,7 +91,15 @@ const Register = () => {
         setGender('');
         navigate('/test');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err.response.data)
+        const errorsObject = err.response.data.errors;
+        const errorMessages = {};
+        for (let key of Object.keys(errorsObject)) {
+          errorMessages[key] = errorsObject[key].message;
+        }
+        setErrors(errorMessages);
+      });
   };
 
   
@@ -116,6 +126,7 @@ const Register = () => {
                   required
                 />
               </FormControl>
+              {errors.firstName && <p><small className='text-danger'> {errors.firstName} </small></p>}
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl variant="outlined" fullWidth style={styles.input}>
@@ -129,6 +140,7 @@ const Register = () => {
                   required
                 />
               </FormControl>
+              {errors.lastName && <p><small className='text-danger'> {errors.lastName} </small></p>}
             </Grid>
             <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth style={styles.input}>
@@ -142,6 +154,7 @@ const Register = () => {
                   required
                 />
               </FormControl>
+              {errors.email && <p><small className='text-danger'> {errors.email} </small></p>}
             </Grid>
             <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth style={styles.input}>
@@ -155,6 +168,7 @@ const Register = () => {
                   required
                 />
               </FormControl>
+              {errors.password && <p><small className='text-danger'> {errors.password} </small></p>}
             </Grid>
             <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth style={styles.input}>
@@ -168,6 +182,7 @@ const Register = () => {
                   required
                 />
               </FormControl>
+              {errors.confirmPassword && <p><small className='text-danger'> {errors.confirmPassword} </small></p>}
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl variant="outlined" fullWidth style={styles.input}>
@@ -180,6 +195,7 @@ const Register = () => {
                   required
                 />
               </FormControl>
+              {errors.birthday && <p><small className='text-danger'> {errors.birthday} </small></p>}
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl variant="outlined" fullWidth style={styles.input}>
