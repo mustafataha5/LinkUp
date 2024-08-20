@@ -1,12 +1,13 @@
 import { AppBar } from '@mui/material'
 import React from 'react'
 import Navbar from '../components/Navbar'
-
+import Post from '../components/Post'
+import PostList from '../components/PostList'
 const MainPage = () => {
   return (
     <div>
-    <Navbar/>
-      <h1>success</h1>
+      <Navbar />
+      <PostList />
     </div>
   )
 }
