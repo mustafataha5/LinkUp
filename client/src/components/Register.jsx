@@ -92,7 +92,7 @@ const Register = () => {
   
   return (
     <div style={wrapperStyles}>
-      <Paper elevation={3} style={styles.paper}>
+      <Paper elevation={10}  style={styles.paper}>
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>

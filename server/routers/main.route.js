@@ -1,6 +1,3 @@
-
-
-
 const UserController = require('../controllers/user.controller') ; 
 const { authenticate } = require('../config/jwt.config');
 
@@ -19,7 +16,7 @@ module.exports = app => {
     app.patch("/api/users/:id",UserController.userUpdate);
     app.delete("/api/users/:id",UserController.userDelete);
 
-    //  //dropDB 
+    //  dropDB 
     //  app.delete("/api/DBMustafa",DB.dropDatabase)
     
 }
