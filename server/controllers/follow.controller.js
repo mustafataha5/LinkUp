@@ -1,4 +1,4 @@
-const { Follow } = require('../models/follow.model');
+const  Follow  = require('../models/follow.model');
 
 
 module.exports.updateFollow = (request, response) => {
@@ -11,21 +11,27 @@ module.exports.updateFollow = (request, response) => {
 }
 
 module.exports.deleteFollow = (request, response) => {
-    Follow.deleteOne({ _id: request.params.id })
-        .then(deleteConfirmation => response.json(deleteConfirmation))
+    Follow.findByIdAndDelete({ _id: request.params.id })
+        .then(follow => response.json({follow}))
         .catch(err => response.json(err))
 }
 
 module.exports.getAllFollows = (request, response) => {
     Follow.find({})
-        .then(Follows => response.json(Follows))
+        .then(follows => response.json({follows}))
         .catch(err => response.json(err))
 }
 
-module.exports.getFollow = (request, response) => {
-    Follow.findOne({_id:request.params.id})
-        .then(Follow => response.json(Follow))
-        .catch(err => response.json(err))
+module.exports.getFollowingBy = (request, response) => {
+    Follow.findOne({followed:request.params.id})
+        .then(follow => response.json({follow}))
+        .catch(err => response.json(err));
+}
+
+module.exports.getFolloweOther = (request, response) => {
+    Follow.findOne({follower:request.params.id})
+        .then(follow => response.json({follow}))
+        .catch(err => response.json(err));
 }
 
 // The method below is new
@@ -34,6 +40,6 @@ module.exports.createFollow = (request, response) => {
     Follow.create({ 
         follower, followed
     })  
-        .then(Follow => response.json(Follow))   
+        .then(follow => response.json({follow}))   
         .catch(err => response.status(400).json(err));
 }

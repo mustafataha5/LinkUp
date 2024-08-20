@@ -18,14 +18,6 @@ module.exports = app => {
     app.patch("/api/users/:id",UserController.userUpdate);
     app.delete("/api/users/:id",UserController.userDelete);
 
-   
-    
-    //posts 
-
-
-
-    //follow 
-    
     //  //dropDB 
     //  app.delete("/api/DBMustafa",DB.dropDatabase)
     

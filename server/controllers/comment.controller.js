@@ -1,8 +1,9 @@
-const { Comment } = require('../models/comment.model');
+const  Comment  = require('../models/comment.model');
 
 module.exports.updateComment = (request, response) => {
     // {new: true}: returns the NEWLY updated document, not original one
-    Comment.findOneAndUpdate({_id: request.params.id}, request.body, {new:true})
+    const {userId,postId} = request.body ;
+    Comment.findOneAndUpdate({_id: request.params.id,user:userId,post:postId}, request.body, {new:true})
         // handles & returns successful update:
         .then(updatedComment  => response.json(updatedComment ))
         // handles & returns any error during the process as JSON response
@@ -10,9 +11,9 @@ module.exports.updateComment = (request, response) => {
 }
 
 module.exports.deleteComment  = (request, response) => {
-    Comment.deleteOne({ _id: request.params.id })
-        .then(deleteConfirmation => response.json(deleteConfirmation))
-        .catch(err => response.json(err))
+    Comment.findByIdAndDelete({ _id: request.params.id })
+        .then(comment => response.json({comment}))
+        .catch(err => response.json(err)) ;
 }
 
 module.exports.getAllComments = (request, response) => {
@@ -21,17 +22,29 @@ module.exports.getAllComments = (request, response) => {
         .catch(err => response.json(err))
 }
 
-module.exports.getComment  = (request, response) => {
-    Comment.findOne({_id:request.params.id})
-        .then(Comment  => response.json(Comment))
-        .catch(err => response.json(err))
+module.exports.getAllCommentsOfPost = async (request, response) => {
+    // Comment.findOne({_id:request.params.id})
+    //     .then(Comment  => response.json(Comment))
+    //     .catch(err => response.json(err))
+
+            try {
+        
+                const {postId} = request.body;                 
+                const comments =await  Comment.find({post:postId}).sort({timestamp: 1});
+                //console.log(messages)
+                response.status(200).json({ comments });
+            }
+            catch(err){
+                response.status(500).json({ message: 'An error occurred while retrieving comments.', err });
+            }
+
 }
 
 // The method below is new
 module.exports.createComment  = (request, response) => {
-    const { message, user_id, post_id } = request.body;
+    const { content,postId,userId } = request.body;
     Comment.create({ 
-        message, user_id, post_id
+        content, user:userId, post:postId
     })  
         .then(Comment  => response.json(Comment ))   
         .catch(err => response.status(400).json(err));
