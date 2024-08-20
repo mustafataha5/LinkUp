@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Test = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
@@ -20,15 +21,20 @@ const Test = () => {
             });
     }, []);
 
+    useEffect(() => {
+        if (!loading) {
+            if (isLoggedIn) {
+                navigate('/success');  // Navigate to Home page if logged in
+            } else {
+                navigate('/403');      // Navigate to 403 page if not logged in
+            }
+        }
+    }, [isLoggedIn, loading]);
+
     if (loading) {
         return <div>Loading...</div>;
     }
-
-    return (
-        <div>
-            {isLoggedIn ? <h1>You are logged in</h1> : <h1>Please log in</h1>}
-        </div>
-    );
+    return null;                       // Nothing to render since navigation will happen    
 }
 
 export default Test
