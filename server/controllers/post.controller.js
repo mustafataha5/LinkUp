@@ -1,4 +1,4 @@
-const { Post} = require('../models/post.model');
+const  Post= require('../models/post.model');
 
 module.exports.updatePost = (request, response) => {
     // {new: true}: returns the NEWLY updated document, not original one
@@ -17,11 +17,11 @@ module.exports.deletePost  = (request, response) => {
 
 module.exports.getAllPosts = (request, response) => {
     Post.find({})
-        .then(Posts => response.json(Posts))
+        .then(posts => response.json({posts:posts}))
         .catch(err => response.json(err))
 }
 
-module.exports.getPost  = (request, response) => {
+module.exports.getAllPostOfUser  = (request, response) => {
     Post.findOne({_id:request.params.id})
         .then(Post  => response.json(Post))
         .catch(err => response.json(err))
@@ -29,10 +29,8 @@ module.exports.getPost  = (request, response) => {
 
 // The method below is new
 module.exports.createPost  = (request, response) => {
-    const { message } = request.body;
-    Post.create({ 
-        message
-    })  
-        .then(Post  => response.json(Post ))   
+    const {user,content} = request.body
+    Post.create({user,content})  
+        .then(post  => response.json({post:post}))   
         .catch(err => response.status(400).json(err));
 }

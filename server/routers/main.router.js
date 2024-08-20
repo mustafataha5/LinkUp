@@ -2,9 +2,7 @@
 
 
 const UserController = require('../controllers/user.controller') ;
-const MessageController = require("../controllers/message.controller"); 
 const { authenticate } = require('../config/jwt.config');
-
 
 module.exports = app => {
     //user
@@ -20,11 +18,14 @@ module.exports = app => {
     app.patch("/api/users/:id",UserController.userUpdate);
     app.delete("/api/users/:id",UserController.userDelete);
 
+   
+    
+    //posts 
 
-    app.post("/api/messages/send",MessageController.sendMessage);
-    app.get("/api/messages/:user1Id/:user2Id",MessageController.getMessages);
-    app.patch("/api/messages/read/:messageId",MessageController.setMessageReaded)
-    app.delete("/api/messages/:messageId",MessageController.deleteMessage)
+
+
+    //follow 
+    
     //  //dropDB 
     //  app.delete("/api/DBMustafa",DB.dropDatabase)
     

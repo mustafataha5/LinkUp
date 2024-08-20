@@ -17,6 +17,8 @@ app.use(express.urlencoded({ extended: true })); // This is new
 
 
 require('./config/mongoose.config');
-require('./routers/main.router')(app) ; 
+require('./routers/main.router')(app); 
+require("./routers/message.route")(app);
+require('./routers/post.route')(app) ; 
 
 app.listen(port, () => console.log(`Listening on port: ${port}`) );
