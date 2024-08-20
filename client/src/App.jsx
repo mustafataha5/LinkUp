@@ -9,6 +9,7 @@ import Login from './components/Login'
 import Test from './components/Test'
 
 import MainPage from './views/MainPage'
+import Page403 from './components/Page403'
 
 
 function App() {
@@ -25,6 +26,8 @@ function App() {
     <Route path='/test' element={<Test />}/>
 
     <Route path='/success' element={<MainPage/>}/>
+    <Route path='/403' element={<Page403/>}/>
+
 
 </Routes>
     </>
