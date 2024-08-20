@@ -36,11 +36,14 @@ const Home = () => {
           navigate('/test');
         })
         .catch(err=>{
+          console.log(err.response.data)
           const errorResponse = err.response.data.errors; // Get the errors from err.response.data
           const errorArr = []; // Define a temp error array to push the messages in
           for (const key of Object.keys(errorResponse)) { // Loop through all errors and get the messages
               errorArr.push(errorResponse[key].message)
           }
+          console.log('>>>>>>>>>>>>>>')
+          console.log(errorArr)
           // Set Errors
           setErrors(errorArr);
       })   
