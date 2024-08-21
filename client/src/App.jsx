@@ -7,7 +7,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom'
 import Register from './components/Register'
 import Login from './components/Login'
 import Test from './components/Test'
-// import FollowerSidebar from './views/FollowerSidebar';
+import Ads from './components/Ads';
 import MainPage from './views/MainPage'
 import Page403 from './components/Page403'
 import FriendPage from './views/FriendPage'
@@ -41,8 +41,10 @@ function App() {
     <>
      <UserContext.Provider value={ {user, setUser} }>
       <Routes>
-        <Route path='/profile/:id' element={<Profile/>}/>
-        <Route path='/randatest' element={<AutoPlaySwipeableViews />} />
+      <Route path='/profile/:id' element={<Profile/>}/>
+      {/* <Route path='/randatest' element={<AutoPlaySwipeableViews />} /> */}
+        <Route path='/randatest' element={<Ads />} />
+        {/* <Route path='/randatest' element={<AutoPlaySwipeableViews />} /> */}
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path="/register" element={<Register flag={true} />} />

@@ -85,3 +85,40 @@ module.exports.getNotFollowedBy = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+module.exports.getAllFriend = (req, res) => {
+    const { id } = req.params;
+
+    Follow.find({
+        $or: [
+            { followed: id },
+            { follower: id }
+        ]
+    })
+    .populate('followed', 'firstName lastName imageUrl _id')  // Populate followed user details
+    .populate('follower', 'firstName lastName imageUrl _id')  // Populate follower user details
+    .then(friends => {
+        const formattedFriends = friends.map(friend => {
+            if (friend.followed._id.toString() === id) {
+                // If the user is the followed one, return the follower's details
+                return {
+                    _id: friend.follower._id,
+                    firstName: friend.follower.firstName,
+                    lastName: friend.follower.lastName,
+                    imageUrl: friend.follower.imageUrl
+                };
+            } else if (friend.follower._id.toString() === id) {
+                // If the user is the follower, return the followed one's details
+                return {
+                    _id: friend.followed._id,
+                    firstName: friend.followed.firstName,
+                    lastName: friend.followed.lastName,
+                    imageUrl: friend.followed.imageUrl
+                };
+            }
+        });
+
+        res.json({ friends: formattedFriends.filter(Boolean) });
+    })
+    .catch(err => res.status(400).json(err));
+};
