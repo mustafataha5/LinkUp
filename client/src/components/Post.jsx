@@ -29,39 +29,49 @@ import PostForm from './PostForm';
 const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [likes, setLikes] = useState(0);
-  const [likedUser, setLikedUser] = useState([])
-  const [isLiked,setIsLiked] = useState(false) ; 
+  
+  const [numOfLikes, setNumOfLikes] = useState(0);
+
+  const [likedUsers, setLikedUsers] = useState([]);
+  const [isLiked, setIsLiked] = useState(false);
+
   const [comments, setComments] = useState([]);
-  const [liked, setLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true) ; 
+  
   useEffect(() => {
-    setLoading(true) ; 
-    getPostLikes()
-    isLikedByUser()
-  }, [liked]);
-
-  const getPostLikes = async() => {
-    
-    await axios.get(`http://localhost:8000/api/likes/${post._id}`)
-      .then(response => {
-        console.log("likes", response.data.Like)
-        // if (response.data && Array.isArray(response.data)) {
-          setLikedUser(response.data.Like); // Set the number of likes
-          setLikes(response.data.Like.length); // Set the number of likes
-          setLoading(false) ;
-        // }
-      })
-      .catch(error => {
+  
+    const fetchData = async () => {
+      try {
+        // Fetch the likes for the post
+        const response = await axios.get(`http://localhost:8000/api/likes/${post._id}`);
+        console.log(post._id + "-----likes", response.data.Like);
+  
+        // Update the number of likes and the list of users who liked the post
+        const likedUsers = response.data.Like;
+        setNumOfLikes(likedUsers.length);
+        setLikedUsers(likedUsers);
+  
+        // Check if the current user has liked the post
+        console.log("LikeUser", likedUsers);
+        console.log("userID",userId) ; 
+        const userHasLiked = likedUsers.some(like => like.user === userId); // Check if userId exists in any like object
+        console.log(userHasLiked);
+        setIsLiked(userHasLiked);
+  
+      } catch (error) {
         console.error('Error fetching likes:', error);
-      });
-  };
+      }
+    };
+  
+    fetchData();
+  }, [post._id, userId]);
+
 
   const handleLike = () => {
-    if (liked) {
+    if (isLiked) {
       axios.delete('http://localhost:8000/api/likes/'+post._id+"/"+userId)
       .then(res => {
         console.log(res.data)
@@ -86,15 +96,10 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
           // setErrors(errorResponse);
         })
     }
-    setLiked(!liked);
-    setLikes((prev) => (liked ? prev - 1 : prev + 1));
+    setIsLiked(!isLiked);
+    setNumOfLikes((prev) => (isLiked ? prev - 1 : prev + 1));
   }
 
-  const isLikedByUser = () => {
-    console.log("LikeUser",likedUser)
-    console.log(likedUser.includes(userId))
-    setLiked(likedUser.includes(userId));
-  }
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -144,11 +149,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
     setIsEditing(false)
   }
 
-  if(loading){
-    return (
-      <div>loading ...</div>
-    )
-  }
+
 
   return (
     <Card sx={{ maxWidth: 500, margin: '20px auto' }}>
@@ -222,11 +223,11 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
 
       <CardActions disableSpacing>
         <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
-          <IconButton aria-label="like" onClick={handleLike}>
-            <ThumbUpIcon color={liked ? 'primary' : 'action'} />
+          <IconButton aria-label="like" onClick={() => handleLike(post._id)}>
+            <ThumbUpIcon color={isLiked ? 'primary' : 'action'} />
           </IconButton>
           <Typography variant="body2" color="text.secondary">
-            {likes}
+            {numOfLikes}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>

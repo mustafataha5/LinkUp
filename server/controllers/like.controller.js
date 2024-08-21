@@ -41,7 +41,8 @@ module.exports.getAllLikes = (request, response) => {
 }
 
 module.exports.getLike = (request, response) => {
-    Like.find({_id:request.params.id})
+ // console.log(request.params.postId)
+    Like.find({post:request.params.postId})
         .then(Like => response.json({Like}))
         .catch(err => response.json(err))
 }
@@ -49,7 +50,7 @@ module.exports.getLike = (request, response) => {
 // The method below is new
 module.exports.createLike = (request, response) => {
     const { users_id, posts_id } = request.body;
-    console.log(users_id+"  ----  "+posts_id)
+ //   console.log(users_id+"  ----  "+posts_id)
     Like.create({ 
         user:users_id, post:posts_id
     })  
