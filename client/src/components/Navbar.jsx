@@ -166,6 +166,8 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{position:'fixed' ,top:0,width:"100%",zIndex:1000}}>
+
       <AppBar sx={{ backgroundColor: "#fe520a" }} position="static">
         <Toolbar>
           <Typography
@@ -201,10 +203,10 @@ export default function PrimarySearchAppBar() {
             </IconButton>
             <IconButton
              size="large"
-              aria-label="show 4 new mails" 
-              color="inherit"
-              onClick={mailClick}
-              >
+             aria-label="show 4 new mails" 
+             color="inherit"
+             onClick={mailClick}
+             >
               <Badge color="error">
                 <MailIcon />
               </Badge>
@@ -214,7 +216,7 @@ export default function PrimarySearchAppBar() {
               aria-label="show 17 new notifications"
               color="inherit"
               onClick={peopleClick}
-            >
+              >
               <Badge  color="error">
                 <PeopleIcon/>
               </Badge>
@@ -227,7 +229,7 @@ export default function PrimarySearchAppBar() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-            >
+              >
               <AccountCircle />
             </IconButton>
           </Box>
@@ -239,7 +241,7 @@ export default function PrimarySearchAppBar() {
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
               color="inherit"
-            >
+              >
               <MoreIcon />
             </IconButton>
           </Box>
@@ -247,6 +249,7 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+              </Box>
     </Box>
   );
 }

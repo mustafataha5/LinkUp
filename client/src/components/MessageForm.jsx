@@ -8,7 +8,7 @@ const MessageForm = ({renderMessage}) => {
         if(value.length<1){
             return ; 
         }
-        renderMessage(value) ; 
+       // renderMessage(value) ; 
         setValue('');
     }      
   return (

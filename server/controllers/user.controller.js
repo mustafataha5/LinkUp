@@ -126,10 +126,3 @@ module.exports.userDelete = (req,res) =>{
     .then(user => res.json({user:user}))
     .catch(err => res.json(err)) ; 
 }
-
-
-
-
-
-
-

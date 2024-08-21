@@ -2,44 +2,48 @@ import { AppBar, Box, Container, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import PostList from '../components/PostList';
-import FollowerSidebar from './FollowerSidebar';
 import FollowerList from './FollowerList';
 import axios from 'axios';
-import PostForm from '../components/PostForm';
-import { useNavigate } from 'react-router-dom'; // Assuming you're using react-router-dom
+import { useNavigate } from 'react-router-dom';
+import CreatePostSection from './CreatePostSection';
+import { ToastContainer } from 'react-toastify';
+import PostSection from './PostSection';
 
 const MainPage = () => {
-  const [user, setUser] = useState({});
-  const navigate = useNavigate(); // For navigation
-  const [errors, setErrors] = useState([]);
+  // To save the logged in user object 
+  const [user, setUser] = useState(null); // Use null initially
+  const [loading, setLoading] = useState(true); // Loading state
 
+  const navigate = useNavigate();
+
+  // Get the user (we will get the id from the cookies then find the user)
   useEffect(() => {
-    axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+    getUser()
+    console.log(user)
+  }, []);
+
+  const getUser = async () => {
+     await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
       .then(response => {
-        console.log(response.data);
+        console.log("inside", response.data.user)
         setUser(response.data.user);
       })
       .catch(error => {
         console.error('Error checking authentication', error);
         navigate('/login'); // Redirect to login if not authenticated
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
-  }, [navigate]);
+  }
 
-  const handlePostSubmit = (post) => {
-    axios.post('http://localhost:8000/api/posts', post)
-
-      .then(res => {
-        console.log(res.data)
-      })
-      .catch(err => {
-        console.log(err.response.data.errors)
-        const errorResponse = err.response.data.errors;
-        setErrors(errorResponse);
-      })
-  };
+  if (loading) {
+    return <div>Loading...</div>; // Optionally, replace with a spinner or skeleton UI
+  }
 
   return (
     <div>
+      <ToastContainer />
       <Navbar />
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Container>
@@ -48,14 +52,13 @@ const MainPage = () => {
               <FollowerList />
             </Grid>
             <Grid item xs={8}>
-              <PostForm
-                errors={errors}
-                name={user.firstName + " " + user.lastName}
-                userImage="https://example.com/user-image.jpg"
-                onPostSubmit={handlePostSubmit}
-                userId = {user._id}
-              />
-              <PostList />
+              {/* Only render the CreatePostSection and PostSection if user data is available */}
+              {user && (
+                <>
+                  <CreatePostSection user={user} />
+                  <PostSection user={user} />
+                </>
+              )}
             </Grid>
           </Grid>
         </Container>

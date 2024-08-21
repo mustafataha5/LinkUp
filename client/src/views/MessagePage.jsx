@@ -17,8 +17,7 @@ const MessagePage = () => {
                 <Grid  
                 item xs={8}
                 sx={{
-                  position:'sticky' ,  
-                  height: "90vh",  
+                  height: "100vh",  
                 }}
                 >
                     <Chat 

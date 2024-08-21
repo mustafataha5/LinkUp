@@ -14,8 +14,8 @@ const Chat = ({ name, messages, renderMessage }) => {
     }, [messages]);
 
     return (
-        <div style={{ height: '90%', position: 'fixed', right: 0, top: 0, width: '66.666%' }}>
-            <div className="m-5 p-3 border border-1 border-dark overflow-auto" style={{ height: 'calc(100% - 150px)' }}>
+        <div style={{ height: '90%', position: 'fixed', right: 0, bottom: 0, width: '66.666%' }}>
+            <div className="m-5 p-3 border border-1 border-dark overflow-auto" style={{ height: 'calc(90% - 100px)' }}>
                 {messages.length > 0 &&
                     messages.map((message, i) => (
                         name !== message.name ? (
@@ -36,7 +36,9 @@ const Chat = ({ name, messages, renderMessage }) => {
                             />
                         )
                     ))}
-                <div className="mt-5" ref={messagesEndRef} />
+                <div ref={messagesEndRef} />
+            </div>
+            <div className='w-80 px-3 mx-5'>
                 <MessageForm renderMessage={renderMessage} />
             </div>
         </div>
