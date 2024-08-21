@@ -16,6 +16,7 @@ import AutoPlaySwipeableViews from './views/PhotoSlider';
 import { UserContext } from './context/UserContext'
 import Profile from './views/Profile'
 import axios from 'axios'
+import AdminStat from './components/AdminStat'
 
 function App() {
   const [user,setUser] = useState(null) ;
@@ -42,6 +43,7 @@ function App() {
      <UserContext.Provider value={ {user, setUser} }>
       <Routes>
       <Route path='/profile/:id' element={<Profile/>}/>
+      <Route path='/muath' element={<AdminStat/>}/>
       {/* <Route path='/randatest' element={<AutoPlaySwipeableViews />} /> */}
         <Route path='/randatest' element={<Ads />} />
         {/* <Route path='/randatest' element={<AutoPlaySwipeableViews />} /> */}

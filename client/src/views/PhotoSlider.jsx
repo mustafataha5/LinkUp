@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import MobileStepper from '@mui/material/MobileStepper';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
@@ -14,12 +15,7 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
   {
-    label: "Free Gigabytes - Jawwal's GREAT Promotions!!!",
-    imgPath:'https://www.jawwal.ps/storage/uploads/content/zTRI1spx8zgWvuXa1I7cKlsf2q99T0OhRG9IepYD.png',
-    link: 'https://www.jawwal.ps/ar/individuals/campaigns-and-offers/west-bank/8095',
-  },
-  {
-    label: 'Your Trip to Bali, Indenesia is on Royal Jordanian',
+    label: 'Your Trip to Bali, Indonesia is on Royal Jordanian',
     imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
     link: 'https://www.rj.com/',
   },
@@ -31,7 +27,7 @@ const images = [
   {
     label: "Jezzine Restaurant - Ramallah's Best Seafood!!",
     imgPath:'https://st7038.ispot.cc/images/22161/331297198_6139840872741430_7247942029885331817_n.jpg',
-    link: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
+    link: 'http://www.bahri1976.com/?fbclid=IwY2xjawEy8q9leHRuA2FlbQIxMAABHRldoQoeG2DrHA6ThQcE3hCAE-h_7_pr2naTPmGY7vuqd9jxCWIp2Tbo2g_aem_Y-0exrt6XXnBbEkBFhc_BQ',
   },
 ];
 
@@ -53,20 +49,20 @@ function SwipeableTextMobileStepper() {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
-      <Paper
-        square
-        elevation={0}
+    <Card sx={{ maxWidth: 400, overflow: 'hidden', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}>
+      <CardContent
         sx={{
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: 'column',
           height: 50,
-          pl: 2,
+          justifyContent: 'center',
           bgcolor: 'background.default',
         }}
       >
-        <Typography>{images[activeStep].label}</Typography>
-      </Paper>
+        <Typography variant="subtitle1" align="center">
+          {images[activeStep].label}
+        </Typography>
+      </CardContent>
       <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={activeStep}
@@ -123,7 +119,7 @@ function SwipeableTextMobileStepper() {
           </Button>
         }
       />
-    </Box>
+    </Card>
   );
 }
 
