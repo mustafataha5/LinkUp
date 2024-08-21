@@ -8,6 +8,7 @@ import axios from 'axios';
 const Test = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [userId,setUserId] = useState('') ;
     const navigate = useNavigate();
 
     useEffect(() => {

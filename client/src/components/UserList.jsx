@@ -46,10 +46,13 @@ const UserList = ({
   const whenclick = (realationId,id) => {
    // console.log(id)
     setUsers(users.filter(user => user._id != id))
-    if(index ===0 ){
+    if(index ===0 || index==1 ){
         onClickTab(realationId) ;
     }
-    onClickTab(id) ; 
+    else{
+
+        onClickTab(id) ; 
+    }
   }
   
   return (
@@ -66,6 +69,12 @@ const UserList = ({
           <CardActions style={{ padding: 0 }}>
             {
                 index == 0 && 
+                <IconButton onClick={()=>whenclick(follower.relationId,follower._id)} size="large" aria-label="follow" color="inherit" >
+                <PersonRemoveIcon/>
+                </IconButton>
+            }
+            {
+                index == 1 && 
                 <IconButton onClick={()=>whenclick(follower.relationId,follower._id)} size="large" aria-label="follow" color="inherit" >
                 <PersonRemoveIcon/>
                 </IconButton>
