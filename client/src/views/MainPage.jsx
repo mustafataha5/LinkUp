@@ -44,8 +44,8 @@ const MainPage = () => {
     getPosts()
   }, []);
 
-  const getPosts = async () => {
-    await axios.get('http://localhost:8000/api/posts')
+  const getPosts = () => {
+    axios.get('http://localhost:8000/api/posts')
       .then((response) => {
         console.log("Posts= ", response.data.posts)
         setPosts(response.data.posts); // Assuming the API returns { posts: [] }
@@ -54,7 +54,6 @@ const MainPage = () => {
         console.error('Error fetching posts:', error);
       });
   }
-
 
   if (loading) {
     return <div>Loading...</div>; // Optionally, replace with a spinner or skeleton UI
@@ -75,7 +74,7 @@ const MainPage = () => {
               {user && (
                 <>
                   <CreatePostSection user={user} getPosts={getPosts} />
-                  <PostSection user={user}  posts={posts}/>
+                  <PostSection user={user}  posts={posts} setPosts={setPosts}/>
                 </>
               )}
             </Grid>
