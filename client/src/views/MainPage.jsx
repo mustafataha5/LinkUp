@@ -13,6 +13,10 @@ const MainPage = () => {
   // To save the logged in user object 
   const [user, setUser] = useState(null); // Use null initially
   const [loading, setLoading] = useState(true); // Loading state
+  // State to hold the posts
+  const [posts, setPosts] = useState([]);
+
+
   const navigate = useNavigate();
 
   // Get the user (we will get the id from the cookies then find the user)
@@ -22,7 +26,7 @@ const MainPage = () => {
   }, []);
 
   const getUser = async () => {
-     await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+    await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
       .then(response => {
         console.log("inside", response.data.user)
         setUser(response.data.user);
@@ -35,6 +39,23 @@ const MainPage = () => {
         setLoading(false); // Stop loading
       });
   }
+
+  // Fetch the posts when the component is mounted
+  useEffect(() => {
+    getPosts()
+  }, []);
+
+  const getPosts = async () => {
+    await axios.get('http://localhost:8000/api/posts')
+      .then((response) => {
+        console.log("Posts= ", response.data.posts)
+        setPosts(response.data.posts); // Assuming the API returns { posts: [] }
+      })
+      .catch((error) => {
+        console.error('Error fetching posts:', error);
+      });
+  }
+
 
   if (loading) {
     return <div>Loading...</div>; // Optionally, replace with a spinner or skeleton UI
@@ -54,8 +75,8 @@ const MainPage = () => {
               {/* Only render the CreatePostSection and PostSection if user data is available */}
               {user && (
                 <>
-                  <CreatePostSection user={user} />
-                  <PostSection user={user} />
+                  <CreatePostSection user={user} getPosts={getPosts} />
+                  <PostSection user={user}  posts={posts}/>
                 </>
               )}
             </Grid>
