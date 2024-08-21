@@ -72,6 +72,7 @@ const Post = ({ postId, username, userImage, date, content, postImage, isOwnPost
   const handleDelete = () => {
     try {
       // Notify parent component to remove the post from the list
+      handleMenuClose()
       onDelete(postId);
     } catch (error) {
       console.error('Error deleting post:', error);

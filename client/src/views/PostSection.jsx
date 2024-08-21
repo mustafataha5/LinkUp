@@ -6,7 +6,6 @@ import Swal from 'sweetalert2';
 const PostSection = ({ posts, user, handleDeletePost, setPosts }) => {
   const handleDelete = async (postId) => {
     try {
-      // Show SweetAlert2 confirmation dialog
       const result = await Swal.fire({
         title: 'Are you sure?',
         text: 'This action cannot be undone.',
@@ -17,16 +16,13 @@ const PostSection = ({ posts, user, handleDeletePost, setPosts }) => {
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel'
       });
-  
-      // Log result for debugging
-      console.log("SweetAlert result:", result);
-  
+    
       if (result.isConfirmed) {
+        // Proceed with deletion
         await axios.delete(`http://localhost:8000/api/posts/${postId}`);
-        // Remove post from frontend
         setPosts((prevPosts) => prevPosts.filter(post => post._id !== postId));
         Swal.fire('Deleted!', 'Your post has been deleted.', 'success');
-      } else if (result.isDismissed) {
+      } else {
         console.log('Deletion cancelled');
       }
     } catch (error) {
