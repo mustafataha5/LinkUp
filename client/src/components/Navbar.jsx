@@ -102,6 +102,10 @@ export default function PrimarySearchAppBar() {
     navigate("/success");
   }
 
+  const mailClick = () => {
+    navigate("/message");
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -195,7 +199,12 @@ export default function PrimarySearchAppBar() {
             >
             <HomeIcon />
             </IconButton>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton
+             size="large"
+              aria-label="show 4 new mails" 
+              color="inherit"
+              onClick={mailClick}
+              >
               <Badge color="error">
                 <MailIcon />
               </Badge>
