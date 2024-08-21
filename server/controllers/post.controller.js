@@ -31,8 +31,8 @@ module.exports.getAllPostOfUser  = (request, response) => {
 
 // The method below is new
 module.exports.createPost  = (request, response) => {
-    const {user,content} = request.body
-    Post.create({user,content})  
+    const {user,content, imageUrl} = request.body
+    Post.create({user,content,imageUrl})  
         .then(post  => response.json({post:post}))   
         .catch(err => response.status(400).json(err));
 }

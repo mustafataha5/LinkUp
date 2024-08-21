@@ -13,9 +13,9 @@ import {
 } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
-const PostForm = ({ userImage, name, onPostSubmit, errors }) => {
+const PostForm = ({ userId, userImage, name, onPostSubmit, errors }) => {
     const [content, setContent] = useState('');
-    const [image, setImage] = useState(null);
+    const [imageUrl, setImageURL] = useState(null);
 
     const handleContentChange = (event) => {
         setContent(event.target.value);
@@ -24,23 +24,19 @@ const PostForm = ({ userImage, name, onPostSubmit, errors }) => {
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setImage(URL.createObjectURL(file));
+            setImageURL(URL.createObjectURL(file));
         }
     };
 
     const handleSubmit = () => {
-        if (content.trim()) {
-            onPostSubmit({ content, image });
-            setContent('');
-            setImage(null);
-        }
+        onPostSubmit({ userId, content, imageUrl })
     };
 
     return (
         <Card sx={{ maxWidth: 500, margin: '20px auto' }}>
             <CardHeader
                 avatar={<Avatar src={userImage} alt="User" />}
-                title="Current user"
+                title={name}
             />
             <CardContent>
                 <TextField
@@ -52,9 +48,11 @@ const PostForm = ({ userImage, name, onPostSubmit, errors }) => {
                     value={content}
                     onChange={handleContentChange}
                 />
-                {image && (
+                {errors.content && <small className="text-danger">{errors.content.message}</small>}
+
+                {imageUrl && (
                     <Box sx={{ mt: 2 }}>
-                        <img src={image} alt="Selected" style={{ width: '100%' }} />
+                        <img src={imageUrl} alt="Selected" style={{ width: '100%' }} />
                     </Box>
                 )}
                 <Box sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
