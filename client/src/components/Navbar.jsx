@@ -19,6 +19,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
+import { useContext } from 'react';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,11 +67,14 @@ export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const navigate = useNavigate()
-  
+
+  const {setUser} = useContext(UserContext) ; 
+
   const LogOut = () =>{
     axios.post('http://localhost:8000/api/logout',{}, {withCredentials: true})
     .then((res) => {
       console.log(res)
+      setUser(null) ; 
       navigate('/')
     })
     .catch(err => console.log(err))
@@ -100,6 +105,10 @@ export default function PrimarySearchAppBar() {
   }
   const homeClick = () => {
     navigate("/success");
+  }
+
+  const mailClick = () => {
+    navigate("/message");
   }
 
   const menuId = 'primary-search-account-menu';
@@ -162,6 +171,8 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{position:'fixed' ,top:0,width:"100%",zIndex:1000}}>
+
       <AppBar sx={{ backgroundColor: "#fe520a" }} position="static">
         <Toolbar>
           <Typography
@@ -195,7 +206,12 @@ export default function PrimarySearchAppBar() {
             >
             <HomeIcon />
             </IconButton>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton
+             size="large"
+             aria-label="show 4 new mails" 
+             color="inherit"
+             onClick={mailClick}
+             >
               <Badge color="error">
                 <MailIcon />
               </Badge>
@@ -205,7 +221,7 @@ export default function PrimarySearchAppBar() {
               aria-label="show 17 new notifications"
               color="inherit"
               onClick={peopleClick}
-            >
+              >
               <Badge  color="error">
                 <PeopleIcon/>
               </Badge>
@@ -218,7 +234,7 @@ export default function PrimarySearchAppBar() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-            >
+              >
               <AccountCircle />
             </IconButton>
           </Box>
@@ -230,7 +246,7 @@ export default function PrimarySearchAppBar() {
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
               color="inherit"
-            >
+              >
               <MoreIcon />
             </IconButton>
           </Box>
@@ -238,6 +254,7 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+              </Box>
     </Box>
   );
 }

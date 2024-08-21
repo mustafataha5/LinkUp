@@ -1,5 +1,7 @@
 import { AppBar, Box, Container, Grid } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../context/UserContext'
+
 import Navbar from '../components/Navbar';
 import PostList from '../components/PostList';
 import FollowerList from './FollowerList';
@@ -8,35 +10,40 @@ import { useNavigate } from 'react-router-dom';
 import CreatePostSection from './CreatePostSection';
 import { ToastContainer } from 'react-toastify';
 import PostSection from './PostSection';
+import UserList from '../components/UserList';
 
 const MainPage = () => {
   // To save the logged in user object 
-  const [user, setUser] = useState(null); // Use null initially
+  //const [user, setUser] = useState(null); // Use null initially
   const [loading, setLoading] = useState(true); // Loading state
   // State to hold the posts
   const [posts, setPosts] = useState([]);
-
+  const { user,setUser } = useContext(UserContext); 
+  const [users,setUsers] = useState([]) ; 
   const navigate = useNavigate();
 
   // Get the user (we will get the id from the cookies then find the user)
   useEffect(() => {
+    // console.log(">>>>><<<<<"+user);
+    // console.log(user)
+    //setLoading(false);
     getUser()
-    console.log(user)
   }, []);
 
   const getUser = async () => {
     await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
-      .then(response => {
-        console.log("inside", response.data.user)
+      .then( response => {
+       // console.log("inside", response.data.user)
+        getfollowed(response.data.user._id);
         setUser(response.data.user);
       })
       .catch(error => {
         console.error('Error checking authentication', error);
-        navigate('/login'); // Redirect to login if not authenticated
+        navigate('/403'); // Redirect to login if not authenticated
       })
-      .finally(() => {
-        setLoading(false); // Stop loading
-      });
+      // .finally(() => {
+      //   setLoading(false); // Stop loading
+      // });
   }
 
   // Fetch the posts when the component is mounted
@@ -55,6 +62,19 @@ const MainPage = () => {
       });
   }
 
+  const getfollowed = (id) => {
+    axios.get('http://localhost:8000/api/follows/followed/'+id)
+      .then((response) => {
+        console.log( response.data)
+        setUsers( response.data.followings)
+        setLoading(false); // Stop loading
+      //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
+      })
+      .catch((error) => {
+        console.error('Error fetching posts:', error);
+      });
+  }
+
   if (loading) {
     return <div>Loading...</div>; // Optionally, replace with a spinner or skeleton UI
   }
@@ -67,7 +87,7 @@ const MainPage = () => {
         <Container>
           <Grid container spacing={2}>
             <Grid item xs={3}>
-              <FollowerList />
+              <UserList initialUsers={users} index={0}/>
             </Grid>
             <Grid item xs={8}>
               {/* Only render the CreatePostSection and PostSection if user data is available */}

@@ -7,7 +7,7 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 import '../views/FollowerSidebar';
 import PersonAdd from '@mui/icons-material/PersonAdd';
-
+import BlockIcon from '@mui/icons-material/Block';
 // Sample data for followers
 
 
@@ -50,7 +50,6 @@ const UserList = ({
         onClickTab(realationId) ;
     }
     else{
-
         onClickTab(id) ; 
     }
   }
@@ -59,29 +58,29 @@ const UserList = ({
     <div>
     <div  style={{ padding: 20, marginTop: 40  , width:'19rem' ,border:'1px black soild'}}>
 
-      {users.map((follower,i) => (
+      {users.map((user,i) => (
         <Card key={i} style={{ marginBottom: 16, width: '250px', borderBottom: "none" }} >
         <CardContent className="flexMe" style={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar src={follower.imageUrl} alt={follower.name} style={{ marginRight: 10 }} />
+          <Avatar src={user.imageUrl} alt={user.name} style={{ marginRight: 10 }} />
           <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-            {follower.firstName} {follower.lastName}
+            {user.firstName} {user.lastName}
           </Typography>
           <CardActions style={{ padding: 0 }}>
             {
                 index == 0 && 
-                <IconButton onClick={()=>whenclick(follower.relationId,follower._id)} size="large" aria-label="follow" color="inherit" >
+                <IconButton onClick={()=>whenclick(user.relationId,user._id)} size="large" aria-label="follow" color="inherit" >
                 <PersonRemoveIcon/>
                 </IconButton>
             }
             {
                 index == 1 && 
-                <IconButton onClick={()=>whenclick(follower.relationId,follower._id)} size="large" aria-label="follow" color="inherit" >
-                <PersonRemoveIcon/>
+                <IconButton onClick={()=>whenclick(user.relationId,user._id)} size="large" aria-label="follow" color="inherit" >
+                <BlockIcon />
                 </IconButton>
             }
             {
                 index == 2 && 
-                <IconButton onClick={()=>whenclick("",follower._id)} size="large" aria-label="follow" color="inherit" >
+                <IconButton onClick={()=>whenclick("",user._id)} size="large" aria-label="follow" color="inherit" >
                 <PersonAdd />
                 </IconButton>
             }
