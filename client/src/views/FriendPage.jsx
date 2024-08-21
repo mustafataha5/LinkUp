@@ -55,7 +55,7 @@ function BasicTabs() {
             .then(async response => {
                 console.log(response.data)
                 setUserId(response.data.user._id);
-               // setLoading(false) ;
+                setLoading(false) ;
             })
             .catch(error => {
                 console.error('Error checking authentication', error);
@@ -63,16 +63,16 @@ function BasicTabs() {
            
     }, []);
 
-    React.useEffect(() => {
-        axios.get("http://localhost:8000/api/follows/followed/" + userId)
-        .then(res => {
-           console.log(res.data.followings)
-            setUsers(res.data.followings)
-            setLoading(false) ; 
-        })
-        .catch(err => console.log(err))
+    // React.useEffect(() => {
+    //     axios.get("http://localhost:8000/api/follows/followed/" + userId)
+    //     .then(res => {
+    //        console.log(res.data.followings)
+    //         setUsers(res.data.followings)
+    //         setLoading(false) ; 
+    //     })
+    //     .catch(err => console.log(err))
            
-    }, []);
+    // }, []);
 
 
     const handleChange = (event, newValue) => {
