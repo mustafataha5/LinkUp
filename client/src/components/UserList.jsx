@@ -50,7 +50,7 @@ const UserList = ({
           <Card key={user._id} style={{ marginBottom: 16, borderBottom: 'none'}}>
             <CardContent style={{ display: 'flex', alignItems: 'center' }}>
               <Avatar src={user.imageUrl} alt={user.firstName} style={{ marginRight: 10 }} />
-              <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
+              <Typography variant="p" component="div" style={{ flexGrow: 1}}>
                 {user.firstName} {user.lastName}
               </Typography>
               <CardActions style={{ padding: 0 }}>

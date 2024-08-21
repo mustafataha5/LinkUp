@@ -8,6 +8,7 @@ import { Container, Grid } from '@mui/material';
 import UserList from '../components/UserList';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Ads from '../components/Ads';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -119,14 +120,15 @@ function BasicTabs() {
         )
     }
     return (
-        <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ width: '85%', marginTop: 6  }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Following" {...a11yProps(0)} />
                     <Tab label="Follower" {...a11yProps(1)} />
                     <Tab label="Suggestion" {...a11yProps(2)} />
                 </Tabs>
             </Box>
+            <Grid>
             <CustomTabPanel value={value} index={0}>
                 <UserList onClickTab={delFollow} initialUsers={users} index={0} />
             </CustomTabPanel>
@@ -136,6 +138,7 @@ function BasicTabs() {
             <CustomTabPanel value={value} index={2}>
                 <UserList onClickTab={addFollow} initialUsers={users} index={2}/>
             </CustomTabPanel>
+            </Grid>
         </Box>
     );
 }
@@ -146,10 +149,13 @@ const FriendPage = () => {
             <Navbar />
             <Container>
 
-                <Grid container margin={4} spacing={2}>
+                <Grid container justifyContent="center" alignItems="center" margin={4} spacing={2}>
 
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <BasicTabs />
+                    </Grid>
+                    <Grid item xs={4} sx={{marginTop: 12}}>
+                        <Ads />
                     </Grid>
 
                 </Grid>
