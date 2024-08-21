@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../context/UserContext';
 
 const Test = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [loading, setLoading] = useState(true);
-    const [userId,setUserId] = useState('') ;
+    //const [userId,setUserId] = useState('') ;
+    const { setUser } = useContext(UserContext); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -13,10 +15,13 @@ const Test = () => {
             .then(response => {
                 console.log(response.data)
                 setIsLoggedIn(response.data.authenticated);
-                setUserId(response.data.userId) ; 
+      //          setUserId(response.data.userId) ; 
+                console.log("ddddddddllll"+response.data.user._id)
+                setUser(response.data.user);
             })
             .catch(error => {
                 console.error('Error checking authentication', error);
+                navigate('/403')
                 setIsLoggedIn(false);
 
             })

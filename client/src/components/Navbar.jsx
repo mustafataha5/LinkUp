@@ -19,6 +19,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
+import { useContext } from 'react';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,11 +67,14 @@ export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const navigate = useNavigate()
-  
+
+  const {setUser} = useContext(UserContext) ; 
+
   const LogOut = () =>{
     axios.post('http://localhost:8000/api/logout',{}, {withCredentials: true})
     .then((res) => {
       console.log(res)
+      setUser(null) ; 
       navigate('/')
     })
     .catch(err => console.log(err))

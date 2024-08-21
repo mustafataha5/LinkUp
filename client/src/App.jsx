@@ -13,11 +13,13 @@ import Page403 from './components/Page403'
 import FriendPage from './views/FriendPage'
 import MessagePage from './views/MessagePage'
 import AutoPlaySwipeableViews from './views/PhotoSlider';
+import { UserContext } from './context/UserContext'
 
 function App() {
-
+  const [user,setUser] = useState(null) ;
   return (
     <>
+     <UserContext.Provider value={ {user, setUser} }>
       <Routes>
         <Route path='/randatest' element={<AutoPlaySwipeableViews />} />
         <Route path='/' element={<Home />} />
@@ -29,6 +31,7 @@ function App() {
         <Route path='/success' element={<MainPage />} />
         <Route path='/403' element={<Page403 />} />
       </Routes>
+     </UserContext.Provider>
     </>
   )
 }
