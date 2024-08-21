@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import {
   Avatar,
@@ -29,12 +29,72 @@ import PostForm from './PostForm';
 const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [likes, setLikes] = useState(post.likes || 0);
-  const [comments, setComments] = useState(post.comments || []);
-  const [liked, setLiked] = useState(post.likedByUser || false);
+  const [likes, setLikes] = useState(0);
+  const [likedUser, setLikedUser] = useState([])
+  const [isLiked,setIsLiked] = useState(false) ; 
+  const [comments, setComments] = useState([]);
+  const [liked, setLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true) ; 
+  useEffect(() => {
+    setLoading(true) ; 
+    getPostLikes()
+    isLikedByUser()
+  }, [liked]);
+
+  const getPostLikes = async() => {
+    
+    await axios.get(`http://localhost:8000/api/likes/${post._id}`)
+      .then(response => {
+        console.log("likes", response.data.Like)
+        // if (response.data && Array.isArray(response.data)) {
+          setLikedUser(response.data.Like); // Set the number of likes
+          setLikes(response.data.Like.length); // Set the number of likes
+          setLoading(false) ;
+        // }
+      })
+      .catch(error => {
+        console.error('Error fetching likes:', error);
+      });
+  };
+
+  const handleLike = () => {
+    if (liked) {
+      axios.delete('http://localhost:8000/api/likes/'+post._id+"/"+userId)
+      .then(res => {
+        console.log(res.data)
+      })
+      // If there is errors we set the errors equal to the err.response
+      // And pass it as props to the form.
+      .catch(err => {
+        console.log(err.response.data.errors)
+        // const errorResponse = err.response.data.errors;
+        // setErrors(errorResponse);
+      })
+    } else {
+      axios.post('http://localhost:8000/api/likes', { users_id:userId, posts_id:post._id })
+        .then(res => {
+          console.log(res.data)
+        })
+        // If there is errors we set the errors equal to the err.response
+        // And pass it as props to the form.
+        .catch(err => {
+          console.log(err.response)
+          // const errorResponse = err.response.data.errors;
+          // setErrors(errorResponse);
+        })
+    }
+    setLiked(!liked);
+    setLikes((prev) => (liked ? prev - 1 : prev + 1));
+  }
+
+  const isLikedByUser = () => {
+    console.log("LikeUser",likedUser)
+    console.log(likedUser.includes(userId))
+    setLiked(likedUser.includes(userId));
+  }
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,11 +102,6 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleLike = () => {
-    setLiked(!liked);
-    setLikes((prev) => (liked ? prev - 1 : prev + 1));
   };
 
   const handleComment = () => {
@@ -78,17 +133,22 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
 
   const handleEdit = () => {
     setIsEditing(true)
-    console.log("inside edit",post._id)
+    console.log("inside edit", post._id)
     handleMenuClose();
   }
 
-  const handleUpdate = (id,newData) => {
-    console.log(">>>>>>>id"+id)
+  const handleUpdate = (id, newData) => {
+    console.log(">>>>>>>id" + id)
     console.log(newData)
-    onUpdate(post._id,newData)
+    onUpdate(post._id, newData)
     setIsEditing(false)
   }
 
+  if(loading){
+    return (
+      <div>loading ...</div>
+    )
+  }
 
   return (
     <Card sx={{ maxWidth: 500, margin: '20px auto' }}>
@@ -131,16 +191,16 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
         subheader={new Date(post.timestamp).toLocaleDateString()}
       />
       {isEditing ?
-        <PostForm 
-        userId={userId} 
-        onPostSubmit={handleUpdate} 
-        errors={errors} 
-        userImage={post.user.imageUrl} 
-        name={post.user.firstName + " " + post.user.lastName}
-        initialContent={post.content}
-        initialImage={post.imageUrl}
-        postId = {post._id}
-        isEdit={true}
+        <PostForm
+          userId={userId}
+          onPostSubmit={handleUpdate}
+          errors={errors}
+          userImage={post.user.imageUrl}
+          name={post.user.firstName + " " + post.user.lastName}
+          initialContent={post.content}
+          initialImage={post.imageUrl}
+          postId={post._id}
+          isEdit={true}
         /> :
 
         <CardContent>
