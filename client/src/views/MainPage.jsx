@@ -16,7 +16,6 @@ const MainPage = () => {
   // State to hold the posts
   const [posts, setPosts] = useState([]);
 
-
   const navigate = useNavigate();
 
   // Get the user (we will get the id from the cookies then find the user)

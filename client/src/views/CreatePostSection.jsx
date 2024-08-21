@@ -4,6 +4,7 @@ import axios from 'axios'
 import PostForm from '../components/PostForm'
 
 const CreatePostSection = ({ user, getPosts }) => {
+
     // To handle form errors
     const [errors, setErrors] = useState([]);
 
