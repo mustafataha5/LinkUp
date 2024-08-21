@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@mui/x-charts": "^7.13.0",
     "axios": "^1.7.4",
     "bootstrap": "^5.3.3",
     "js-cookie": "^3.0.5",

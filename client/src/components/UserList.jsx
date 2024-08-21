@@ -16,21 +16,10 @@ const UserList = ({
     ],
     onClickTab 
 }) => {
-  const [followers, setFollowers] = useState(initialUsers);
-  const [following, setFollowing] = useState(new Set());
-
   const [users, setUsers] = useState(initialUsers);
 
   const handleFollowToggle = (id) => {
-    setFollowing((prevFollowing) => {
-      const newFollowing = new Set(prevFollowing);
-      if (newFollowing.has(id)) {
-        newFollowing.delete(id);
-      } else {
-        newFollowing.add(id);
-      }
-      return newFollowing;
-    });
+    // Implement follow/unfollow logic
   };
 
   const whenclick = (relationId, id) => {
@@ -49,59 +38,58 @@ const UserList = ({
   };
 
   return (
-    <div>
-      <div style={{ padding: 20, marginTop: 40, width: '19rem', border: '1px solid black' }}>
-        {users.map((user, i) => (
-          <div
-            key={i}
-            onClick={() => handleUserClick(user._id)}
-            style={{ cursor: index === 4 ? 'pointer' : 'default' }} // Make the card clickable when index is 4
-          >
-            <Card style={{ marginBottom: 16, width: '250px', borderBottom: 'none' }}>
-              <CardContent className="flexMe" style={{ display: 'flex', alignItems: 'center' }}>
-                <Avatar src={user.imageUrl} alt={user.name} style={{ marginRight: 10 }} />
-                <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-                  {user.firstName} {user.lastName}
-                </Typography>
-                <CardActions style={{ padding: 0 }}>
-                  {index === 0 && (
-                    <IconButton
-                      onClick={() => whenclick(user.relationId, user._id)}
-                      size="large"
-                      aria-label="follow"
-                      color="inherit"
-                    >
-                      <PersonRemoveIcon />
-                    </IconButton>
-                  )}
-                  {index === 1 && (
-                    <IconButton
-                      onClick={() => whenclick(user.relationId, user._id)}
-                      size="large"
-                      aria-label="follow"
-                      color="inherit"
-                    >
-                      <BlockIcon />
-                    </IconButton>
-                  )}
-                  {index === 2 && (
-                    <IconButton
-                      onClick={() => whenclick('', user._id)}
-                      size="large"
-                      aria-label="follow"
-                      color="inherit"
-                    >
-                      <PersonAddIcon />
-                    </IconButton>
-                  )}
-                </CardActions>
-              </CardContent>
-            </Card>
-          </div>
+    <Card style={{ width: '100%', maxWidth: '300px', margin: '0 auto', padding: '10px' ,boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}>
+      <CardContent>
+        <Typography
+          variant="h6"
+          sx={{ borderBottom: 2, fontSize: 20, mb: 2, textAlign: "center" }}
+        >
+          {index === 0 ? 'Followers' : index === 1 ? 'Blocked Users' : index === 2 ? 'Following' : 'Users'}
+        </Typography>
+        {users.map((user) => (
+          <Card key={user._id} style={{ marginBottom: 16, borderBottom: 'none'}}>
+            <CardContent style={{ display: 'flex', alignItems: 'center' }}>
+              <Avatar src={user.imageUrl} alt={user.firstName} style={{ marginRight: 10 }} />
+              <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
+                {user.firstName} {user.lastName}
+              </Typography>
+              <CardActions style={{ padding: 0 }}>
+                {index === 0 && (
+                  <IconButton
+                    onClick={() => whenclick(user.relationId, user._id)}
+                    size="large"
+                    aria-label="remove follower"
+                    color="inherit"
+                  >
+                    <PersonRemoveIcon />
+                  </IconButton>
+                )}
+                {index === 1 && (
+                  <IconButton
+                    onClick={() => whenclick(user.relationId, user._id)}
+                    size="large"
+                    aria-label="block user"
+                    color="inherit"
+                  >
+                    <BlockIcon />
+                  </IconButton>
+                )}
+                {index === 2 && (
+                  <IconButton
+                    onClick={() => whenclick('', user._id)}
+                    size="large"
+                    aria-label="follow"
+                    color="inherit"
+                  >
+                    <PersonAddIcon />
+                  </IconButton>
+                )}
+              </CardActions>
+            </CardContent>
+          </Card>
         ))}
-      </div>
-      <div style={{ width: '2px', backgroundColor: 'black', height: '100%', marginLeft: 20 }}></div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
