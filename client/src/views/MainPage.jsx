@@ -5,18 +5,20 @@ import PostList from '../components/PostList';
 import FollowerSidebar from './FollowerSidebar';
 import FollowerList from './FollowerList';
 import axios from 'axios';
-import PostForm from '../components/PostForm';
-import { useNavigate } from 'react-router-dom'; // Assuming you're using react-router-dom
+import { useNavigate } from 'react-router-dom'; 
+import CreatePostSection from './CreatePostSection';
+import { ToastContainer } from 'react-toastify';
+
 
 const MainPage = () => {
+  // To save the logged in user object 
   const [user, setUser] = useState({});
-  const navigate = useNavigate(); // For navigation
-  const [errors, setErrors] = useState([]);
+  const navigate = useNavigate();
 
+  // Get the user (we will get the id from the cookies then find the user)
   useEffect(() => {
     axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
       .then(response => {
-        console.log(response.data);
         setUser(response.data.user);
       })
       .catch(error => {
@@ -25,21 +27,9 @@ const MainPage = () => {
       });
   }, [navigate]);
 
-  const handlePostSubmit = (post) => {
-    axios.post('http://localhost:8000/api/posts', post)
-
-      .then(res => {
-        console.log(res.data)
-      })
-      .catch(err => {
-        console.log(err.response.data.errors)
-        const errorResponse = err.response.data.errors;
-        setErrors(errorResponse);
-      })
-  };
-
   return (
     <div>
+      <ToastContainer />
       <Navbar />
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Container>
@@ -48,12 +38,9 @@ const MainPage = () => {
               <FollowerList />
             </Grid>
             <Grid item xs={8}>
-              <PostForm
-                errors={errors}
-                name={user.firstName + " " + user.lastName}
-                userImage="https://example.com/user-image.jpg"
-                onPostSubmit={handlePostSubmit}
-                userId = {user._id}
+              {/* In create post section we need to pass user to display his/her information (profile image + name)  */}
+              <CreatePostSection
+                user={user}
               />
               <PostList />
             </Grid>
