@@ -8,4 +8,5 @@ module.exports = function(app){
     app.get('/api/likes/:posId', LikeController.getLike);
     // app.patch('/api/likes/:id', LikeController.updateLike);
     app.delete('/api/likes/:id', LikeController.deleteLike);
+    app.delete('/api/likes/:postid/:userid', LikeController.deleteLike2);
 }
