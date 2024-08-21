@@ -12,15 +12,20 @@ import {
     Input,
 } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const PostForm = ({ userId, userImage, name, onPostSubmit, errors }) => {
-    const [content, setContent] = useState('');
-    const [imageUrl, setImageURL] = useState(null);
+const PostForm = ({ userId, userImage, name, onPostSubmit, errors, initialContent, initialImage }) => {
+    // Input of the form
+    const [content, setContent] = useState(initialContent);
+    const [imageUrl, setImageURL] = useState(initialImage);
 
+    // This function handle changing in content
     const handleContentChange = (event) => {
         setContent(event.target.value);
     };
 
+    // This function handle changing in imageUrl
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -28,11 +33,24 @@ const PostForm = ({ userId, userImage, name, onPostSubmit, errors }) => {
         }
     };
 
+    // This function handle form submition
     const handleSubmit = () => {
         onPostSubmit({ user: userId, content, imageUrl })
-        if (errors.length == 0){
-            setContent("")
-            setImageURL(null)
+        // Check if ther is no error empty the inputs 
+        if (Object.keys(errors).length === 0) {
+            setContent("");
+            setImageURL(null);
+
+            // Corrected toast notification without toast.POSITION
+            toast.success('🎉 Your post has been submitted successfully!', {
+                position: 'top-center', // Use 'top-center' as a string
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     };
 
@@ -59,6 +77,7 @@ const PostForm = ({ userId, userImage, name, onPostSubmit, errors }) => {
                         <img src={imageUrl} alt="Selected" style={{ width: '100%' }} />
                     </Box>
                 )}
+                {errors.image && <small className="text-danger">{errors.image.message}</small>}
                 <Box sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
                     <Input
                         accept="image/*"
