@@ -1,5 +1,5 @@
 // import * as React from 'react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -19,7 +19,13 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import axios from 'axios';
+<<<<<<< HEAD
 import { useNavigate,  } from 'react-router-dom';
+=======
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
+import { useContext } from 'react';
+>>>>>>> 6578eaa245e497b0ab92dac9f3ea57fd3920a4ee
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,35 +71,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [user, setUser]  = useState("")
+ // const [user, setUser]  = useState("")
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  useEffect(() => {
-    getUser();
-  }, []);
 
-  
-  const getUser = async () => {
-    await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
-      .then(response => {
-        setUser(response.data.user);
-      })
-      .catch(error => {
-        console.error('Error checking authentication', error);
-        navigate('/login'); // Redirect to login if not authenticated
-      })
-      .finally(() => {
-        setLoading(false); // Stop loading
-      });
-  }
+  const {setUser} = useContext(UserContext) ; 
 
-
-
-  
   const LogOut = () =>{
     axios.post('http://localhost:8000/api/logout',{}, {withCredentials: true})
     .then((res) => {
       console.log(res)
+      setUser(null) ; 
       navigate('/')
     })
  
@@ -127,6 +115,10 @@ export default function PrimarySearchAppBar() {
   }
   const homeClick = () => {
     navigate("/success");
+  }
+
+  const mailClick = () => {
+    navigate("/message");
   }
 
   const menuId = 'primary-search-account-menu';
@@ -189,6 +181,8 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{position:'fixed' ,top:0,width:"100%",zIndex:1000}}>
+
       <AppBar sx={{ backgroundColor: "#fe520a" }} position="static">
         <Toolbar>
           <Typography
@@ -222,7 +216,12 @@ export default function PrimarySearchAppBar() {
             >
             <HomeIcon />
             </IconButton>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton
+             size="large"
+             aria-label="show 4 new mails" 
+             color="inherit"
+             onClick={mailClick}
+             >
               <Badge color="error">
                 <MailIcon />
               </Badge>
@@ -232,7 +231,7 @@ export default function PrimarySearchAppBar() {
               aria-label="show 17 new notifications"
               color="inherit"
               onClick={peopleClick}
-            >
+              >
               <Badge  color="error">
                 <PeopleIcon/>
               </Badge>
@@ -245,7 +244,7 @@ export default function PrimarySearchAppBar() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-            >
+              >
               <AccountCircle />
             </IconButton>
           </Box>
@@ -257,7 +256,7 @@ export default function PrimarySearchAppBar() {
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
               color="inherit"
-            >
+              >
               <MoreIcon />
             </IconButton>
           </Box>
@@ -265,6 +264,7 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+              </Box>
     </Box>
   );
 }
