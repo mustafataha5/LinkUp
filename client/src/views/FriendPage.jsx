@@ -63,18 +63,7 @@ function BasicTabs() {
            
     }, []);
 
-    // React.useEffect(() => {
-    //     axios.get("http://localhost:8000/api/follows/followed/" + userId)
-    //     .then(res => {
-    //        console.log(res.data.followings)
-    //         setUsers(res.data.followings)
-    //         setLoading(false) ; 
-    //     })
-    //     .catch(err => console.log(err))
-           
-    // }, []);
-
-
+ 
     const handleChange = (event, newValue) => {
         setLoading(true) ; 
         if (newValue === 0) {
