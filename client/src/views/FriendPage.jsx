@@ -6,6 +6,8 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { Container, Grid } from '@mui/material';
 import UserList from '../components/UserList';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -30,6 +32,7 @@ CustomTabPanel.propTypes = {
 };
 
 function a11yProps(index) {
+
     return {
         id: `simple-tab-${index}`,
         'aria-controls': `simple-tabpanel-${index}`,
@@ -38,11 +41,81 @@ function a11yProps(index) {
 
 function BasicTabs() {
     const [value, setValue] = React.useState(0);
+    const [users, setUsers] = React.useState([]);
+    const [loading ,setLoading] = React.useState(true) ;
+
+    const [userId, setUserId] = React.useState()
+    const navigate = useNavigate();
+
+
+
+
+    React.useEffect(() => {
+        axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+            .then(response => {
+                console.log(response.data)
+                setUserId(response.data.userId);
+                setLoading(false) ;
+            })
+            .catch(error => {
+                console.error('Error checking authentication', error);
+            })
+    }, []);
+
 
     const handleChange = (event, newValue) => {
+        setLoading(true) ; 
+        if (newValue === 0) {
+            axios.get("http://localhost:8000/api/follows/followed/" + userId)
+                .then(res => {
+                   console.log(res.data.followings)
+                    setUsers(res.data.followings)
+                    setLoading(false) ; 
+                })
+                .catch(err => console.log(err))
+        }
+        else if (newValue === 1) {
+            axios.get("http://localhost:8000/api/follows/follower/" + userId)
+                .then(res => {
+                    //console.log(res.data.followers)
+                    setUsers(res.data.followers) 
+                    setLoading(false) ; 
+                })
+                .catch(err => console.log(err))
+        }
+        else if (newValue === 2) {
+            axios.get("http://localhost:8000/api/follows/notfollowed/" + userId)
+                .then(res => {
+                    //console.log(res.data.notFollowedUsers)
+                    setUsers(res.data.notFollowedUsers) 
+                    setLoading(false) ; 
+                })
+                .catch(err => console.log(err))
+        }
+       
         setValue(newValue);
     };
 
+
+    const addFollow = (followed) => {
+        axios.post("http://localhost:8000/api/follows",{follower:userId,followed},{withCredentials:true})
+        .then(res => {console.log(res)})
+        .catch(err => console.log(err)) ;
+    }
+
+    const delFollow = (relatioId) => {
+        axios.delete("http://localhost:8000/api/follows/"+relatioId,{withCredentials:true})
+        .then(res => {console.log(res)})
+        .catch(err => console.log(err)) ;
+    }
+
+    if(loading){
+        return (
+            <div>
+                loading
+            </div>
+        )
+    }
     return (
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -53,13 +126,13 @@ function BasicTabs() {
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-               <UserList /> 
+                <UserList onClickTab={delFollow} initialUsers={users} index={0} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                Item Two
+                <UserList initialUsers={users} index={1} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-                Item Three
+                <UserList onClickTab={addFollow} initialUsers={users} index={2}/>
             </CustomTabPanel>
         </Box>
     );
@@ -71,13 +144,13 @@ const FriendPage = () => {
             <Navbar />
             <Container>
 
-            <Grid container margin={4} spacing={2}>
+                <Grid container margin={4} spacing={2}>
 
-                <Grid item xs={4}>
-                    <BasicTabs />
+                    <Grid item xs={4}>
+                        <BasicTabs />
+                    </Grid>
+
                 </Grid>
-
-            </Grid>
             </Container>
         </div>
     )

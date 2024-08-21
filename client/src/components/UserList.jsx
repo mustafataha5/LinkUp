@@ -6,21 +6,30 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 
 import '../views/FollowerSidebar';
+import PersonAdd from '@mui/icons-material/PersonAdd';
 
 // Sample data for followers
-const initialFollowers = [
-  { id: 1, firstName: 'John', lastName: 'Doe', profilePic: 'path/to/john.jpg' },
-  { id: 2, firstName: 'Jane', lastName: 'Smith', profilePic: 'path/to/jane.jpg' },
-  { id: 3, firstName: 'Alice', lastName: 'Johnson', profilePic: 'path/to/alice.jpg' },
-  { id: 4, firstName: 'Rand', lastName: 'Farhoud', profilePic: 'path/to/rand.jpg' },
-  { id: 5, firstName: 'Randa', lastName: 'Tawasha', profilePic: 'path/to/randa.jpg' },
-  { id: 6, firstName: 'Muath', lastName: 'Ademar', profilePic: 'path/to/muath.jpg' },
-];
 
-const UserList = () => {
-  const [followers, setFollowers] = useState(initialFollowers);
+
+const UserList = ({
+    index = 0 , 
+    initialUsers =[
+        { _id: 1, firstName: 'John', lastName: 'Doe', imageUrl: 'path/to/john.jpg' },
+        { _id: 2, firstName: 'Jane', lastName: 'Smith', imageUrl: 'path/to/jane.jpg' },
+        { _id: 3, firstName: 'Alice', lastName: 'Johnson', imageUrl: 'path/to/alice.jpg' },
+        { _id: 4, firstName: 'Rand', lastName: 'Farhoud', imageUrl: 'path/to/rand.jpg' },
+        { _id: 5, firstName: 'Randa', lastName: 'Tawasha', imageUrl: 'path/to/randa.jpg' },
+        { _id: 6, firstName: 'Muath', lastName: 'Ademar', imageUrl: 'path/to/muath.jpg' },
+      ],
+      onClickTab 
+}) => {
+  const [followers, setFollowers] = useState(initialUsers);
   const [following, setFollowing] = useState(new Set());
 
+  const [users,setUsers] = useState(initialUsers); 
+    // console.log(">>>>>>") ;
+    // console.log(users) ; 
+    // console.log("<<<<<<") ;
   const handleFollowToggle = (id) => {
     setFollowing((prevFollowing) => {
       const newFollowing = new Set(prevFollowing);
@@ -32,22 +41,42 @@ const UserList = () => {
       return newFollowing;
     });
   };
+
+
+  const whenclick = (realationId,id) => {
+   // console.log(id)
+    setUsers(users.filter(user => user._id != id))
+    if(index ===0 ){
+        onClickTab(realationId) ;
+    }
+    onClickTab(id) ; 
+  }
   
   return (
     <div>
     <div  style={{ padding: 20, marginTop: 40  , width:'19rem' ,border:'1px black soild'}}>
 
-      {followers.map((follower) => (
-        <Card key={follower.id} style={{ marginBottom: 16, width: '250px', borderBottom: "none" }} >
+      {users.map((follower,i) => (
+        <Card key={i} style={{ marginBottom: 16, width: '250px', borderBottom: "none" }} >
         <CardContent className="flexMe" style={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar src={follower.profilePic} alt={follower.name} style={{ marginRight: 10 }} />
+          <Avatar src={follower.imageUrl} alt={follower.name} style={{ marginRight: 10 }} />
           <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
             {follower.firstName} {follower.lastName}
           </Typography>
           <CardActions style={{ padding: 0 }}>
-            <IconButton size="large" aria-label="follow" color="inherit" >
-            <PersonRemoveIcon/>
-            </IconButton>
+            {
+                index == 0 && 
+                <IconButton onClick={()=>whenclick(follower.relationId,follower._id)} size="large" aria-label="follow" color="inherit" >
+                <PersonRemoveIcon/>
+                </IconButton>
+            }
+            {
+                index == 2 && 
+                <IconButton onClick={()=>whenclick("",follower._id)} size="large" aria-label="follow" color="inherit" >
+                <PersonAdd />
+                </IconButton>
+            }
+           
           </CardActions>
         </CardContent>
       </Card>
