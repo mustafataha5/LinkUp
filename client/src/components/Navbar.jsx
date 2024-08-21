@@ -19,13 +19,9 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import axios from 'axios';
-<<<<<<< HEAD
-import { useNavigate,  } from 'react-router-dom';
-=======
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
-import { useContext } from 'react';
->>>>>>> 6578eaa245e497b0ab92dac9f3ea57fd3920a4ee
+
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -75,7 +71,8 @@ export default function PrimarySearchAppBar() {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  const {setUser} = useContext(UserContext) ; 
+
+  const {user,setUser} = useContext(UserContext) ; 
 
   const LogOut = () =>{
     axios.post('http://localhost:8000/api/logout',{}, {withCredentials: true})

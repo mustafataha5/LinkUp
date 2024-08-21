@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -13,6 +13,7 @@ import {
   Typography,
   Tooltip
 } from '@mui/material';
+import { UserContext } from '../context/UserContext';
 
 const styles = {
   paper: {
@@ -58,8 +59,8 @@ const wrapperStyles = {
   backgroundColor: '#f0f0f0',
 };
 
-const Register = ({flag= true, intialFirst ="", intialLast = "", initialEmail="", intialPassword="", intialConfirm, intialBirthday,
-  intialGender
+const Register = ({flag= true, intialFirst ="", intialLast = "", initialEmail="", intialPassword="", intialConfirm ="", intialBirthday="",
+  intialGender =""
  }) => {
   const {id} = useParams()
   const [firstName, setFirstName] = useState(intialFirst);
@@ -67,10 +68,10 @@ const Register = ({flag= true, intialFirst ="", intialLast = "", initialEmail=""
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState(intialPassword);
   const [confirmPassword, setConfirm] = useState(intialConfirm);
-  const [birthday, setBirthday] = useState(intialBirthday);
+  const [birthday, setBirthday] = useState(intialBirthday ? new Date(intialBirthday).toISOString().split('T')[0] : "");
   const [gender, setGender] = useState(intialGender);
   const [errors, setErrors] = useState({});
-
+  const {user,setUser} = useContext(UserContext) ; 
   const navigate = useNavigate();
 
   const goHome = () => {
@@ -120,8 +121,8 @@ if (flag){
     }
     else{
       axios
-      .post(
-        'http://localhost:8000/api/users/' + id ,
+      .patch(
+        'http://localhost:8000/api/users/' + user._id ,
         {
           firstName,
           lastName,
@@ -134,7 +135,7 @@ if (flag){
         { withCredentials: true }
       )
       .then((res) => {
-        console.log('successful reg');
+        console.log('successful Update');
         console.log(res);
         // Reset form fields after successful submission
         setFirstName('');
@@ -147,8 +148,11 @@ if (flag){
         navigate('/test');
       })
           .catch((err) => {
-            console.log(err.response.data);
-            const errorsObject = err.response.data.errors;
+            console.log('Error response:', err.response);
+            console.log('Error data:', err.response?.data);
+          
+            const errorsObject = err.response?.data?.errors || {};
+            console.log('Errors object:', errorsObject);
             const errorMessages = {};
             for (let key of Object.keys(errorsObject)) {
               errorMessages[key] = errorsObject[key].message;
@@ -273,77 +277,83 @@ if (flag){
                 </Tooltip>
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
-              <FormControl variant="outlined" fullWidth style={styles.input}>
-                <InputLabel>Password</InputLabel>
-                <Tooltip
-                  title={errors.password || ''}
-                  open={!!errors.password}
-                  placement="right"
-                  arrow
-                  sx={styles.tooltip}
-                >
-                  <OutlinedInput
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    sx={{
-                      height: '50px',
-                      '& input': {
-                        padding: '10px',
-                        backgroundColor: 'white',
-                      },
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'rgba(0, 0, 0, 0.23)',
-                      },
-                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'rgba(0, 0, 0, 0.87)',
-                      },
-                    }}
-                  />
-                </Tooltip>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl variant="outlined" fullWidth style={styles.input}>
-                <InputLabel>Confirm Password</InputLabel>
-                <Tooltip
-                  title={errors.confirmPassword || ''}
-                  open={!!errors.confirmPassword}
-                  placement="right"
-                  arrow
-                  sx={styles.tooltip}
-                >
-                  <OutlinedInput
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirm(e.target.value)}
-                    required
-                    sx={{
-                      height: '50px',
-                      '& input': {
-                        padding: '10px',
-                        backgroundColor: 'white',
-                      },
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'rgba(0, 0, 0, 0.23)',
-                      },
-                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'rgba(0, 0, 0, 0.87)',
-                      },
-                    }}
-                  />
-                </Tooltip>
-              </FormControl>
-            </Grid>
+            {
+              flag && (
+                <>
+                <Grid item xs={12}>
+                <FormControl variant="outlined" fullWidth style={styles.input}>
+                  <InputLabel>Password</InputLabel>
+                  <Tooltip
+                    title={errors.password || ''}
+                    open={!!errors.password}
+                    placement="right"
+                    arrow
+                    sx={styles.tooltip}
+                  >
+                    <OutlinedInput
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      sx={{
+                        height: '50px',
+                        '& input': {
+                          padding: '10px',
+                          backgroundColor: 'white',
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'rgba(0, 0, 0, 0.23)',
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'rgba(0, 0, 0, 0.87)',
+                        },
+                      }}
+                    />
+                  </Tooltip>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl variant="outlined" fullWidth style={styles.input}>
+                  <InputLabel>Confirm Password</InputLabel>
+                  <Tooltip
+                    title={errors.confirmPassword || ''}
+                    open={!!errors.confirmPassword}
+                    placement="right"
+                    arrow
+                    sx={styles.tooltip}
+                  >
+                    <OutlinedInput
+                      type="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirm(e.target.value)}
+                      required
+                      sx={{
+                        height: '50px',
+                        '& input': {
+                          padding: '10px',
+                          backgroundColor: 'white',
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'rgba(0, 0, 0, 0.23)',
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'rgba(0, 0, 0, 0.87)',
+                        },
+                      }}
+                    />
+                  </Tooltip>
+                </FormControl>
+              </Grid>
+              </>
+              )
+            }
+           
             <Grid item xs={12} sm={6}>
               <FormControl variant="outlined" fullWidth style={styles.input}>
-                <InputLabel>Birthday</InputLabel>
                 <Tooltip
                   title={errors.birthday || ''}
                   open={!!errors.birthday}

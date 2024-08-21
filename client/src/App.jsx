@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 // import './App.css'
 import Home from './views/Home'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import Register from './components/Register'
 import Login from './components/Login'
 import Test from './components/Test'
@@ -15,9 +15,28 @@ import MessagePage from './views/MessagePage'
 import AutoPlaySwipeableViews from './views/PhotoSlider';
 import { UserContext } from './context/UserContext'
 import Profile from './views/Profile'
+import axios from 'axios'
 
 function App() {
   const [user,setUser] = useState(null) ;
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
+  //console.log(">>>>>>>>>>" + user)
+  useEffect(() => {
+    
+      axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+        .then(async response => {
+          console.log(response.data.user.password)
+          setUser(response.data.user);
+          setLoading(false)
+        })
+        .catch(error => {
+          console.error('Error checking authentication', error);
+          //navigate("/403")
+        })
+    },[])
+   
+
   return (
     <>
      <UserContext.Provider value={ {user, setUser} }>
@@ -27,7 +46,19 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path="/register" element={<Register flag={true} />} />
-        <Route path="/register/:id" element={<Register flag={false} />} />
+      { user && <Route
+                            path={"/register/" + user._id}
+                            element={
+                            <Register
+                            flag={false}
+                            intialFirst={user.firstName}
+                            intialLast={user.lastName}
+                            initialEmail={user.email}
+                            intialPassword={user.password}
+                            intialConfirm={user.password}
+                            intialBirthday={user.birthday}
+                            intialGender={user.gender}
+                            />}/>}  
         <Route path='/login' element={<Login />} />
         <Route path='/test' element={<Test />} />
         <Route path='/people' element={<FriendPage />} />
