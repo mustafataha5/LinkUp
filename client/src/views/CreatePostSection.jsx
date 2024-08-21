@@ -3,7 +3,8 @@ import { useState } from 'react'
 import axios from 'axios'
 import PostForm from '../components/PostForm'
 
-const CreatePostSection = ({ user }) => {
+const CreatePostSection = ({ user, getPosts }) => {
+
     // To handle form errors
     const [errors, setErrors] = useState([]);
 
@@ -13,6 +14,7 @@ const CreatePostSection = ({ user }) => {
         axios.post('http://localhost:8000/api/posts', post)
             .then(res => {
                 console.log(res.data)
+                getPosts()
             })
             // If there is errors we set the errors equal to the err.response
             // And pass it as props to the form.

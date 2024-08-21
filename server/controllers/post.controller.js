@@ -20,6 +20,7 @@ module.exports.deletePost  = (request, response) => {
 module.exports.getAllPosts = (request, response) => {
     Post.find({})
         .populate('user', 'firstName lastName imageUrl') // Populate user with specific fields
+        .sort({ timestamp: -1 }) // Sort posts by timestamp in descending order
         .then(posts => response.json({ posts: posts }))
         .catch(err => response.json(err));
 }
