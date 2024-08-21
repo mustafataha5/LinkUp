@@ -10,6 +10,7 @@ const CreatePostSection = () => {
 
     // This function is used to create an post
     const createPost = post => {
+        console.log("post info", post)
         axios.post('http://localhost:8000/api/posts', post)
             .then(res => {
                 console.log(res.data)
