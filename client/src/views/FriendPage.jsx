@@ -52,14 +52,26 @@ function BasicTabs() {
 
     React.useEffect(() => {
         axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
-            .then(response => {
+            .then(async response => {
                 console.log(response.data)
-                setUserId(response.data.userId);
-                setLoading(false) ;
+                setUserId(response.data.user._id);
+               // setLoading(false) ;
             })
             .catch(error => {
                 console.error('Error checking authentication', error);
             })
+           
+    }, []);
+
+    React.useEffect(() => {
+        axios.get("http://localhost:8000/api/follows/followed/" + userId)
+        .then(res => {
+           console.log(res.data.followings)
+            setUsers(res.data.followings)
+            setLoading(false) ; 
+        })
+        .catch(err => console.log(err))
+           
     }, []);
 
 
@@ -84,6 +96,7 @@ function BasicTabs() {
                 .catch(err => console.log(err))
         }
         else if (newValue === 2) {
+           
             axios.get("http://localhost:8000/api/follows/notfollowed/" + userId)
                 .then(res => {
                     //console.log(res.data.notFollowedUsers)
@@ -129,7 +142,7 @@ function BasicTabs() {
                 <UserList onClickTab={delFollow} initialUsers={users} index={0} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                <UserList initialUsers={users} index={1} />
+                <UserList onClickTab={delFollow} initialUsers={users} index={1} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
                 <UserList onClickTab={addFollow} initialUsers={users} index={2}/>

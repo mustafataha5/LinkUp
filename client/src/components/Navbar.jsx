@@ -98,6 +98,9 @@ export default function PrimarySearchAppBar() {
   const peopleClick = () => {
     navigate("/people");
   }
+  const homeClick = () => {
+    navigate("/success");
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -188,6 +191,7 @@ export default function PrimarySearchAppBar() {
             aria-label="home"
             color="inherit"
             sx={{ mr: 2 }}
+            onClick={homeClick}
             >
             <HomeIcon />
             </IconButton>
