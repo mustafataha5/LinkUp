@@ -3,10 +3,11 @@ import axios from 'axios';
 import PostList from '../components/PostList';
 import Swal from 'sweetalert2';
 
-const PostSection = ({ posts, user, handleDeletePost, setPosts }) => {
+const PostSection = ({ posts, user, setPosts }) => {
+  const [errors, setErrors] = useState("")
+
   const handleDelete = async (postId) => {
     try {
-      // Show SweetAlert2 confirmation dialog
       const result = await Swal.fire({
         title: 'Are you sure?',
         text: 'This action cannot be undone.',
@@ -17,16 +18,13 @@ const PostSection = ({ posts, user, handleDeletePost, setPosts }) => {
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel'
       });
-  
-      // Log result for debugging
-      console.log("SweetAlert result:", result);
-  
+
       if (result.isConfirmed) {
+        // Proceed with deletion
         await axios.delete(`http://localhost:8000/api/posts/${postId}`);
-        // Remove post from frontend
         setPosts((prevPosts) => prevPosts.filter(post => post._id !== postId));
         Swal.fire('Deleted!', 'Your post has been deleted.', 'success');
-      } else if (result.isDismissed) {
+      } else {
         console.log('Deletion cancelled');
       }
     } catch (error) {
@@ -34,9 +32,29 @@ const PostSection = ({ posts, user, handleDeletePost, setPosts }) => {
       Swal.fire('Error!', 'There was an error deleting the post.', 'error');
     }
   };
-  
+
+  const handleUpdate = (id, post) => {
+    console.log("post updated", post)
+    console.log("post id",id)
+    axios.patch('http://localhost:8000/api/posts/' + id, post)
+      .then(res => {
+        const updatedPost = res.data.post;
+
+        // Update the posts state
+        setPosts((prevPosts) => 
+          prevPosts.map((post) => 
+            post._id === id ? { ...post, content: updatedPost.content } : post
+          )
+        );
+        console.log(res)
+      })
+      .catch(err => {
+        const errorResponse = err.response.data.errors;
+        setErrors(errorResponse);
+      });
+  }
   return (
-    <PostList posts={posts} userId={user._id} handleDelete={handleDelete} />
+    <PostList posts={posts} userId={user._id} handleDelete={handleDelete} handleUpdate={handleUpdate} errors={errors} />
   );
 };
 

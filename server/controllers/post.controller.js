@@ -2,10 +2,11 @@ const  Post= require('../models/post.model');
 
 module.exports.updatePost = (request, response) => {
     // {new: true}: returns the NEWLY updated document, not original one
-    const {user,content} = request.body ;
-    Post.findOneAndUpdate({_id: request.params.id,user:user}, {content}, {new:true})
+    const {user,content,imageUrl} = request.body ;
+    console.log(request.body)
+    Post.findOneAndUpdate({_id: request.params.id,user:user}, {content:content},{new:true})
         // handles & returns successful update:
-        .then(updatedPost  => response.json(updatedPost ))
+        .then(updatedPost  => response.json({post:updatedPost} ))
         // handles & returns any error during the process as JSON response
         .catch(err => response.json(err))
 }
@@ -14,6 +15,7 @@ module.exports.deletePost = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await Post.findByIdAndDelete(id);
+        
         if (!result) {
             return res.status(404).json({ message: 'Post not found' });
         }
