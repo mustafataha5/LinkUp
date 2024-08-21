@@ -42,7 +42,9 @@ const wrapperStyles = {
 
 
 
-const Login = ({ onSubmitProp, errors }) => {
+const Login = ({ onSubmitProp, errors={} }) => {
+  
+
     const [email, setEmail] = useState([])
     const [password, setPassword] = useState([])
     const navigate = useNavigate()

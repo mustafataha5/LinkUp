@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Footer from '../components/Footer'
 import '../css/Home.css' // Import the CSS file
 import logo from '../images/logo.png'
 import { useNavigate  } from 'react-router-dom';
 import axios from 'axios';
 import Login from '../components/Login';
+import { UserContext } from '../context/UserContext';
 const styles = {
   paper: {
       width: "20rem", padding: "1rem"
@@ -27,13 +28,14 @@ const wrapperStyles = {
 const Home = () => {
     const navigate = useNavigate()
     const [errors, setErrors] = useState([])
-      
+   
+
     const handleLoginSubmit = (payload) => {
       axios
         .post('http://localhost:8000/api/login', payload, { withCredentials: true })
         .then((res) => {
           console.log(res);
-       
+          
           navigate('/test');
         })
         .catch(err=>{
