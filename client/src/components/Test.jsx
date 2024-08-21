@@ -11,6 +11,23 @@ const Test = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+            .then(response => {
+                console.log(response.data)
+                setIsLoggedIn(response.data.authenticated);
+                setUserId(response.data.userId) ; 
+            })
+            .catch(error => {
+                console.error('Error checking authentication', error);
+                setIsLoggedIn(false);
+
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
+
+    useEffect(() => {
         if (!loading) {
             if (isLoggedIn) {
                 navigate('/success');  // Navigate to Home page if logged in

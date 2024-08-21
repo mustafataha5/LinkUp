@@ -33,6 +33,7 @@ const Home = () => {
         .post('http://localhost:8000/api/login', payload, { withCredentials: true })
         .then((res) => {
           console.log(res);
+       
           navigate('/test');
         })
         .catch(err=>{
