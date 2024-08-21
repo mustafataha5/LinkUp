@@ -3,12 +3,12 @@ import Header from '../components/Header'
 import AuthorForm from '../components/AuthorForm'
 import { useState } from 'react'
 import axios from 'axios'
-import CreatePost from '../components/PostForm'
+import PostForm from './components/PostForm'
 
 const CreatePostSection = () => {
     const [errors, setErrors] = useState([]);
 
-    // This function is used to create an author
+    // This function is used to create an post
     const createPost = post => {
         axios.post('http://localhost:8000/api/posts', post)
             .then(res => {
@@ -23,8 +23,9 @@ const CreatePostSection = () => {
             })
     }
     <>
+    {/* userImage, name, onPostSubmit, errors */}
         <div className="container mt-5">
-            <CreatePost onSubmit={createPost} errors={errors} userImage={""} name={""} />
+            <PostForm onSubmit={createPost} errors={errors} userImage={""} name={""} />
         </div>
     </>
 }

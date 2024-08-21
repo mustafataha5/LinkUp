@@ -15,21 +15,21 @@ module.exports.authenticate = (req, res, next) => {
   }
   
 
-module.exports.checkauth = (req, res) => {
+module.exports.checkauth =  (req, res) => {
     const token = req.cookies.usertoken; // Assuming you're using cookies to store the token
 
     if (!token) {
         return res.status(401).json({ authenticated: false, message: 'No token provided' });
     }
 
-    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
         if (err) {
             return res.status(401).json({ authenticated: false, message: 'Invalid token' });
         }
-
-        res.status(200).json({ authenticated: true, userId: decoded.id });
+        const user = await User.findById({_id:decoded.id}); 
+        res.status(200).json({ authenticated: true, user: user });
     });
-}  
+} 
 
 //create 
 module.exports.register=async (req,res) => {
