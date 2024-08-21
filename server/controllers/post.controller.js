@@ -19,8 +19,9 @@ module.exports.deletePost  = (request, response) => {
 
 module.exports.getAllPosts = (request, response) => {
     Post.find({})
-        .then(posts => response.json({posts:posts}))
-        .catch(err => response.json(err))
+        .populate('user', 'firstName lastName imageUrl') // Populate user with specific fields
+        .then(posts => response.json({ posts: posts }))
+        .catch(err => response.json(err));
 }
 
 module.exports.getAllPostOfUser  = (request, response) => {

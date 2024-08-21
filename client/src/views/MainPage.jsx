@@ -2,30 +2,44 @@ import { AppBar, Box, Container, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import PostList from '../components/PostList';
-import FollowerSidebar from './FollowerSidebar';
 import FollowerList from './FollowerList';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import CreatePostSection from './CreatePostSection';
 import { ToastContainer } from 'react-toastify';
-
+import PostSection from './PostSection';
 
 const MainPage = () => {
   // To save the logged in user object 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null); // Use null initially
+  const [loading, setLoading] = useState(true); // Loading state
+
   const navigate = useNavigate();
 
   // Get the user (we will get the id from the cookies then find the user)
   useEffect(() => {
-    axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+    getUser()
+    console.log(user)
+  }, []);
+
+  const getUser = async () => {
+     await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
       .then(response => {
+        console.log("inside", response.data.user)
         setUser(response.data.user);
       })
       .catch(error => {
         console.error('Error checking authentication', error);
         navigate('/login'); // Redirect to login if not authenticated
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
-  }, [navigate]);
+  }
+
+  if (loading) {
+    return <div>Loading...</div>; // Optionally, replace with a spinner or skeleton UI
+  }
 
   return (
     <div>
@@ -38,11 +52,13 @@ const MainPage = () => {
               <FollowerList />
             </Grid>
             <Grid item xs={8}>
-              {/* In create post section we need to pass user to display his/her information (profile image + name)  */}
-              <CreatePostSection
-                user={user}
-              />
-              <PostList />
+              {/* Only render the CreatePostSection and PostSection if user data is available */}
+              {user && (
+                <>
+                  <CreatePostSection user={user} />
+                  <PostSection user={user} />
+                </>
+              )}
             </Grid>
           </Grid>
         </Container>
