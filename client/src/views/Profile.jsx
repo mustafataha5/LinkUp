@@ -31,8 +31,9 @@ const styles = {
     container: {
         display: 'flex',
         flexDirection: 'column',
-        marginTop: '2rem',
-        marginRight: '2rem',
+        marginTop: '7rem',
+        marginLeft: '2rem',
+        alignItems: 'center'
     },
     image: {
         width: '150px',
