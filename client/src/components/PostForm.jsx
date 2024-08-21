@@ -29,7 +29,11 @@ const PostForm = ({ userId, userImage, name, onPostSubmit, errors }) => {
     };
 
     const handleSubmit = () => {
-        onPostSubmit({ userId, content, imageUrl })
+        onPostSubmit({ user: userId, content, imageUrl })
+        if (errors.length == 0){
+            setContent("")
+            setImageURL(null)
+        }
     };
 
     return (
