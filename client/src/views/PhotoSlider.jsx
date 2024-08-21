@@ -14,24 +14,24 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
   {
-    label: 'San Francisco – Oakland Bay Bridge, United States',
-    imgPath:
-      'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
+    label: "Free Gigabytes - Jawwal's GREAT Promotions!!!",
+    imgPath:'https://www.jawwal.ps/storage/uploads/content/zTRI1spx8zgWvuXa1I7cKlsf2q99T0OhRG9IepYD.png',
+    link: 'https://www.jawwal.ps/ar/individuals/campaigns-and-offers/west-bank/8095',
   },
   {
-    label: 'Bird',
-    imgPath:
-      'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60',
+    label: 'Your Trip to Bali, Indenesia is on Royal Jordanian',
+    imgPath: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
+    link: 'https://www.rj.com/',
   },
   {
-    label: 'Bali, Indonesia',
-    imgPath:
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
+    label: 'Luxurious Carmel Hotel - Your Home in Ramallah',
+    imgPath: 'https://www.carmelhotel.ps//files/image/slider/5JUL3602-Pano_HDR.jpg',
+    link: 'https://www.carmelhotel.ps/',
   },
   {
-    label: 'Goč, Serbia',
-    imgPath:
-      'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
+    label: "Jezzine Restaurant - Ramallah's Best Seafood!!",
+    imgPath:'https://st7038.ispot.cc/images/22161/331297198_6139840872741430_7247942029885331817_n.jpg',
+    link: 'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
   },
 ];
 
@@ -76,18 +76,20 @@ function SwipeableTextMobileStepper() {
         {images.map((step, index) => (
           <div key={step.label}>
             {Math.abs(activeStep - index) <= 2 ? (
-              <Box
-                component="img"
-                sx={{
-                  height: 255,
-                  display: 'block',
-                  maxWidth: 400,
-                  overflow: 'hidden',
-                  width: '100%',
-                }}
-                src={step.imgPath}
-                alt={step.label}
-              />
+              <a href={step.link} target="_blank" rel="noopener noreferrer">
+                <Box
+                  component="img"
+                  sx={{
+                    height: 255,
+                    display: 'block',
+                    maxWidth: 400,
+                    overflow: 'hidden',
+                    width: '100%',
+                  }}
+                  src={step.imgPath}
+                  alt={step.label}
+                />
+              </a>
             ) : null}
           </div>
         ))}
