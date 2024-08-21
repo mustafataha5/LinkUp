@@ -1,6 +1,4 @@
 import React from 'react'
-import Header from '../components/Header'
-import AuthorForm from '../components/AuthorForm'
 import { useState } from 'react'
 import axios from 'axios'
 import CreatePost from '../components/PostForm'

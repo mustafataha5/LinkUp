@@ -1,34 +1,26 @@
-import React from 'react'
-import Post from './Post'
-const PostList = () => {
+import React, { useEffect, useState } from 'react';
+import Post from './Post';
+
+const PostList = ({ posts, userId }) => {
     return (
         <>
-            <Post
-                username="John Doe"
-                userImage="https://example.com/user-image.jpg"
-                date="August 20, 2024"
-                content="This is a sample post content."
-            />
-
-            <Post
-                username="Jan Doe"
-                userImage="https://example.com/user-image.jpg"
-                date="August 20, 2024"
-                content="This is another post with an image!"
-                postImage="https://th.bing.com/th/id/OIP.Z_PIeIRDajXPmZHROt-T_QHaEK?rs=1&pid=ImgDetMain"
-                isOwnPost={false}
-            />
-
-            <Post
-                username="Jane Doe"
-                userImage="https://example.com/user-image.jpg"
-                date="August 20, 2024"
-                content="This is a post with different options based on ownership!"
-                postImage="https://example.com/post-image.jpg"
-                isOwnPost={true}  // Set to true if the post belongs to the logged-in user
-            />
+            {posts.length > 0 ? (
+                posts.map((post) => (
+                    <Post
+                        key={post._id}
+                        username={post.user.firstName + post.user.lastName}  // Assuming the user object has a 'name' field
+                        userImage={post.user.imageUrl}  // Fallback image
+                        date={new Date(post.timestamp).toLocaleDateString()}
+                        content={post.content}
+                        postImage={post.imageUrl}
+                        isOwnPost={post.user._id === userId}
+                    />
+                ))
+            ) : (
+                <p>No posts available</p>
+            )}
         </>
-    )
-}
+    );
+};
 
-export default PostList
+export default PostList;

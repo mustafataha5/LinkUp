@@ -12,27 +12,45 @@ import {
     Input,
 } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const PostForm = ({ userImage, name, onPostSubmit, errors }) => {
-    const [content, setContent] = useState('');
-    const [image, setImage] = useState(null);
+const PostForm = ({ userId, userImage, name, onPostSubmit, errors, initialContent, initialImage }) => {
+    // Input of the form
+    const [content, setContent] = useState(initialContent);
+    const [imageUrl, setImageURL] = useState(initialImage);
 
+    // This function handle changing in content
     const handleContentChange = (event) => {
         setContent(event.target.value);
     };
 
+    // This function handle changing in imageUrl
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setImage(URL.createObjectURL(file));
+            setImageURL(URL.createObjectURL(file));
         }
     };
 
+    // This function handle form submition
     const handleSubmit = () => {
-        if (content.trim()) {
-            onPostSubmit({ content, image });
-            setContent('');
-            setImage(null);
+        onPostSubmit({ user: userId, content, imageUrl })
+        // Check if ther is no error empty the inputs 
+        if (Object.keys(errors).length === 0) {
+            setContent("");
+            setImageURL(null);
+
+            // Corrected toast notification without toast.POSITION
+            toast.success('🎉 Your post has been submitted successfully!', {
+                position: 'top-center', // Use 'top-center' as a string
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     };
 
@@ -40,7 +58,7 @@ const PostForm = ({ userImage, name, onPostSubmit, errors }) => {
         <Card sx={{ maxWidth: 500, margin: '20px auto' }}>
             <CardHeader
                 avatar={<Avatar src={userImage} alt="User" />}
-                title="Current user"
+                title={name}
             />
             <CardContent>
                 <TextField
@@ -52,11 +70,14 @@ const PostForm = ({ userImage, name, onPostSubmit, errors }) => {
                     value={content}
                     onChange={handleContentChange}
                 />
-                {image && (
+                {errors.content && <small className="text-danger">{errors.content.message}</small>}
+
+                {imageUrl && (
                     <Box sx={{ mt: 2 }}>
-                        <img src={image} alt="Selected" style={{ width: '100%' }} />
+                        <img src={imageUrl} alt="Selected" style={{ width: '100%' }} />
                     </Box>
                 )}
+                {errors.image && <small className="text-danger">{errors.image.message}</small>}
                 <Box sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
                     <Input
                         accept="image/*"

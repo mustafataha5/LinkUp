@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const Test = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [userId,setUserId] = useState('') ;
     const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
             .then(response => {
+                console.log(response.data)
                 setIsLoggedIn(response.data.authenticated);
+                setUserId(response.data.userId) ; 
             })
             .catch(error => {
                 console.error('Error checking authentication', error);
                 setIsLoggedIn(false);
+
             })
             .finally(() => {
                 setLoading(false);
@@ -34,7 +37,7 @@ const Test = () => {
     if (loading) {
         return <div>Loading...</div>;
     }
-    return null;                       // Nothing to render since navigation will happen    
+    return <div>loging...</div>;       // Nothing to render since navigation will happen    
 }
 
 export default Test
