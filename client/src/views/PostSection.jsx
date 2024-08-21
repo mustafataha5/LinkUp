@@ -3,7 +3,9 @@ import axios from 'axios';
 import PostList from '../components/PostList';
 import Swal from 'sweetalert2';
 
-const PostSection = ({ posts, user, handleDeletePost, setPosts }) => {
+const PostSection = ({ posts, user, setPosts }) => {
+  const [errors, setErrors] = useState("")
+
   const handleDelete = async (postId) => {
     try {
       const result = await Swal.fire({
@@ -16,7 +18,7 @@ const PostSection = ({ posts, user, handleDeletePost, setPosts }) => {
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel'
       });
-    
+
       if (result.isConfirmed) {
         // Proceed with deletion
         await axios.delete(`http://localhost:8000/api/posts/${postId}`);
@@ -30,9 +32,29 @@ const PostSection = ({ posts, user, handleDeletePost, setPosts }) => {
       Swal.fire('Error!', 'There was an error deleting the post.', 'error');
     }
   };
-  
+
+  const handleUpdate = (id, post) => {
+    console.log("post updated", post)
+    console.log("post id",id)
+    axios.patch('http://localhost:8000/api/posts/' + id, post)
+      .then(res => {
+        const updatedPost = res.data.post;
+
+        // Update the posts state
+        setPosts((prevPosts) => 
+          prevPosts.map((post) => 
+            post._id === id ? { ...post, content: updatedPost.content } : post
+          )
+        );
+        console.log(res)
+      })
+      .catch(err => {
+        const errorResponse = err.response.data.errors;
+        setErrors(errorResponse);
+      });
+  }
   return (
-    <PostList posts={posts} userId={user._id} handleDelete={handleDelete} />
+    <PostList posts={posts} userId={user._id} handleDelete={handleDelete} handleUpdate={handleUpdate} errors={errors} />
   );
 };
 

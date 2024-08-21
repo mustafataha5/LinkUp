@@ -24,18 +24,17 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import CommentIcon from '@mui/icons-material/Comment';
 import ReportIcon from '@mui/icons-material/Report';
+import PostForm from './PostForm';
 
-const Post = ({ postId, username, userImage, date, content, postImage, isOwnPost, onDelete }) => {
+const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [likes, setLikes] = useState(0);
-  const [comments, setComments] = useState([
-    { text: 'Great post!', user: 'Alice', userImage: 'https://example.com/alice.jpg' },
-    { text: 'Thanks for sharing!', user: 'Bob', userImage: 'https://example.com/bob.jpg' },
-  ]);
-  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(post.likes || 0);
+  const [comments, setComments] = useState(post.comments || []);
+  const [liked, setLiked] = useState(post.likedByUser || false);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -58,31 +57,43 @@ const Post = ({ postId, username, userImage, date, content, postImage, isOwnPost
     if (newComment.trim()) {
       setComments((prev) => [
         ...prev,
-        { text: newComment, user: 'Current User', userImage: 'https://example.com/current-user.jpg' },
+        { text: newComment, user: post.user.firstName + ' ' + post.user.lastName, userImage: post.user.imageUrl },
       ]);
       setNewComment('');
     }
   };
 
   const handleReport = () => {
-    // Implement the report functionality here
     alert('Report feature coming soon!');
   };
 
   const handleDelete = () => {
     try {
-      // Notify parent component to remove the post from the list
-      handleMenuClose()
-      onDelete(postId);
+      handleMenuClose();
+      onDelete(post._id);
     } catch (error) {
       console.error('Error deleting post:', error);
     }
   };
 
+  const handleEdit = () => {
+    setIsEditing(true)
+    console.log("inside edit",post._id)
+    handleMenuClose();
+  }
+
+  const handleUpdate = (id,newData) => {
+    console.log(">>>>>>>id"+id)
+    console.log(newData)
+    onUpdate(post._id,newData)
+    setIsEditing(false)
+  }
+
+
   return (
     <Card sx={{ maxWidth: 500, margin: '20px auto' }}>
       <CardHeader
-        avatar={<Avatar src={userImage} alt={username} />}
+        avatar={<Avatar src={post.user.imageUrl} alt={post.user.firstName + post.user.lastName} />}
         action={
           <React.Fragment>
             <IconButton aria-label="settings" onClick={handleMenuOpen}>
@@ -101,10 +112,10 @@ const Post = ({ postId, username, userImage, date, content, postImage, isOwnPost
                 horizontal: 'right',
               }}
             >
-              {isOwnPost ? (
+              {post.user._id === userId ? (
                 [
-                  <MenuItem key="edit" onClick={handleMenuClose}>Edit</MenuItem>,
-                  <MenuItem key="delete" onClick={handleDelete}>Delete</MenuItem>,
+                  <MenuItem key="edit" onClick={handleEdit}>Edit</MenuItem>,
+                  <MenuItem key="delete" onClick={handleDelete}>Delete</MenuItem>
                 ]
               ) : (
                 <MenuItem onClick={handleReport}>
@@ -114,27 +125,41 @@ const Post = ({ postId, username, userImage, date, content, postImage, isOwnPost
               )}
             </Menu>
           </React.Fragment>
-        }
-        title={username}
-        subheader={date}
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {content}
-        </Typography>
-      </CardContent>
 
-      {/* Conditionally render the post image */}
-      {postImage && (
+        }
+        title={post.user.firstName + ' ' + post.user.lastName}
+        subheader={new Date(post.timestamp).toLocaleDateString()}
+      />
+      {isEditing ?
+        <PostForm 
+        userId={userId} 
+        onPostSubmit={handleUpdate} 
+        errors={errors} 
+        userImage={post.user.imageUrl} 
+        name={post.user.firstName + " " + post.user.lastName}
+        initialContent={post.content}
+        initialImage={post.imageUrl}
+        postId = {post._id}
+        isEdit={true}
+        /> :
+
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {post.content}
+          </Typography>
+        </CardContent>
+      }
+
+      {post.imageUrl && (
         <CardMedia
           component="img"
-          image={postImage}
+          image={post.imageUrl}
           alt="Post image"
           sx={{ maxHeight: 300, objectFit: 'cover' }}
         />
+
       )}
 
-      {/* Card actions for likes and comments */}
       <CardActions disableSpacing>
         <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
           <IconButton aria-label="like" onClick={handleLike}>
@@ -154,7 +179,6 @@ const Post = ({ postId, username, userImage, date, content, postImage, isOwnPost
         </Box>
       </CardActions>
 
-      {/* Comments Section */}
       {showComments && (
         <>
           <Divider />
