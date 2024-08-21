@@ -12,16 +12,19 @@ import MainPage from './views/MainPage'
 import Page403 from './components/Page403'
 import FriendPage from './views/FriendPage'
 import AutoPlaySwipeableViews from './views/PhotoSlider';
+import Profile from './views/Profile'
 
 function App() {
 
   return (
     <>
       <Routes>
+        <Route path='/profile/:id' element={<Profile/>}/>
         <Route path='/randatest' element={<AutoPlaySwipeableViews />} />
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
+        <Route path="/register" element={<Register flag={true} />} />
+        <Route path="/register/:id" element={<Register flag={false} />} />
         <Route path='/login' element={<Login />} />
         <Route path='/test' element={<Test />} />
         <Route path='/people' element={<FriendPage />} />

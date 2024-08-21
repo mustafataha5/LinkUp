@@ -1,4 +1,5 @@
-import * as React from 'react';
+// import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -18,7 +19,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,  } from 'react-router-dom';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -64,7 +65,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [user, setUser]  = useState("")
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  
+  const getUser = async () => {
+    await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+      .then(response => {
+        setUser(response.data.user);
+      })
+      .catch(error => {
+        console.error('Error checking authentication', error);
+        navigate('/login'); // Redirect to login if not authenticated
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
+      });
+  }
+
+
+
   
   const LogOut = () =>{
     axios.post('http://localhost:8000/api/logout',{}, {withCredentials: true})
@@ -72,9 +96,12 @@ export default function PrimarySearchAppBar() {
       console.log(res)
       navigate('/')
     })
+ 
     .catch(err => console.log(err))
   }
-
+  const profile = () => {
+    navigate(`/profile/${user._id}`);
+  };
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -113,7 +140,7 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={profile}>Profile</MenuItem>
       <MenuItem onClick={LogOut}>Log Out</MenuItem>
     </Menu>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Paper,
   Grid,
@@ -58,14 +58,17 @@ const wrapperStyles = {
   backgroundColor: '#f0f0f0',
 };
 
-const Register = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirm] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [gender, setGender] = useState('');
+const Register = ({flag= true, intialFirst ="", intialLast = "", initialEmail="", intialPassword="", intialConfirm, intialBirthday,
+  intialGender
+ }) => {
+  const {id} = useParams()
+  const [firstName, setFirstName] = useState(intialFirst);
+  const [lastName, setLastName] = useState(intialLast);
+  const [email, setEmail] = useState(initialEmail);
+  const [password, setPassword] = useState(intialPassword);
+  const [confirmPassword, setConfirm] = useState(intialConfirm);
+  const [birthday, setBirthday] = useState(intialBirthday);
+  const [gender, setGender] = useState(intialGender);
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
@@ -76,10 +79,49 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+if (flag){
 
-    axios
+  axios
+  .post(
+    'http://localhost:8000/api/register',
+    {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      birthday,
+      gender,
+    },
+    { withCredentials: true }
+  )
+  .then((res) => {
+    console.log('successful reg');
+    console.log(res);
+    // Reset form fields after successful submission
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+    setConfirm('');
+    setBirthday('');
+    setGender('');
+    navigate('/test');
+  })
+      .catch((err) => {
+        console.log(err.response.data);
+        const errorsObject = err.response.data.errors;
+        const errorMessages = {};
+        for (let key of Object.keys(errorsObject)) {
+          errorMessages[key] = errorsObject[key].message;
+        }
+        setErrors(errorMessages);
+      });
+    }
+    else{
+      axios
       .post(
-        'http://localhost:8000/api/register',
+        'http://localhost:8000/api/users/' + id ,
         {
           firstName,
           lastName,
@@ -104,25 +146,28 @@ const Register = () => {
         setGender('');
         navigate('/test');
       })
-      .catch((err) => {
-        console.log(err.response.data);
-        const errorsObject = err.response.data.errors;
-        const errorMessages = {};
-        for (let key of Object.keys(errorsObject)) {
-          errorMessages[key] = errorsObject[key].message;
-        }
-        setErrors(errorMessages);
-      });
-  };
+          .catch((err) => {
+            console.log(err.response.data);
+            const errorsObject = err.response.data.errors;
+            const errorMessages = {};
+            for (let key of Object.keys(errorsObject)) {
+              errorMessages[key] = errorsObject[key].message;
+            }
+            setErrors(errorMessages);
+          });
 
-  return (
+    }
+
+    };
+    
+    return (
     <div style={wrapperStyles}>
       <Paper elevation={10} style={styles.paper}>
         <Typography
           variant="h1"
           sx={{ textAlign: 'center', fontSize: 50, mb: 2 }}
         >
-          Register
+          {flag ? 'Register' : 'Update Profile'}
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -374,7 +419,7 @@ const Register = () => {
                 color="primary"
                 style={styles.button}
               >
-                Submit
+                {flag ? 'Submit' : 'Update'}
               </Button>
               <Button
                 onClick={goHome}
