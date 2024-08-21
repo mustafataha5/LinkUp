@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   Avatar,
   Card,
@@ -24,12 +25,11 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import CommentIcon from '@mui/icons-material/Comment';
 import ReportIcon from '@mui/icons-material/Report';
 
-const Post = ({ username, userImage, date, content, postImage, isOwnPost }) => {
+const Post = ({ postId, username, userImage, date, content, postImage, isOwnPost, onDelete }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [likes, setLikes] = useState(0);
   const [comments, setComments] = useState([
-    // Example comments with user info
     { text: 'Great post!', user: 'Alice', userImage: 'https://example.com/alice.jpg' },
     { text: 'Thanks for sharing!', user: 'Bob', userImage: 'https://example.com/bob.jpg' },
   ]);
@@ -69,12 +69,21 @@ const Post = ({ username, userImage, date, content, postImage, isOwnPost }) => {
     alert('Report feature coming soon!');
   };
 
+  const handleDelete = () => {
+    try {
+      // Notify parent component to remove the post from the list
+      onDelete(postId);
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
+  };
+
   return (
     <Card sx={{ maxWidth: 500, margin: '20px auto' }}>
       <CardHeader
         avatar={<Avatar src={userImage} alt={username} />}
         action={
-          <>
+          <React.Fragment>
             <IconButton aria-label="settings" onClick={handleMenuOpen}>
               <MoreVertIcon />
             </IconButton>
@@ -92,10 +101,10 @@ const Post = ({ username, userImage, date, content, postImage, isOwnPost }) => {
               }}
             >
               {isOwnPost ? (
-                <>
-                  <MenuItem onClick={handleMenuClose}>Edit</MenuItem>
-                  <MenuItem onClick={handleMenuClose}>Delete</MenuItem>
-                </>
+                [
+                  <MenuItem key="edit" onClick={handleMenuClose}>Edit</MenuItem>,
+                  <MenuItem key="delete" onClick={handleDelete}>Delete</MenuItem>,
+                ]
               ) : (
                 <MenuItem onClick={handleReport}>
                   <ReportIcon sx={{ marginRight: 1 }} />
@@ -103,7 +112,7 @@ const Post = ({ username, userImage, date, content, postImage, isOwnPost }) => {
                 </MenuItem>
               )}
             </Menu>
-          </>
+          </React.Fragment>
         }
         title={username}
         subheader={date}

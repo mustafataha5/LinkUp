@@ -10,12 +10,18 @@ module.exports.updatePost = (request, response) => {
         .catch(err => response.json(err))
 }
 
-module.exports.deletePost  = (request, response) => {
-    const {id} = request.params
-    Post.findByIdAndDelete({ _id:id  })
-        .then(post => response.json({post:post}))
-        .catch(err => response.json(err))
-}
+module.exports.deletePost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await Post.findByIdAndDelete(id);
+        if (!result) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.json({ message: 'Post deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err });
+    }
+};
 
 module.exports.getAllPosts = (request, response) => {
     Post.find({})
