@@ -13,6 +13,7 @@ const MainPage = () => {
   // To save the logged in user object 
   const [user, setUser] = useState(null); // Use null initially
   const [loading, setLoading] = useState(true); // Loading state
+
   const navigate = useNavigate();
 
   // Get the user (we will get the id from the cookies then find the user)
