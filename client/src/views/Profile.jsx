@@ -266,7 +266,8 @@ const Profile = () => {
             <Dialog
     open={open}
     onClose={handleClose}
-    maxWidth="xs" // You can use 'xs', 'sm', 'md', 'lg', 'xl'
+    maxWidth="xs" 
+    sx={{width: "100%", textAlign: "center"}}// You can use 'xs', 'sm', 'md', 'lg', 'xl'
     fullWidth // Makes the dialog use the full width within the maxWidth
 >
     <DialogTitle>Change Profile Picture</DialogTitle>

@@ -137,7 +137,7 @@ const MainPage = () => {
                 </>
               )}
             </Grid>
-            <Grid item xs={3} container direction="column" spacing={2} sx={{ marginRight: -10 }}>
+            <Grid item xs={3} container direction="column" spacing={3} sx={{ marginRight: -10 }}>
               <Grid item sx={{marginTop: 6}}>
                 <Ads />
               </Grid>

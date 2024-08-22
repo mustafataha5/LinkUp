@@ -68,7 +68,7 @@ const Login = ({ onSubmitProp, errors={} }) => {
       variant="h1"
       sx={{ textAlign: 'center', fontSize : 50 }}
     >
-      LogIn
+      Login
     </Typography>
               <form onSubmit={handleSubmit}>
                 <FormControl variant="outlined"  fullWidth style={styles.input}>

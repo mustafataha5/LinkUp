@@ -58,8 +58,15 @@ const PostForm = ({postId,
   };
 
   return (
-    <Card sx={{ maxWidth: 500, margin: '20px auto' }}>
-      <CardHeader avatar={<Avatar src={userImage} alt="User" />} title={name} />
+    <Card sx={{ maxWidth: 500,
+      margin: '20px auto',
+      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Adjust shadow as needed
+      borderRadius: '8px', // Optional: Rounded corners
+    }}>
+        <CardHeader
+          avatar={<Avatar src={userImage} alt="User" />}
+          title={<Typography variant="h6" sx={{ fontWeight: 'bold' }}>{name}</Typography>}
+        />
       <CardContent>
         <TextField
           fullWidth

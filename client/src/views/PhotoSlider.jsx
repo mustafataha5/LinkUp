@@ -59,7 +59,7 @@ function SwipeableTextMobileStepper() {
           bgcolor: 'background.default',
         }}
       >
-        <Typography variant="subtitle1" align="center">
+        <Typography variant="subtitle1" align="center" sx={{fontWeight: 'bold'}}>
           {images[activeStep].label}
         </Typography>
       </CardContent>
