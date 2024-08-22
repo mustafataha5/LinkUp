@@ -33,10 +33,12 @@ const Profile = () => {
     }, [id]);
 
     const getPosts = () => {
-        axios.get('http://localhost:8000/api/posts',{ withCredentials: true })
+        axios.get('http://localhost:8000/api/posts/user/'+id,{ withCredentials: true })
             .then((response) => {
-                console.log("Posts= ", response.data.posts);
-                setPosts(response.data.posts);
+                if (response.data.posts.length > 0)
+                    setPosts(response.data.posts);
+                else
+                setPosts([]);
             })
             .catch((error) => {
                 console.error('Error fetching posts:', error);
@@ -46,16 +48,17 @@ const Profile = () => {
     const getUser = async () => {
         try {
             const response = await axios.get('http://localhost:8000/api/users/'+id, { withCredentials: true });
-            console.log(response.data.user)
+            // console.log(response.data.user)
             setUser(response.data.user);
             navigate('/profile/'+response.data.user._id)
         } catch (error) {
             console.error('Error checking authentication', error);
-            //navigate('/403');
+            navigate('/403');
         } finally {
             setLoading(false);
         }
     };
+    
     const getfollowed = (id) => {
         axios.get('http://localhost:8000/api/follows/followed/'+id)
           .then((response) => {
