@@ -1,9 +1,7 @@
 import { AppBar, Box, Container, Grid } from '@mui/material';
 import { useState, useEffect, useContext } from 'react';
-import { UserContext } from '../context/UserContext'
-
+import { UserContext } from '../context/UserContext';
 import Navbar from '../components/Navbar';
-
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CreatePostSection from './CreatePostSection';
@@ -11,7 +9,6 @@ import { ToastContainer } from 'react-toastify';
 import PostSection from './PostSection';
 import UserList from '../components/UserList';
 import Ads from '../components/Ads';
-
 
 
 const MainPage = () => {
@@ -22,6 +19,7 @@ const MainPage = () => {
   const [posts, setPosts] = useState([]);
   const { user,setUser } = useContext(UserContext); 
   const [users,setUsers] = useState([]) ; 
+  const [suggested, setSuggested] = useState([])
   const navigate = useNavigate();
 
   // Get the user (we will get the id from the cookies then find the user)
@@ -38,6 +36,7 @@ const MainPage = () => {
        // console.log("inside", response.data.user)
         getfollowed(response.data.user._id);
         setUser(response.data.user);
+        getSuggested(response.data.user._id)
       })
       .catch(error => {
         console.error('Error checking authentication', error);
@@ -64,18 +63,33 @@ const MainPage = () => {
       });
   }
 
+
   const getfollowed = (id) => {
     axios.get('http://localhost:8000/api/follows/followed/'+id)
       .then((response) => {
         console.log( response.data)
         setUsers( response.data.followings)
-        setLoading(false); // Stop loading
+       // setLoading(false); // Stop loading
       //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
       })
       .catch((error) => {
         console.error('Error fetching posts:', error);
       });
   }
+  const getSuggested = (id) =>{
+    axios.get('http://localhost:8000/api/follows/notfollowed/'+id)
+    .then ((response) =>{
+      console.log(response.data.notFollowedUsers)
+      setSuggested(response.data.notFollowedUsers)
+      console.log('Suggested Users:', suggested);
+
+      setLoading(false); // Stop loading
+      //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
+      })
+      .catch((error) => {
+        console.error('Error fetching posts:', error);
+      });
+  } 
   
 
   if (loading) {
@@ -126,7 +140,7 @@ const MainPage = () => {
                 <Ads />
               </Grid>
               <Grid item>
-                <UserList initialUsers={users} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
+                <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
               </Grid>
             </Grid>
           </Grid>
