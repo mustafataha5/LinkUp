@@ -30,9 +30,9 @@ const UserList = ({
     }
   };
 
-  const limitUsers = useMemo(() => {
-    return index === 0 ? users.slice(0, 8) : users.slice(0, 4);
-  }, [index, users]);
+  // const limitUsers = useMemo(() => {
+  //   return index === 0 ? users.slice(0, 8) : users.slice(0, 4);
+  // }, [index, users]);
 
   return (
     <Card style={{ width: '100%', maxWidth: '300px', margin: '0 auto', padding: '10px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}>
@@ -43,7 +43,7 @@ const UserList = ({
         >
           {index === 0 ? 'Following' : index === 1 ? 'Followers' : index === 2 ? 'Suggestion' : 'Users'}
         </Typography>
-        {limitUsers.map((user) => (
+        {users.map((user) => (
           <Card
             key={user._id}
             style={{

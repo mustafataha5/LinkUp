@@ -181,7 +181,7 @@ const Profile = () => {
                                 <img 
                                     src={urlUser.imageUrl} 
                                     alt="Profile" 
-                                    style={{ width: '100%', borderRadius: '50%', marginBottom: 14 }} 
+                                    style={{ width: '100%', borderRadius: '100%', height:"200px", marginBottom: 14 }} 
                                     onClick={handleImageClick}
                                 />
                                 <h6>{urlUser.firstName} {urlUser.lastName}</h6>
@@ -202,7 +202,27 @@ const Profile = () => {
                             </Button>}
                             </Box>
                             {/* UserList component */}
+                            <Box
+                                        sx={{
+                                            maxHeight: '590px',
+                                            overflowY: 'auto',
+                                            '&::-webkit-scrollbar': {
+                                                width: '8px',
+                                            },
+                                            '&::-webkit-scrollbar-track': {
+                                                background: '#f1f1f1',
+                                            },
+                                            '&::-webkit-scrollbar-thumb': {
+                                                background: '#888',
+                                                borderRadius: '10px',
+                                            },
+                                            '&::-webkit-scrollbar-thumb:hover': {
+                                                background: '#555',
+                                            },
+                                        }}
+                                    >
                             <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }}/>
+                            </Box>
                         </Grid>
                         <Grid item xs={6}>
                             {urlUser && (

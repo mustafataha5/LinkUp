@@ -20,6 +20,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import SearchBar from './SearchBar';
+import logo from '../images/logo.png'
 
 
 
@@ -144,18 +145,18 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+      <MenuItem onClick={mailClick}>
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit" >
+          <Badge badgeContent={60} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="error">
-            <PeopleIcon />
+      <MenuItem onClick={peopleClick}>
+        <IconButton size="large" aria-label="show 17 new notifications" color="inherit"  >
+          <Badge badgeContent={18} color="error">
+            <PeopleIcon  />
           </Badge>
         </IconButton>
         <p>Followers</p>
@@ -179,16 +180,17 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <Box sx={{ position: 'fixed', top: 0, width: "100%", zIndex: 1000 }}>
 
-        <AppBar sx={{ backgroundColor: "#fe520a" }} position="static">
+        <AppBar sx={{ backgroundColor: "#555" }} position="static">
           <Toolbar>
-            <Typography
+            <img src={logo} style={{width: "250px", height: "64px"}}/>
+            {/* <Typography
               variant="h6"
               noWrap
               component="div"
               sx={{ display: { xs: 'none', sm: 'block' } }}
             >
               LinkUp
-            </Typography>
+            </Typography> */}
             <Toolbar sx={{ justifyContent: 'center', width: "80%" }}>
 
               <SearchBar />
