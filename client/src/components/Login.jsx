@@ -72,11 +72,12 @@ const Login = ({ onSubmitProp, errors={} }) => {
     </Typography>
               <form onSubmit={handleSubmit}>
                 <FormControl variant="outlined"  fullWidth style={styles.input}>
-                <InputLabel>E-mail</InputLabel>
+                <InputLabel >E-mail</InputLabel>
                 <OutlinedInput type="email" 
                         id="email" 
                         name="email" 
                         value={email}
+                        label='Email'
                         onChange={e => setEmail(e.target.value)}  
                         required 
                     />
@@ -87,6 +88,7 @@ const Login = ({ onSubmitProp, errors={} }) => {
                     <OutlinedInput type="password"
                         id="password" 
                         name="password" 
+                        label='Password'
                         value={password}
                         onChange={e => setPassword(e.target.value)} 
                         required 

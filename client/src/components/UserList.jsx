@@ -36,6 +36,14 @@ const UserList = ({
       onClickTab(id); // Trigger an action with the user's ID
     }
   };
+  let limitUsers;
+  if(index === 0){
+    limitUsers = users.slice(0,8)
+  }
+  else{
+
+    limitUsers = users.slice(0,4)
+  }
 
   return (
     <Card style={{ width: '100%', maxWidth: '300px', margin: '0 auto', padding: '10px' ,boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}>
@@ -46,7 +54,7 @@ const UserList = ({
         >
           {index === 0 ? 'Followers' : index === 1 ? 'Blocked Users' : index === 2 ? 'Following' : 'Users'}
         </Typography>
-        {users.map((user) => (
+        {limitUsers.map((user) => (
           <Card key={user._id} style={{ marginBottom: 16, borderBottom: 'none'}}>
             <CardContent style={{ display: 'flex', alignItems: 'center' }}>
               <Avatar src={user.imageUrl} alt={user.firstName} style={{ marginRight: 10 }} />

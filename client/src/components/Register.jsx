@@ -77,6 +77,9 @@ const Register = ({flag= true, intialFirst ="", intialLast = "", initialEmail=""
   const goHome = () => {
     navigate('/')
   }
+  const profile= () =>{
+    navigate('/success')
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -189,6 +192,7 @@ if (flag){
                     type="text"
                     id="firstName"
                     name="firstName"
+                    label='First Name'
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required
@@ -223,6 +227,7 @@ if (flag){
                     type="text"
                     id="lastName"
                     name="lastName"
+                    label='Last Name'
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     required
@@ -257,6 +262,7 @@ if (flag){
                     type="email"
                     id="email"
                     name="email"
+                    label='Email'
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -294,6 +300,7 @@ if (flag){
                       type="password"
                       id="password"
                       name="password"
+                      label='Password'
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
@@ -328,6 +335,7 @@ if (flag){
                       type="password"
                       id="confirmPassword"
                       name="confirmPassword"
+                      label='ConfirmPassword'
                       value={confirmPassword}
                       onChange={(e) => setConfirm(e.target.value)}
                       required
@@ -399,6 +407,7 @@ if (flag){
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
                     required
+                    label='Gender'
                     sx={{
                       height: '50px',
                       '& .MuiSelect-select': {
@@ -432,7 +441,7 @@ if (flag){
                 {flag ? 'Submit' : 'Update'}
               </Button>
               <Button
-                onClick={goHome}
+                onClick={flag ? goHome : profile}
                 variant="contained"
                 color="primary"
                 style={styles.button1}
