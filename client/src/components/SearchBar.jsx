@@ -93,7 +93,7 @@ const SearchBar = () => {
     }, []);
 
     return (
-        <Box sx={{ position: 'relative', width: '100%' }}>
+        <Box sx={{ position: 'relative', width: '100%' , margin: '0 auto', display:'flex' ,justifyContent:'space-around' }}>
             <Search>
                 <SearchIconWrapper>
                     <SearchIcon />
