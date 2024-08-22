@@ -38,19 +38,16 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const [comments, setComments] = useState([]);
-  // const [numOfComments, setNumOfComments] = useState(0);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         // Fetch the likes for the post
         const response = await axios.get(`http://localhost:8000/api/likes/${post._id}`);
-        // console.log(post._id + "-----likes", response.data.Like);
 
         // Update the number of likes and the list of users who liked the post
         const likedUsers = response.data.Like;
@@ -58,10 +55,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
         setLikedUsers(likedUsers);
 
         // Check if the current user has liked the post
-        // console.log("LikeUser", likedUsers);
-        // console.log("userID", userId);
         const userHasLiked = likedUsers.some(like => like.user === userId); // Check if userId exists in any like object
-        // console.log(userHasLiked);
         setIsLiked(userHasLiked);
 
       } catch (error) {
@@ -73,25 +67,24 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   }, [post._id, userId]);
 
   useEffect(() => {
-    // api/comments/:postId
     const fetchComments = async () => {
       try {
-        // Fetch the likes for the post
+        // Fetch the comments for the post
         const response = await axios.get(`http://localhost:8000/api/comments/${post._id}`);
         //console.log(post._id + "comments", response.data.comments);
 
-        // Update the number of likes and the list of users who liked the post
         const data = response.data.comments;
-        // setNumOfComments(data.length);
         setComments(data);
       } catch (error) {
         console.error('Error fetching commnts:', error);
       }
     };
     fetchComments();
-  }, [post._id]);
+  }, [post._id]); // Comments change with change of post only (for users it will be same)
 
+  // Function to handle clicking on like icon
   const handleLike = () => {
+    // If user is already liked the post then he/she wants to dislike the post 
     if (isLiked) {
       axios.delete('http://localhost:8000/api/likes/' + post._id + "/" + userId)
         .then(res => {
@@ -101,9 +94,8 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
         // And pass it as props to the form.
         .catch(err => {
           console.log(err.response.data.errors)
-          // const errorResponse = err.response.data.errors;
-          // setErrors(errorResponse);
         })
+      // If the user didn't liked this post before then the user wants to add a like 
     } else {
       axios.post('http://localhost:8000/api/likes', { users_id: userId, posts_id: post._id })
         .then(res => {
@@ -113,14 +105,12 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
         // And pass it as props to the form.
         .catch(err => {
           console.log(err.response)
-          // const errorResponse = err.response.data.errors;
-          // setErrors(errorResponse);
         })
     }
+    // Update like count and color of the like button in the frontend
     setIsLiked(!isLiked);
     setNumOfLikes((prev) => (isLiked ? prev - 1 : prev + 1));
   }
-
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -130,67 +120,70 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
     setAnchorEl(null);
   };
 
+  // Open or close comment section
   const handleComment = () => {
     setShowComments(!showComments);
   };
+
+  // Handle clicking on add comment button 
   const handleAddComment = () => {
     if (!newComment.trim()) return;
-  
+    // Send a post request to the server and send {content, postID, userID}
     axios.post('http://localhost:8000/api/comments', {
       content: newComment.trim(),
       postId: post._id,
       userId: user._id
     })
-    .then(res => {
-      const savedComment = res.data; // Ensure this contains populated user info
-      setComments(prev => [
-        ...prev,
-        {
-          content: savedComment.content,
-          user: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            imageUrl: user.imageUrl
-          },
-          _id: savedComment._id,
-          timestamp: savedComment.timestamp
-        }
-      ]);
-      setNewComment('');
-    })
-    .catch(err => {
-      console.error("Error saving comment:", err.response || err.message);
-    });
+      .then(res => {
+        const savedComment = res.data;
+        // Update the comments on the frontend
+        setComments(prev => [
+          ...prev,
+          {
+            content: savedComment.content,
+            // we will take the user information from context
+            user: {
+              firstName: user.firstName,
+              lastName: user.lastName,
+              imageUrl: user.imageUrl
+            },
+            _id: savedComment._id,
+            timestamp: savedComment.timestamp
+          }
+        ]);
+        // Clear the comment section to allow the user to add new one
+        setNewComment('');
+      })
+      .catch(err => {
+        console.error("Error saving comment:", err.response);
+      });
   };
-
 
   const handleReport = () => {
     alert('Report feature coming soon!');
   };
 
+  // Function to handle delete post option for owner of posts or admins
   const handleDelete = () => {
     try {
-      handleMenuClose();
-      onDelete(post._id);
+      handleMenuClose();  // First we need to close the drop down menu
+      onDelete(post._id); // Send delete request to the server
     } catch (error) {
       console.error('Error deleting post:', error);
     }
   };
 
+  // To handle edit post option only for owner of posts
   const handleEdit = () => {
-    setIsEditing(true)
-    console.log("inside edit", post._id)
-    handleMenuClose();
+    setIsEditing(true)   // Set it to true to open the edit form section
+    handleMenuClose();   // Also we need to close the drop down menu
   }
 
+  // Handle clicking on edit button to update the post information 
   const handleUpdate = (id, newData) => {
-    console.log(">>>>>>>id" + id)
-    console.log(newData)
-    onUpdate(post._id, newData)
-    setIsEditing(false)
+    onUpdate(post._id, newData)  // Send patch request to the server with the new data
+    setIsEditing(false)          // To close the editing area
   }
-
-
 
   return (
     <Card sx={{ maxWidth: 500, margin: '20px auto' }}>
@@ -214,21 +207,25 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
                 horizontal: 'right',
               }}
             >
+              {/* This option will be for the post onwer or user with role admin  */}
               {post.user._id === userId ? (
                 [
                   <MenuItem key="edit" onClick={handleEdit}>Edit</MenuItem>,
                   <MenuItem key="delete" onClick={handleDelete}>Delete</MenuItem>
                 ]
-              ) : (
-                <MenuItem onClick={handleReport}>
-                  <ReportIcon sx={{ marginRight: 1 }} />
-                  Report
-                </MenuItem>
-              )}
+              ) :
+                // This option will be for the other users
+                (
+                  <MenuItem onClick={handleReport}>
+                    <ReportIcon sx={{ marginRight: 1 }} />
+                    Report
+                  </MenuItem>
+                )}
             </Menu>
           </React.Fragment>
 
         }
+        // The header part of the post {user name, user image, date and time }
         title={post.user.firstName + ' ' + post.user.lastName}
         subheader={new Date(post.timestamp).toLocaleString('en-US', {
           year: 'numeric', // e.g., '2024'
@@ -240,7 +237,9 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
           hour12: true // Use 12-hour time format (AM/PM)
         })}
       />
+      {/* Editing area */}
       {isEditing ?
+        // If the user wants to update the post, display the edit form
         <PostForm
           userId={userId}
           onPostSubmit={handleUpdate}
@@ -252,14 +251,14 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
           postId={post._id}
           isEdit={true}
         /> :
-
+        // If not just display the post information
         <CardContent>
           <Typography variant="body2" color="text.secondary">
             {post.content}
           </Typography>
         </CardContent>
       }
-
+      {/* Check if the post has an image or not */}
       {post.imageUrl && (
         <CardMedia
           component="img"
@@ -269,7 +268,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
         />
 
       )}
-
+      {/* Interaction section {like and comment icons} */}
       <CardActions disableSpacing>
         <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
           <IconButton aria-label="like" onClick={() => handleLike(post._id)}>
@@ -289,62 +288,61 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
         </Box>
       </CardActions>
 
+      {/* Comment area */}
       {showComments && (
-  <>
-    <Divider />
-    <CardContent>
-      <List>
-        {comments && comments.map((comment, index) => (
-          <ListItem key={index}>
-            <ListItemAvatar>
-              {/* Make sure you access the image URL from the user object */}
-              <Avatar src={comment.user.imageUrl} alt={`${comment.user.firstName} ${comment.user.lastName}`} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={`${comment.user.firstName} ${comment.user.lastName}`}
-              secondary={
-                <>
-                  <Typography variant="body2" color="text.primary">
-                    {comment.content}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {new Date(comment.timestamp).toLocaleString('en-US', {
-                      year: 'numeric', // e.g., '2024'
-                      month: 'long', // e.g., 'August'
-                      day: 'numeric', // e.g., '22'
-                      hour: '2-digit', // e.g., '3 PM'
-                      minute: '2-digit', // e.g., '30'
-                      hour12: true // Use 12-hour time format (AM/PM)
-                    })}
-                  </Typography>
-                </>
-              }
-            />
-          </ListItem>
-        ))}
-      </List>
-      <Box sx={{ mt: 2 }}>
-        <TextField
-          fullWidth
-          variant="outlined"
-          label="Add a comment"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddComment}
-          sx={{ mt: 1 }}
-        >
-          Post
-        </Button>
-      </Box>
-    </CardContent>
-  </>
-)}
-
-
+        <>
+          <Divider />
+          <CardContent>
+            <List>
+              {/* Shoe all comments for this post, and each one will have user name, user image, comment, date and time */}
+              {comments && comments.map((comment, index) => (
+                <ListItem key={index}>
+                  <ListItemAvatar>
+                    <Avatar src={comment.user.imageUrl} alt={`${comment.user.firstName} ${comment.user.lastName}`} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${comment.user.firstName} ${comment.user.lastName}`}
+                    secondary={
+                      <>
+                        <Typography variant="body2" color="text.primary">
+                          {comment.content}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {new Date(comment.timestamp).toLocaleString('en-US', {
+                            year: 'numeric', // e.g., '2024'
+                            month: 'long', // e.g., 'August'
+                            day: 'numeric', // e.g., '22'
+                            hour: '2-digit', // e.g., '3 PM'
+                            minute: '2-digit', // e.g., '30'
+                            hour12: true // Use 12-hour time format (AM/PM)
+                          })}
+                        </Typography>
+                      </>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
+            <Box sx={{ mt: 2 }}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Add a comment"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddComment}
+                sx={{ mt: 1 }}
+              >
+                Comment
+              </Button>
+            </Box>
+          </CardContent>
+        </>
+      )}
     </Card>
   );
 };
