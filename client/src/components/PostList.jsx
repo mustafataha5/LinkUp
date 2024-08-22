@@ -4,7 +4,7 @@ import Post from './Post';
 const PostList = ({ posts, userId, handleDelete, handleUpdate, errors }) => {
     return (
         <>
-            {posts.length > 0 ? (
+            {posts && posts.length > 0 ? (
                 posts.map((post) => (
                     <Post
                         key={post._id}
