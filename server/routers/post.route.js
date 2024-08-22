@@ -9,6 +9,7 @@ module.exports = function (app) {
     app.get('/api/posts', PostController.getAllPosts);
     //get all post of user 
     app.get('/api/posts/:userid', PostController.getAllPostOfUser);
+    app.get('/api/posts/user/:id', PostController.getAllPostOfUserByUserID);
     //post create 
     app.post('/api/posts', PostController.createPost);
     app.patch('/api/posts/:id', PostController.updatePost);

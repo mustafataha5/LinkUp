@@ -235,18 +235,7 @@ export default function PrimarySearchAppBar() {
                 <PeopleIcon/>
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit">
-                <Badge color="error">
-                  <PeopleIcon />
-                </Badge>
-              </IconButton>
+
               <IconButton
                 size="large"
                 edge="end"

@@ -13,7 +13,6 @@ module.exports.authenticate = (req, res, next) => {
       }
     });
   }
-  
 
 module.exports.checkauth =  (req, res) => {
     const token = req.cookies.usertoken; // Assuming you're using cookies to store the token
@@ -34,7 +33,6 @@ module.exports.checkauth =  (req, res) => {
 //create 
 module.exports.register=async (req,res) => {
     try{
-
         const user = await User.findOne({ email: req.body.email });
         console.log(user)
         if(user != null) {
@@ -58,7 +56,6 @@ module.exports.register=async (req,res) => {
     })
     .catch(err => res.status(400).json(err));
 } 
-
 
 //login 
 module.exports.login = async (req,res) => {
@@ -130,25 +127,14 @@ module.exports.userDelete = (req,res) =>{
 // Search for users by names
 module.exports.searchUsers = async (req, res) => {
     const query = req.query.q; // Query from the request
-    console.log("Search query:", query); // Log query for debugging
-
-    // Split the query into first and last names
-    const [firstNameQuery, lastNameQuery] = query.trim().split(' ');
-
     try {
-        // Build the search criteria
-        const searchCriteria = {};
-        
-        if (firstNameQuery) {
-            searchCriteria.firstName = { $regex: firstNameQuery, $options: 'i' };
-        }
-
-        if (lastNameQuery) {
-            searchCriteria.lastName = { $regex: lastNameQuery, $options: 'i' };
-        }
-
-        // Search for users by firstName and lastName (case-insensitive)
-        const users = await User.find(searchCriteria).select('firstName lastName _id');
+        // Search for users by firstName or lastName (case-insensitive)
+        const users = await User.find({
+            $or: [
+                { firstName: { $regex: query, $options: 'i' } },
+                { lastName: { $regex: query, $options: 'i' } }
+            ]
+        }).select('firstName lastName _id'); // Select necessary fields
 
         if (users.length === 0) {
             return res.status(404).json({ message: 'No users found' });
