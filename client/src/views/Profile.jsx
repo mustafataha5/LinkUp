@@ -16,7 +16,9 @@ import { Button } from '@mui/material';
 
 const Profile = () => {
     const imageUrl = 'https://via.placeholder.com/150'; // Replace this with the actual image URL or default picture
-    const { user, setUser } = useContext(UserContext);
+    const { id } = useParams();
+
+    const [user, setUser ] = useState({});
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
     const [users, setUsers] = useState([])
@@ -28,10 +30,10 @@ const Profile = () => {
             getPosts();
         };
         fetchData();
-    }, []);
+    }, [id]);
 
     const getPosts = () => {
-        axios.get('http://localhost:8000/api/posts')
+        axios.get('http://localhost:8000/api/posts',{ withCredentials: true })
             .then((response) => {
                 console.log("Posts= ", response.data.posts);
                 setPosts(response.data.posts);
@@ -43,11 +45,13 @@ const Profile = () => {
 
     const getUser = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true });
+            const response = await axios.get('http://localhost:8000/api/users/'+id, { withCredentials: true });
+            console.log(response.data.user)
             setUser(response.data.user);
+            navigate('/profile/'+response.data.user._id)
         } catch (error) {
             console.error('Error checking authentication', error);
-            navigate('/403');
+            //navigate('/403');
         } finally {
             setLoading(false);
         }
