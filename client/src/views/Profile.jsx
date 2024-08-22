@@ -35,7 +35,8 @@ const Profile = () => {
      
              console.log(response.data);
              setUser(response.data.user);
-             getAllFrind(response.data.user._id);
+             getfollowed(response.data.user._id);
+             //getSuggested(response.data.user._id)
            })
            .catch(error => {
      
@@ -98,8 +99,7 @@ const Profile = () => {
         const fetchData = async () => {
             await getUser();
             getPosts();
-            getfollowed(id);
-            getSuggested(id)
+
         };
         fetchData();
     }, [id]);
@@ -122,8 +122,8 @@ const Profile = () => {
             const response = await axios.get('http://localhost:8000/api/users/'+id, { withCredentials: true });
             console.log(response.data.user)
             // getfollowed(response.data.user._id);
-            setUrlUser(response.data.user);
             // getSuggested(response.data.user._id)
+            setUrlUser(response.data.user);
             navigate('/profile/'+response.data.user._id)
         } catch (error) {
             console.error('Error checking authentication', error);
@@ -134,20 +134,22 @@ const Profile = () => {
     };
     
     const getfollowed = (id) => {
-        axios.get('http://localhost:8000/api/follows/followed/'+id)
+        console.log(id)
+         axios.get('http://localhost:8000/api/follows/followed/'+id)
           .then((response) => {
-            console.log( response.data)
+            
             setUsers( response.data.followings)
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>")
+            console.log(response.data.followings)
 
           })
           .catch((error) => {
             console.error('Error fetching posts:', error);
           });
       }
-      const getSuggested = async (id) =>{
-        await axios.get('http://localhost:8000/api/follows/notfollowed/'+id)
+      const getSuggested =  (id) =>{
+         axios.get('http://localhost:8000/api/follows/notfollowed/'+id)
         .then ((response) =>{
-          console.log(response.data.notFollowedUsers)
           setSuggested(response.data.notFollowedUsers)
           console.log('Suggested Users:', suggested);
     
