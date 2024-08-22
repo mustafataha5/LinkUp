@@ -12,17 +12,64 @@ import Container from '@mui/material/Container'; // Assuming you're using Contai
 import { ToastContainer } from 'react-toastify'; // Ensure you import ToastContainer correctly
 import 'react-toastify/dist/ReactToastify.css'; // Add ToastContainer's CSS if not already included
 import UserList from '../components/UserList';
-import { Button } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 
 const Profile = () => {
-    const imageUrl = 'https://via.placeholder.com/150'; // Replace this with the actual image URL or default picture
-    const { id } = useParams();
 
-    const [user, setUser ] = useState({});
+ // Replace this with the actual image URL or default picture
+    const { user, setUser } = useContext(UserContext);
+
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
     const [users, setUsers] = useState([])
+    const [open, setOpen] = useState(false); // State to control the dialog
+    const [suggested, setSuggested] = useState([])
+    const [imageUrl, setNewImageUrl] = useState('');
     const navigate = useNavigate();
+
+    const handleSave = (e) => {
+        e.preventDefault();
+        axios
+            .patch(
+                'http://localhost:8000/api/users/' + user._id,
+                {
+                    imageUrl
+                },
+                { withCredentials: true }
+            )
+            .then((res) => {
+                console.log('successful Update');
+                console.log(res);
+                // Reset form fields after successful submission
+                setNewImageUrl("");
+                setOpen(false);
+                navigate('/test');
+            })
+            .catch((err) => {
+                console.log('Error response:', err.response);
+                console.log('Error data:', err.response?.data);
+                
+                const errorsObject = err.response?.data?.errors || {};
+                console.log('Errors object:', errorsObject);
+                const errorMessages = {};
+                for (let key of Object.keys(errorsObject)) {
+                    errorMessages[key] = errorsObject[key].message;
+                }
+                setErrors(errorMessages);
+            });
+    };
+    
+
+
+            // Update user image here, then close the dialog
+            
+    const handleImageClick = () => {
+        setOpen(true); // Open the dialog when the image is clicked
+    };
+
+    const handleClose = () => {
+        setOpen(false); // Close the dialog
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,34 +93,67 @@ const Profile = () => {
     };
 
     const getUser = async () => {
-        try {
-            const response = await axios.get('http://localhost:8000/api/users/'+id, { withCredentials: true });
-            // console.log(response.data.user)
+        await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+          .then( response => {
+           // console.log("inside", response.data.user)
+            getfollowed(response.data.user._id);
             setUser(response.data.user);
-            navigate('/profile/'+response.data.user._id)
-        } catch (error) {
+            getSuggested(response.data.user._id)
+          })
+          .catch(error => {
             console.error('Error checking authentication', error);
-            navigate('/403');
-        } finally {
-            setLoading(false);
-        }
-    };
+            navigate('/403'); // Redirect to login if not authenticated
+          })
+          // .finally(() => {
+          //   setLoading(false); // Stop loading
+          // });
+      }
+
+//         try {
+//             const response = await axios.get('http://localhost:8000/api/users/'+id, { withCredentials: true });
+//             // console.log(response.data.user)
+//             setUser(response.data.user);
+//             navigate('/profile/'+response.data.user._id)
+//         } catch (error) {
+//             console.error('Error checking authentication', error);
+//             navigate('/403');
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
     
     const getfollowed = (id) => {
         axios.get('http://localhost:8000/api/follows/followed/'+id)
           .then((response) => {
             console.log( response.data)
             setUsers( response.data.followings)
-            setLoading(false); // Stop loading
-          //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
           })
           .catch((error) => {
             console.error('Error fetching posts:', error);
           });
       }
+      const getSuggested = (id) =>{
+        axios.get('http://localhost:8000/api/follows/notfollowed/'+id)
+        .then ((response) =>{
+          console.log(response.data.notFollowedUsers)
+          setSuggested(response.data.notFollowedUsers)
+          console.log('Suggested Users:', suggested);
+    
+          setLoading(false); // Stop loading
+          //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
+          })
+          .catch((error) => {
+            console.error('Error fetching posts:', error);
+          });
+      } 
           const edit = ()=>{
             navigate(`/register/${user._id}`)
           }
+
+          
+            
+        
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -92,10 +172,11 @@ const Profile = () => {
                         {/* Profile Section (Left) */}
                         <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
                             <Box sx={{ marginBottom: 3, textAlign: 'center', boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)', padding: 3}} > {/* Adds space between profile and UserList */}
-                                <img 
-                                    src={user.imageUrl} 
-                                    alt="Profile" 
-                                    style={{ width: '100%', borderRadius: '50%', marginBottom: 14 }} 
+                            <img
+                                    src={user.imageUrl}
+                                    alt="Profile"
+                                    style={{ width: '100%', borderRadius: '100%', marginBottom: 14, height: '200px', cursor: 'pointer' }}
+                                    onClick={handleImageClick} // Open the dialog on image click
                                 />
                                 <h6>{user.firstName} {user.lastName}</h6>
                             <Button
@@ -150,12 +231,55 @@ const Profile = () => {
                                 <Ads />
                             </Grid>
                             <Grid item>
-                                <UserList initialUsers={users} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
+                                <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Container>
             </Box>
+            <Dialog
+    open={open}
+    onClose={handleClose}
+    maxWidth="xs" // You can use 'xs', 'sm', 'md', 'lg', 'xl'
+    fullWidth // Makes the dialog use the full width within the maxWidth
+>
+    <DialogTitle>Change Profile Picture</DialogTitle>
+    <DialogContent>
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <img
+                src={user.imageUrl}
+                alt="Profile"
+                style={{ width: '200px', borderRadius: '100%', marginBottom: 14, height: '200px', cursor: 'pointer', alignContent: "center" }}
+                onClick={handleImageClick} // Open the dialog on image click
+            />
+        </Box>
+        <TextField
+            autoFocus
+            margin="dense"
+            label="Image URL"
+            type="url"
+            fullWidth
+            variant="standard"
+            value={imageUrl}
+            onChange={(e) => setNewImageUrl(e.target.value)}
+        />
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleClose} color="primary">
+            Cancel
+        </Button>
+        <Button onClick={handleSave} color="primary">
+            Save
+        </Button>
+    </DialogActions>
+</Dialog>
+
         </>
     );
 };
