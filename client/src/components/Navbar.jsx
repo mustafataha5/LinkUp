@@ -19,6 +19,7 @@ import MoreIcon from '@mui/icons-material/More'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import SearchBar from './SearchBar';
 
 
 
@@ -46,7 +47,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  
+
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -65,22 +66,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
- // const [user, setUser]  = useState("")
+  // const [user, setUser]  = useState("")
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
 
-  const {user,setUser} = useContext(UserContext) ; 
+  const { user, setUser } = useContext(UserContext);
 
-  const LogOut = () =>{
-    axios.post('http://localhost:8000/api/logout',{}, {withCredentials: true})
-    .then((res) => {
-      console.log(res)
-      setUser(null) ; 
-      navigate('/')
-    })
- 
-    .catch(err => console.log(err))
+  const LogOut = () => {
+    axios.post('http://localhost:8000/api/logout', {}, { withCredentials: true })
+      .then((res) => {
+        console.log(res)
+        setUser(null);
+        navigate('/')
+      })
+
+      .catch(err => console.log(err))
   }
   const profile = () => {
     navigate(`/profile/${user._id}`);
@@ -176,21 +177,22 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Box sx={{position:'fixed' ,top:0,width:"100%",zIndex:1000}}>
+      <Box sx={{ position: 'fixed', top: 0, width: "100%", zIndex: 1000 }}>
 
-      <AppBar sx={{ backgroundColor: "#fe520a" }} position="static">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            LinkUp
-          </Typography>
-          <Toolbar sx={{ justifyContent: 'center', width: "80%"}}>
+        <AppBar sx={{ backgroundColor: "#fe520a" }} position="static">
+          <Toolbar>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+            >
+              LinkUp
+            </Typography>
+            <Toolbar sx={{ justifyContent: 'center', width: "80%" }}>
 
-          <Search >
+              <SearchBar />
+              {/* <Search >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -198,68 +200,68 @@ export default function PrimarySearchAppBar() {
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
               />
-          </Search>
+          </Search> */}
+            </Toolbar>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <IconButton
+                size="large"
+                aria-label="home"
+                color="inherit"
+                sx={{ mr: 2 }}
+                onClick={homeClick}
+              >
+                <HomeIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+                onClick={mailClick}
+              >
+                <Badge color="error">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+                onClick={peopleClick}
+              >
+                <Badge color="error">
+                  <PeopleIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </Box>
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
           </Toolbar>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-          <IconButton
-            size="large"
-            aria-label="home"
-            color="inherit"
-            sx={{ mr: 2 }}
-            onClick={homeClick}
-            >
-            <HomeIcon />
-            </IconButton>
-            <IconButton
-             size="large"
-             aria-label="show 4 new mails" 
-             color="inherit"
-             onClick={mailClick}
-             >
-              <Badge color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-              onClick={peopleClick}
-              >
-              <Badge  color="error">
-                <PeopleIcon/>
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-              >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-              >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-              </Box>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+      </Box>
     </Box>
   );
 }
