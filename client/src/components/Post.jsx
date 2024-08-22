@@ -230,7 +230,15 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
 
         }
         title={post.user.firstName + ' ' + post.user.lastName}
-        subheader={new Date(post.timestamp).toLocaleDateString()}
+        subheader={new Date(post.timestamp).toLocaleString('en-US', {
+          year: 'numeric', // e.g., '2024'
+          month: 'long', // e.g., 'August'
+          day: 'numeric', // e.g., '22'
+          hour: '2-digit', // e.g., '3 PM'
+          minute: '2-digit', // e.g., '30'
+          second: '2-digit', // e.g., '45'
+          hour12: true // Use 12-hour time format (AM/PM)
+        })}
       />
       {isEditing ?
         <PostForm
@@ -282,44 +290,60 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
       </CardActions>
 
       {showComments && (
-        <>
-          <Divider />
-          <CardContent>
-            <List>
-              {comments && comments.map((comment, index) => (
-                <ListItem key={index}>
-                  <ListItemAvatar>
-                    {/* Make sure you access the image URL from the user object */}
-                    <Avatar src={comment.user.imageUrl} alt={`${comment.user.firstName} ${comment.user.lastName}`} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    // Concatenate firstName and lastName to display the full name of the user
-                    primary={`${comment.user.firstName} ${comment.user.lastName}`}
-                    secondary={comment.content} // Changed to access the correct comment content
-                  />
-                </ListItem>
-              ))}
-            </List>
-            <Box sx={{ mt: 2 }}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                label="Add a comment"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAddComment}
-                sx={{ mt: 1 }}
-              >
-                Post
-              </Button>
-            </Box>
-          </CardContent>
-        </>
-      )}
+  <>
+    <Divider />
+    <CardContent>
+      <List>
+        {comments && comments.map((comment, index) => (
+          <ListItem key={index}>
+            <ListItemAvatar>
+              {/* Make sure you access the image URL from the user object */}
+              <Avatar src={comment.user.imageUrl} alt={`${comment.user.firstName} ${comment.user.lastName}`} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={`${comment.user.firstName} ${comment.user.lastName}`}
+              secondary={
+                <>
+                  <Typography variant="body2" color="text.primary">
+                    {comment.content}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Date(comment.timestamp).toLocaleString('en-US', {
+                      year: 'numeric', // e.g., '2024'
+                      month: 'long', // e.g., 'August'
+                      day: 'numeric', // e.g., '22'
+                      hour: '2-digit', // e.g., '3 PM'
+                      minute: '2-digit', // e.g., '30'
+                      hour12: true // Use 12-hour time format (AM/PM)
+                    })}
+                  </Typography>
+                </>
+              }
+            />
+          </ListItem>
+        ))}
+      </List>
+      <Box sx={{ mt: 2 }}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Add a comment"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddComment}
+          sx={{ mt: 1 }}
+        >
+          Post
+        </Button>
+      </Box>
+    </CardContent>
+  </>
+)}
+
 
     </Card>
   );
