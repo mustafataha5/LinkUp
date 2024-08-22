@@ -2,7 +2,6 @@ import { AppBar, Box, Container, Grid } from '@mui/material';
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import Navbar from '../components/Navbar';
-
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CreatePostSection from './CreatePostSection';
@@ -10,7 +9,6 @@ import { ToastContainer } from 'react-toastify';
 import PostSection from './PostSection';
 import UserList from '../components/UserList';
 import Ads from '../components/Ads';
-
 
 
 const MainPage = () => {

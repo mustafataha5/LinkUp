@@ -19,9 +19,10 @@ import AdminStatPie from './components/AdminStatPie';
 import AdminUserEdit from './components/AdminUserEdit';
 import AdminStatBar from './components/AdminStatBar';
 import AdminUserList from './views/AdminUserList';
+import AdminNavbar from './components/AdminNavbar';
 
 function App() {
-  const [user,setUser] = useState(null) ;
+  const [user, setUser] = useState(null) ;
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
   //console.log(">>>>>>>>>>" + user)
@@ -44,6 +45,7 @@ function App() {
      <UserContext.Provider value={ {user, setUser} }>
       <Routes>
         {/* <Route path='/randatest' element={<AdminStatBar/>}/> */}
+        <Route path='/admin/dashboard' element={<AdminNavbar />}/>
         <Route path='/randatest' element={<AdminUserList/>}/>
       {/* <Route path='/randatest' element={<AdminStatPie/>}/> */}
       <Route path='/profile/:id' element={<Profile/>}/>
