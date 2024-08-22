@@ -143,9 +143,9 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
             content: savedComment.content,
             // we will take the user information from context
             user: {
-              firstName: savedComment.user.firstName,
-              lastName: savedComment.user.lastName,
-              imageUrl: savedComment.user.imageUrl
+              firstName: user.firstName,
+              lastName: user.lastName,
+              imageUrl: user.imageUrl
             },
             _id: savedComment._id,
             timestamp: savedComment.timestamp
