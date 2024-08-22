@@ -30,6 +30,17 @@ module.exports.getMessages = async (req,res) => {
     }
 }
 
+module.exports.getAllMessages = async (req,res) => {
+    try {
+        const messages =await Message.find().sort({timestamp: 1});
+        //console.log(messages)
+        res.status(200).json({ data: messages });
+    }
+    catch(err){
+        res.status(500).json({ message: 'An error occurred while retrieving messages.', err });
+    }
+}
+
 module.exports.setMessageReaded = (req,res) => {
     const messageId = req.params.messageId
     Message.findByIdAndUpdate({_id:messageId},
