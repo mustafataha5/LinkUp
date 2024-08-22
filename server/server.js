@@ -31,8 +31,34 @@ const server = app.listen(port, () => console.log(`Listening on port: ${port}`) 
 
 const io = require('socket.io')(server, { cors: true });
 
+io.on('connection', (socket) => {
+    console.log('A user connected:', socket.id);
+  
+    // Join a unique room between two users
+    socket.on('joinRoom', ({ userId1, userId2 }) => {
+      const roomName = generateRoomName(userId1, userId2);
+      socket.join(roomName);
+      console.log(`${socket.id} joined room: ${roomName}`);
+    });
+  
+    // Handle private messages between two users
+    socket.on('privateMessage', ({ userId1, userId2, message }) => {
+      const roomName = generateRoomName(userId1, userId2);
+      io.to(roomName).emit('message', message);
+    });
+  
+    socket.on('disconnect', () => {
+      console.log('User disconnected:', socket.id);
+    });
+  });
+  
+  function generateRoomName(userId1, userId2) {
+    const sortedIds = [userId1, userId2].sort();
+    return `room-${sortedIds[0]}-${sortedIds[1]}`;
+  }
 
 
+  
 
 
 
