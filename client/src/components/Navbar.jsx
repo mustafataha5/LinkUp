@@ -201,34 +201,48 @@ export default function PrimarySearchAppBar() {
               inputProps={{ 'aria-label': 'search' }}
               />
           </Search> */}
-            </Toolbar>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <IconButton
-                size="large"
-                aria-label="home"
-                color="inherit"
-                sx={{ mr: 2 }}
-                onClick={homeClick}
+           
+          </Search>
+          </Toolbar>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <IconButton
+            size="large"
+            aria-label="home"
+            color="inherit"
+            sx={{ mr: 2 }}
+            onClick={homeClick}
+            >
+            <HomeIcon />
+            </IconButton>
+            <IconButton
+             size="large"
+             aria-label="show 4 new mails" 
+             color="inherit"
+             onClick={mailClick}
+             >
+              <Badge badgeContent={17} color="error">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              color="inherit"
+              onClick={peopleClick}
               >
-                <HomeIcon />
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={mailClick}
-              >
-                <Badge color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="inherit"
-                onClick={peopleClick}
-              >
+              <Badge badgeContent="+"  color="error">
+                <PeopleIcon/>
+              </Badge>
+            </IconButton>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit">
                 <Badge color="error">
                   <PeopleIcon />
                 </Badge>
