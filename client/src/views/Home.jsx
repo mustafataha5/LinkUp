@@ -5,7 +5,7 @@ import logo from '../images/logo.png'
 import { useNavigate  } from 'react-router-dom';
 import axios from 'axios';
 import Login from '../components/Login';
-import { UserContext } from '../context/UserContext';
+// import { UserContext } from '../context/UserContext';
 const styles = {
   paper: {
       width: "20rem", padding: "1rem"
@@ -39,7 +39,7 @@ const Home = () => {
           navigate('/test');
         })
         .catch(err=>{
-          console.log(err.response.data)
+          console.log(err.response)
           // const errorResponse = err.response.data.errors; // Get the errors from err.response.data
           // const errorArr = []; // Define a temp error array to push the messages in
           // for (const key of Object.keys(errorResponse)) { // Loop through all errors and get the messages

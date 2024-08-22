@@ -123,3 +123,37 @@ module.exports.userDelete = (req,res) =>{
     .then(user => res.json({user:user}))
     .catch(err => res.json(err)) ; 
 }
+
+// Search for users by names
+module.exports.searchUsers = async (req, res) => {
+    const query = req.query.q; // Query from the request
+    console.log("Search query:", query); // Log query for debugging
+
+    // Split the query into first and last names
+    const [firstNameQuery, lastNameQuery] = query.trim().split(' ');
+
+    try {
+        // Build the search criteria
+        const searchCriteria = {};
+        
+        if (firstNameQuery) {
+            searchCriteria.firstName = { $regex: firstNameQuery, $options: 'i' };
+        }
+
+        if (lastNameQuery) {
+            searchCriteria.lastName = { $regex: lastNameQuery, $options: 'i' };
+        }
+
+        // Search for users by firstName and lastName (case-insensitive)
+        const users = await User.find(searchCriteria).select('firstName lastName _id');
+
+        if (users.length === 0) {
+            return res.status(404).json({ message: 'No users found' });
+        }
+
+        res.json(users); // Send the search results as a response
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};

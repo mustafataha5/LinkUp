@@ -16,6 +16,7 @@ module.exports = app => {
     app.patch("/api/users/:id",UserController.userUpdate);
     app.delete("/api/users/:id",UserController.userDelete);
 
+    app.get('/api/search',UserController.searchUsers)
     //  dropDB 
     //  app.delete("/api/DBMustafa",DB.dropDatabase)
     

@@ -56,11 +56,11 @@ const MessagePage = () => {
   return (
     <div>
       <Navbar />
-      <Container >
-        <Grid container spacing={1}>
+      <Container  >
+        <Grid container spacing={1}  >
 
-          <Grid item xs={4}>
-            <UserList initialUsers={friends} index={4}  />
+          <Grid item xs={4} marginTop={15}>
+            <UserList initialUsers={friends} index={3}  />
           </Grid>
           <Grid
             item xs={8}

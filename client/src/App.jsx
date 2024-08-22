@@ -12,7 +12,6 @@ import MainPage from './views/MainPage'
 import Page403 from './components/Page403'
 import FriendPage from './views/FriendPage'
 import MessagePage from './views/MessagePage'
-import AutoPlaySwipeableViews from './views/PhotoSlider';
 import { UserContext } from './context/UserContext'
 import Profile from './views/Profile'
 import axios from 'axios'

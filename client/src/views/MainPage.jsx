@@ -2,8 +2,7 @@ import { AppBar, Box, Container, Grid } from '@mui/material';
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import Navbar from '../components/Navbar';
-import PostList from '../components/PostList';
-import FollowerList from './FollowerList';
+
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CreatePostSection from './CreatePostSection';
@@ -11,6 +10,8 @@ import { ToastContainer } from 'react-toastify';
 import PostSection from './PostSection';
 import UserList from '../components/UserList';
 import Ads from '../components/Ads';
+
+
 
 const MainPage = () => {
   // To save the logged in user object 
@@ -74,6 +75,7 @@ const MainPage = () => {
         console.error('Error fetching posts:', error);
       });
   }
+  
 
   if (loading) {
     return <div>Loading...</div>; // Optionally, replace with a spinner or skeleton UI
@@ -85,25 +87,45 @@ const MainPage = () => {
       <Navbar />
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
         <Container>
-          <Grid container spacing={2}>
+          <Grid container spacing={5}>
             <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
               <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }}/>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} >
               {/* Only render the CreatePostSection and PostSection if user data is available */}
               {user && (
                 <>
                   <CreatePostSection user={user} getPosts={getPosts} />
-                  <PostSection user={user}  posts={posts} setPosts={setPosts}/>
+                  <Box
+                    sx={{
+                      maxHeight: '590px',
+                      overflowY: 'auto',
+                      '&::-webkit-scrollbar': {
+                        width: '8px',
+                      },
+                      '&::-webkit-scrollbar-track': {
+                        background: '#f1f1f1',
+                      },
+                      '&::-webkit-scrollbar-thumb': {
+                        background: '#888',
+                        borderRadius: '10px',
+                      },
+                      '&::-webkit-scrollbar-thumb:hover': {
+                        background: '#555',
+                      },
+                    }}
+                  >
+                  <PostSection user={user}  posts={posts} setPosts={setPosts} />
+                  </Box>
                 </>
               )}
             </Grid>
-            <Grid item xs={3} container direction="column" spacing={2}>
+            <Grid item xs={3} container direction="column" spacing={2} sx={{ marginRight: -10 }}>
               <Grid item sx={{marginTop: 6}}>
                 <Ads />
               </Grid>
               <Grid item>
-                <UserList initialUsers={users} index={3} sx={{ boxShadow: '40 10px 40px solid black' }}/>
+                <UserList initialUsers={users} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
               </Grid>
             </Grid>
           </Grid>
