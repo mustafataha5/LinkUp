@@ -84,7 +84,7 @@ const MainPage = () => {
   return (
     <div>
       <ToastContainer />
-      <Navbar />
+      {/* <Navbar /> */}
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
         <Container>
           <Grid container spacing={5}>

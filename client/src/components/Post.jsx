@@ -25,66 +25,87 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import CommentIcon from '@mui/icons-material/Comment';
 import ReportIcon from '@mui/icons-material/Report';
 import PostForm from './PostForm';
+import { UserContext } from '../context/UserContext';
 
 const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  
+  const { user, setUser } = useContext(UserContext);
+
   const [numOfLikes, setNumOfLikes] = useState(0);
 
   const [likedUsers, setLikedUsers] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
 
   const [comments, setComments] = useState([]);
+  // const [numOfComments, setNumOfComments] = useState(0);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(true) ; 
-  
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-  
+
     const fetchData = async () => {
       try {
         // Fetch the likes for the post
         const response = await axios.get(`http://localhost:8000/api/likes/${post._id}`);
-        console.log(post._id + "-----likes", response.data.Like);
-  
+        // console.log(post._id + "-----likes", response.data.Like);
+
         // Update the number of likes and the list of users who liked the post
         const likedUsers = response.data.Like;
         setNumOfLikes(likedUsers.length);
         setLikedUsers(likedUsers);
-  
+
         // Check if the current user has liked the post
-        console.log("LikeUser", likedUsers);
-        console.log("userID",userId) ; 
+        // console.log("LikeUser", likedUsers);
+        // console.log("userID", userId);
         const userHasLiked = likedUsers.some(like => like.user === userId); // Check if userId exists in any like object
-        console.log(userHasLiked);
+        // console.log(userHasLiked);
         setIsLiked(userHasLiked);
-  
+
       } catch (error) {
         console.error('Error fetching likes:', error);
       }
     };
-  
+
     fetchData();
   }, [post._id, userId]);
 
+  useEffect(() => {
+    // api/comments/:postId
+    const fetchComments = async () => {
+      try {
+        // Fetch the likes for the post
+        const response = await axios.get(`http://localhost:8000/api/comments/${post._id}`);
+        console.log(post._id + "comments", response.data.comments);
+
+        // Update the number of likes and the list of users who liked the post
+        const data = response.data.comments;
+        // setNumOfComments(data.length);
+        setComments(data);
+      } catch (error) {
+        console.error('Error fetching commnts:', error);
+      }
+    };
+    fetchComments();
+  }, [post._id]);
 
   const handleLike = () => {
     if (isLiked) {
-      axios.delete('http://localhost:8000/api/likes/'+post._id+"/"+userId)
-      .then(res => {
-        console.log(res.data)
-      })
-      // If there is errors we set the errors equal to the err.response
-      // And pass it as props to the form.
-      .catch(err => {
-        console.log(err.response.data.errors)
-        // const errorResponse = err.response.data.errors;
-        // setErrors(errorResponse);
-      })
+      axios.delete('http://localhost:8000/api/likes/' + post._id + "/" + userId)
+        .then(res => {
+          console.log(res.data)
+        })
+        // If there is errors we set the errors equal to the err.response
+        // And pass it as props to the form.
+        .catch(err => {
+          console.log(err.response.data.errors)
+          // const errorResponse = err.response.data.errors;
+          // setErrors(errorResponse);
+        })
     } else {
-      axios.post('http://localhost:8000/api/likes', { users_id:userId, posts_id:post._id })
+      axios.post('http://localhost:8000/api/likes', { users_id: userId, posts_id: post._id })
         .then(res => {
           console.log(res.data)
         })
@@ -112,16 +133,36 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   const handleComment = () => {
     setShowComments(!showComments);
   };
-
   const handleAddComment = () => {
-    if (newComment.trim()) {
-      setComments((prev) => [
+    if (!newComment.trim()) return;
+  
+    axios.post('http://localhost:8000/api/comments', {
+      content: newComment.trim(),
+      postId: post._id,
+      userId: user._id
+    })
+    .then(res => {
+      const savedComment = res.data; // Ensure this contains populated user info
+      setComments(prev => [
         ...prev,
-        { text: newComment, user: post.user.firstName + ' ' + post.user.lastName, userImage: post.user.imageUrl },
+        {
+          content: savedComment.content,
+          user: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            imageUrl: user.imageUrl
+          },
+          _id: savedComment._id,
+          timestamp: savedComment.timestamp
+        }
       ]);
       setNewComment('');
-    }
+    })
+    .catch(err => {
+      console.error("Error saving comment:", err.response || err.message);
+    });
   };
+
 
   const handleReport = () => {
     alert('Report feature coming soon!');
@@ -235,7 +276,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
             <CommentIcon />
           </IconButton>
           <Typography variant="body2" color="text.secondary">
-            {comments.length}
+            {comments ? comments.length : 0}
           </Typography>
         </Box>
       </CardActions>
@@ -245,14 +286,16 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
           <Divider />
           <CardContent>
             <List>
-              {comments.map((comment, index) => (
+              {comments && comments.map((comment, index) => (
                 <ListItem key={index}>
                   <ListItemAvatar>
-                    <Avatar src={comment.userImage} alt={comment.user} />
+                    {/* Make sure you access the image URL from the user object */}
+                    <Avatar src={comment.user.imageUrl} alt={`${comment.user.firstName} ${comment.user.lastName}`} />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={comment.user}
-                    secondary={comment.text}
+                    // Concatenate firstName and lastName to display the full name of the user
+                    primary={`${comment.user.firstName} ${comment.user.lastName}`}
+                    secondary={comment.content} // Changed to access the correct comment content
                   />
                 </ListItem>
               ))}
@@ -277,6 +320,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
           </CardContent>
         </>
       )}
+
     </Card>
   );
 };
