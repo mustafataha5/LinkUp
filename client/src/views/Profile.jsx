@@ -12,22 +12,94 @@ import Container from '@mui/material/Container'; // Assuming you're using Contai
 import { ToastContainer } from 'react-toastify'; // Ensure you import ToastContainer correctly
 import 'react-toastify/dist/ReactToastify.css'; // Add ToastContainer's CSS if not already included
 import UserList from '../components/UserList';
-import { Button } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 
 const Profile = () => {
-    const imageUrl = 'https://via.placeholder.com/150'; // Replace this with the actual image URL or default picture
     const { id } = useParams();
     const { user, setUser } = useContext(UserContext); // Logged in user
     const [urlUser, setUrlUser ] = useState({});             // user from url
     const [loading, setLoading] = useState(true);
+    const [suggested, setSuggested] = useState([])
     const [posts, setPosts] = useState([]);
     const [users, setUsers] = useState([])
+    const [imageUrl, setNewImageUrl] = useState('');
+    const [open, setOpen] = useState(false); 
     const navigate = useNavigate();
+
+
+
+
+    const getAuth = async () => {
+        await  axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
+           .then(response => {
+     
+             console.log(response.data);
+             setUser(response.data.user);
+             getAllFrind(response.data.user._id);
+           })
+           .catch(error => {
+     
+             console.error('Error checking authentication', error);
+             navigate('/403');
+           })
+       }
+     useEffect(() => {
+     
+         if (!user) {
+             getAuth()
+         }
+     
+       }, []); 
+     
+
+    const handleSave = (e) => {
+        e.preventDefault();
+        axios
+            .patch(
+                'http://localhost:8000/api/users/' + user._id,
+                {
+                    imageUrl
+                },
+                { withCredentials: true }
+            )
+            .then((res) => {
+                console.log('successful Update');
+                console.log(res);
+                // Reset form fields after successful submission
+                setNewImageUrl("");
+                setOpen(false);
+                navigate('/test');
+            })
+            .catch((err) => {
+                console.log('Error response:', err.response);
+                console.log('Error data:', err.response?.data);
+                
+                const errorsObject = err.response?.data?.errors || {};
+                console.log('Errors object:', errorsObject);
+                const errorMessages = {};
+                for (let key of Object.keys(errorsObject)) {
+                    errorMessages[key] = errorsObject[key].message;
+                }
+                setErrors(errorMessages);
+            });
+    };
+
+
+
+    const handleImageClick = () => {
+        setOpen(true); // Open the dialog when the image is clicked
+    };
+
+    const handleClose = () => {
+        setOpen(false); // Close the dialog
+    };
 
     useEffect(() => {
         const fetchData = async () => {
             await getUser();
             getPosts();
+            getfollowed(id);
+            getSuggested(id)
         };
         fetchData();
     }, [id]);
@@ -48,8 +120,10 @@ const Profile = () => {
     const getUser = async () => {
         try {
             const response = await axios.get('http://localhost:8000/api/users/'+id, { withCredentials: true });
-            // console.log(response.data.user)
+            console.log(response.data.user)
+            // getfollowed(response.data.user._id);
             setUrlUser(response.data.user);
+            // getSuggested(response.data.user._id)
             navigate('/profile/'+response.data.user._id)
         } catch (error) {
             console.error('Error checking authentication', error);
@@ -64,13 +138,26 @@ const Profile = () => {
           .then((response) => {
             console.log( response.data)
             setUsers( response.data.followings)
-            setLoading(false); // Stop loading
-          //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
+
           })
           .catch((error) => {
             console.error('Error fetching posts:', error);
           });
       }
+      const getSuggested = async (id) =>{
+        await axios.get('http://localhost:8000/api/follows/notfollowed/'+id)
+        .then ((response) =>{
+          console.log(response.data.notFollowedUsers)
+          setSuggested(response.data.notFollowedUsers)
+          console.log('Suggested Users:', suggested);
+    
+          setLoading(false); // Stop loading
+          //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
+          })
+          .catch((error) => {
+            console.error('Error fetching posts:', error);
+          });
+      } 
           const edit = ()=>{
             navigate(`/register/${urlUser._id}`)
           }
@@ -96,6 +183,7 @@ const Profile = () => {
                                     src={urlUser.imageUrl} 
                                     alt="Profile" 
                                     style={{ width: '100%', borderRadius: '50%', marginBottom: 14 }} 
+                                    onClick={handleImageClick}
                                 />
                                 <h6>{urlUser.firstName} {urlUser.lastName}</h6>
                             {user._id === urlUser._id && <Button
@@ -150,12 +238,55 @@ const Profile = () => {
                                 <Ads />
                             </Grid>
                             <Grid item>
-                                <UserList initialUsers={users} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
+                                <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Container>
             </Box>
+            <Dialog
+    open={open}
+    onClose={handleClose}
+    maxWidth="xs" // You can use 'xs', 'sm', 'md', 'lg', 'xl'
+    fullWidth // Makes the dialog use the full width within the maxWidth
+>
+    <DialogTitle>Change Profile Picture</DialogTitle>
+    <DialogContent>
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <img
+                src={user.imageUrl}
+                alt="Profile"
+                style={{ width: '200px', borderRadius: '100%', marginBottom: 14, height: '200px', cursor: 'pointer', alignContent: "center" }}
+                onClick={handleImageClick} // Open the dialog on image click
+            />
+        </Box>
+        <TextField
+            autoFocus
+            margin="dense"
+            label="Image URL"
+            type="url"
+            fullWidth
+            variant="standard"
+            value={imageUrl}
+            onChange={(e) => setNewImageUrl(e.target.value)}
+        />
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleClose} color="primary">
+            Cancel
+        </Button>
+        <Button onClick={handleSave} color="primary">
+            Save
+        </Button>
+    </DialogActions>
+</Dialog>
+
         </>
     );
 };
