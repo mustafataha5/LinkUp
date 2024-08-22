@@ -16,9 +16,10 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 
 const Profile = () => {
 
- // Replace this with the actual image URL or default picture
-    const { user, setUser } = useContext(UserContext);
-
+    const imageUrl = 'https://via.placeholder.com/150'; // Replace this with the actual image URL or default picture
+    const { id } = useParams();
+    const { user, setUser } = useContext(UserContext); // Logged in user
+    const [urlUser, setUrlUser ] = useState({});             // urlUser from url
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
     const [users, setUsers] = useState([])
@@ -93,14 +94,13 @@ const Profile = () => {
     };
 
     const getUser = async () => {
-        await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
-          .then( response => {
-           // console.log("inside", response.data.user)
-            getfollowed(response.data.user._id);
-            setUser(response.data.user);
-            getSuggested(response.data.user._id)
-          })
-          .catch(error => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/users/'+id, { withCredentials: true });
+            // console.log(response.data.user)
+            setUrlUser(response.data.user);
+            navigate('/profile/'+response.data.user._id)
+        } catch (error) {
+
             console.error('Error checking authentication', error);
             navigate('/403'); // Redirect to login if not authenticated
           })
@@ -148,7 +148,7 @@ const Profile = () => {
           });
       } 
           const edit = ()=>{
-            navigate(`/register/${user._id}`)
+            navigate(`/register/${urlUser._id}`)
           }
 
           
@@ -158,7 +158,7 @@ const Profile = () => {
         return <div>Loading...</div>;
     }
 
-    if (!user) {
+    if (!urlUser) {
         return <div>User not found</div>;
     }
 
@@ -172,14 +172,13 @@ const Profile = () => {
                         {/* Profile Section (Left) */}
                         <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
                             <Box sx={{ marginBottom: 3, textAlign: 'center', boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)', padding: 3}} > {/* Adds space between profile and UserList */}
-                            <img
-                                    src={user.imageUrl}
-                                    alt="Profile"
-                                    style={{ width: '100%', borderRadius: '100%', marginBottom: 14, height: '200px', cursor: 'pointer' }}
-                                    onClick={handleImageClick} // Open the dialog on image click
+                                <img 
+                                    src={urlUser.imageUrl} 
+                                    alt="Profile" 
+                                    style={{ width: '100%', borderRadius: '50%', marginBottom: 14 }} 
                                 />
-                                <h6>{user.firstName} {user.lastName}</h6>
-                            <Button
+                                <h6>{urlUser.firstName} {urlUser.lastName}</h6>
+                            {user._id === urlUser._id && <Button
                                 onClick={edit}
                                 variant='outlined'
                                 sx={{
@@ -193,15 +192,15 @@ const Profile = () => {
                                 }}
                                 >
                                 Edit your profile
-                            </Button>
+                            </Button>}
                             </Box>
                             {/* UserList component */}
                             <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }}/>
                         </Grid>
                         <Grid item xs={6}>
-                            {user && (
+                            {urlUser && (
                                 <>
-                                    <CreatePostSection user={user} getPosts={getPosts} />
+                                    <CreatePostSection user={urlUser} getPosts={getPosts} />
                                     <Box
                                         sx={{
                                             maxHeight: '590px',
@@ -221,7 +220,7 @@ const Profile = () => {
                                             },
                                         }}
                                     >
-                                        <PostSection user={user} posts={posts} setPosts={setPosts} />
+                                        <PostSection user={urlUser} posts={posts} setPosts={setPosts} />
                                     </Box>
                                 </>
                             )}
