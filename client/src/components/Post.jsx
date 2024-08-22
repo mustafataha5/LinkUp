@@ -78,7 +78,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
       try {
         // Fetch the likes for the post
         const response = await axios.get(`http://localhost:8000/api/comments/${post._id}`);
-        console.log(post._id + "comments", response.data.comments);
+        //console.log(post._id + "comments", response.data.comments);
 
         // Update the number of likes and the list of users who liked the post
         const data = response.data.comments;

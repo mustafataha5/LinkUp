@@ -36,29 +36,47 @@ const UserList = ({
       onClickTab(id); // Trigger an action with the user's ID
     }
   };
-  let limitUsers;
-  if(index === 0){
-    limitUsers = users.slice(0,8)
-  }
-  else{
 
-    limitUsers = users.slice(0,4)
+  let limitUsers;
+  if (index === 0) {
+    limitUsers = users.slice(0, 8);
+  } else {
+    limitUsers = users.slice(0, 4);
   }
 
   return (
-    <Card style={{ width: '100%', maxWidth: '300px', margin: '0 auto', padding: '10px' ,boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}>
+    <Card style={{ width: '100%', maxWidth: '300px', margin: '0 auto', padding: '10px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}>
       <CardContent>
         <Typography
           variant="h6"
           sx={{ borderBottom: 2, fontSize: 20, mb: 2, textAlign: "center" }}
         >
-          {index === 0 ? 'Followers' : index === 1 ? 'Blocked Users' : index === 2 ? 'Following' : 'Users'}
+          {index === 0 ? 'Following' : index === 1 ? 'Followers' : index === 2 ? 'Suggestion' : 'Users'}
         </Typography>
         {limitUsers.map((user) => (
-          <Card key={user._id} style={{ marginBottom: 16, borderBottom: 'none'}}>
-            <CardContent style={{ display: 'flex', alignItems: 'center' }}>
+          <Card 
+            key={user._id} 
+            style={{ marginBottom: 16, borderBottom: 'none', cursor: index === 4 ? 'pointer' : 'default' }}
+            onClick={index === 4 ? () => handleUserClick(user._id) : null}
+          >
+            <CardContent 
+              style={{ 
+                maxHeight: '60vh', 
+                overflowY: 'auto', 
+                display: 'flex', 
+                alignItems: 'center',
+                backgroundColor: index === 4 ? '#f0f0f0' : 'transparent',
+                transition: 'background-color 0.3s ease-in-out'
+              }}
+              onMouseEnter={(e) => {
+                if (index === 4) e.currentTarget.style.backgroundColor = '#e0e0e0';
+              }}
+              onMouseLeave={(e) => {
+                if (index === 4) e.currentTarget.style.backgroundColor = '#f0f0f0';
+              }}
+            >
               <Avatar src={user.imageUrl} alt={user.firstName} style={{ marginRight: 10 }} />
-              <Typography variant="p" component="div" style={{ flexGrow: 1}}>
+              <Typography variant="body1" component="div" style={{ flexGrow: 1 }}>
                 {user.firstName} {user.lastName}
               </Typography>
               <CardActions style={{ padding: 0 }}>
