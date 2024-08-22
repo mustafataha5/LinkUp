@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Message from './Message';
 import MessageForm from './MessageForm';
 
-const Chat = ({ name, messages, renderMessage }) => {
+const Chat = ({ reciver, owner, messages, createMessage }) => {
     const messagesEndRef = useRef(null);
 
     const scrollToBottom = () => {
@@ -13,33 +13,36 @@ const Chat = ({ name, messages, renderMessage }) => {
         scrollToBottom();
     }, [messages]);
 
+    const sendMessage = (newMessage) =>{
+        createMessage(owner._id,reciver._id,newMessage)
+    }
     return (
         <div style={{ height: '90%', position: 'fixed', right: 0, bottom: 0, width: '66.666%' }}>
             <div className="m-5 p-3 border border-1 border-dark overflow-auto" style={{ height: 'calc(90% - 100px)' }}>
                 {messages.length > 0 &&
                     messages.map((message, i) => (
-                        name !== message.name ? (
+                        owner._id !== message.sender ? (
                             <Message
                                 key={i}
-                                name={message.name}
+                                name={reciver.firstName}
                                 mflex={'start'}
-                                message={message.message}
-                                color={'primary'}
+                                message={message.content}
+                                color={'info'}
                             />
                         ) : (
                             <Message
                                 key={i}
-                                name={'You'}
+                                name={owner.firstName}
                                 mflex={'end'}
-                                message={message.message}
-                                color={'info'}
+                                message={message.content}
+                                color={'primary'}
                             />
                         )
                     ))}
                 <div ref={messagesEndRef} />
             </div>
             <div className='w-80 px-3 mx-5'>
-                <MessageForm renderMessage={renderMessage} />
+                <MessageForm onFromSubmit={sendMessage} />
             </div>
         </div>
     );

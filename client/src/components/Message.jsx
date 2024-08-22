@@ -4,8 +4,8 @@ const Message = ({ name, message, color, mflex }) => {
     return (
         <div className={'m-2  text-white   d-flex justify-content-' + mflex}>
             <div className={'rounded-4 p-3 m-3 w-50 bg-'+color} >
-                <h4>{name} said</h4>
-                <p>{message}</p>
+                <small>{name} said</small>
+                <h6>{message}</h6>
             </div>
         </div>
     )

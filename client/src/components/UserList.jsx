@@ -5,7 +5,9 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import BlockIcon from '@mui/icons-material/Block';
 
 const UserList = ({
-    index = 0, 
+    index = 0,
+    owner ={} , 
+    reciver = {} ,  
     initialUsers = [
         { _id: 1, firstName: 'John', lastName: 'Doe', imageUrl: 'path/to/john.jpg' },
         { _id: 2, firstName: 'Jane', lastName: 'Smith', imageUrl: 'path/to/jane.jpg' },
@@ -14,10 +16,10 @@ const UserList = ({
         { _id: 5, firstName: 'Randa', lastName: 'Tawasha', imageUrl: 'path/to/randa.jpg' },
         { _id: 6, firstName: 'Muath', lastName: 'Ademar', imageUrl: 'path/to/muath.jpg' },
     ],
-    onClickTab 
+    onClickTab =()=>{},
+    onCardClick=()=>{}
 }) => {
   const [users, setUsers] = useState(initialUsers);
-
   const handleFollowToggle = (id) => {
     // Implement follow/unfollow logic
   };
@@ -26,16 +28,12 @@ const UserList = ({
     setUsers(users.filter(user => user._id !== id));
     if (index === 0 || index === 1) {
       onClickTab(relationId);
-    } else {
+    } else if(index == 2) {
       onClickTab(id);
     }
   };
 
-  const handleUserClick = (id) => {
-    if (index === 4) {
-      onClickTab(id); // Trigger an action with the user's ID
-    }
-  };
+ 
 
   let limitUsers;
   if (index === 0) {
@@ -57,11 +55,10 @@ const UserList = ({
           <Card 
             key={user._id} 
             style={{ marginBottom: 16, borderBottom: 'none', cursor: index === 4 ? 'pointer' : 'default' }}
-            onClick={index === 4 ? () => handleUserClick(user._id) : null}
           >
             <CardContent 
               style={{ 
-                maxHeight: '60vh', 
+                maxHeight: '100vh', 
                 overflowY: 'auto', 
                 display: 'flex', 
                 alignItems: 'center',
@@ -73,6 +70,13 @@ const UserList = ({
               }}
               onMouseLeave={(e) => {
                 if (index === 4) e.currentTarget.style.backgroundColor = '#f0f0f0';
+              }}
+              onClick={(e) =>{
+
+                  onCardClick(user._id); 
+                  // console.log("---------------------------")
+                  // console.log(user.firstName+" "+user._id) ;
+                  // console.log(owner.firstName+"  "+owner._id);
               }}
             >
               <Avatar src={user.imageUrl} alt={user.firstName} style={{ marginRight: 10 }} />
