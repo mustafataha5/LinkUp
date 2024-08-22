@@ -304,9 +304,6 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
                     primary={`${comment.user.firstName} ${comment.user.lastName}`}
                     secondary={
                       <>
-                        <Typography variant="body2" color="text.primary">
-                          {comment.content}
-                        </Typography>
                         <Typography variant="body2" color="text.secondary">
                           {new Date(comment.timestamp).toLocaleString('en-US', {
                             year: 'numeric', // e.g., '2024'
@@ -316,6 +313,9 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
                             minute: '2-digit', // e.g., '30'
                             hour12: true // Use 12-hour time format (AM/PM)
                           })}
+                        </Typography>
+                        <Typography variant="body2" color="text.primary">
+                          {comment.content}
                         </Typography>
                       </>
                     }
