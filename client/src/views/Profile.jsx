@@ -32,11 +32,8 @@ const Profile = () => {
     const getAuth = async () => {
         await  axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
            .then(response => {
-     
              console.log(response.data);
              setUser(response.data.user);
-             getfollowed(response.data.user._id);
-             //getSuggested(response.data.user._id)
            })
            .catch(error => {
      
@@ -99,7 +96,8 @@ const Profile = () => {
         const fetchData = async () => {
             await getUser();
             getPosts();
-
+            // getfollowed(id);
+            // getSuggested(id)
         };
         fetchData();
     }, [id]);
@@ -118,19 +116,19 @@ const Profile = () => {
     };
 
     const getUser = async () => {
-        try {
-            const response = await axios.get('http://localhost:8000/api/users/'+id, { withCredentials: true });
+            await axios.get('http://localhost:8000/api/users/'+id, { withCredentials: true })
+            .then((response) => { 
             console.log(response.data.user)
-            // getfollowed(response.data.user._id);
-            // getSuggested(response.data.user._id)
+            console.log("Before", users, suggested)
+            getfollowed(response.data.user._id);
             setUrlUser(response.data.user);
+            getSuggested(response.data.user._id)
+            console.log("After", users, suggested)
             navigate('/profile/'+response.data.user._id)
-        } catch (error) {
+        }) .catch ((error) => {
             console.error('Error checking authentication', error);
             navigate('/403');
-        } finally {
-            setLoading(false);
-        }
+        })
     };
     
     const getfollowed = (id) => {
@@ -139,16 +137,15 @@ const Profile = () => {
           .then((response) => {
             
             setUsers( response.data.followings)
-            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>")
-            console.log(response.data.followings)
-
+           // setLoading(false); // Stop loading
+          //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
           })
           .catch((error) => {
             console.error('Error fetching posts:', error);
           });
       }
-      const getSuggested =  (id) =>{
-         axios.get('http://localhost:8000/api/follows/notfollowed/'+id)
+      const getSuggested = (id) =>{
+        axios.get('http://localhost:8000/api/follows/notfollowed/'+id)
         .then ((response) =>{
           setSuggested(response.data.notFollowedUsers)
           console.log('Suggested Users:', suggested);

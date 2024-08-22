@@ -1,46 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, Typography, Avatar, CardActions, IconButton } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import BlockIcon from '@mui/icons-material/Block';
 
 const UserList = ({
-    index = 0,
-    owner ={} , 
-    reciver = {} ,  
-    initialUsers = [
-        { _id: 1, firstName: 'John', lastName: 'Doe', imageUrl: 'path/to/john.jpg' },
-        { _id: 2, firstName: 'Jane', lastName: 'Smith', imageUrl: 'path/to/jane.jpg' },
-        { _id: 3, firstName: 'Alice', lastName: 'Johnson', imageUrl: 'path/to/alice.jpg' },
-        { _id: 4, firstName: 'Rand', lastName: 'Farhoud', imageUrl: 'path/to/rand.jpg' },
-        { _id: 5, firstName: 'Randa', lastName: 'Tawasha', imageUrl: 'path/to/randa.jpg' },
-        { _id: 6, firstName: 'Muath', lastName: 'Ademar', imageUrl: 'path/to/muath.jpg' },
-    ],
-    onClickTab =()=>{},
-    onCardClick=()=>{}
+  index = 0,
+  owner = {},
+  reciver = {},
+  initialUsers = [
+    { _id: 1, firstName: 'John', lastName: 'Doe', imageUrl: 'path/to/john.jpg' },
+    { _id: 2, firstName: 'Jane', lastName: 'Smith', imageUrl: 'path/to/jane.jpg' },
+    { _id: 3, firstName: 'Alice', lastName: 'Johnson', imageUrl: 'path/to/alice.jpg' },
+    { _id: 4, firstName: 'Rand', lastName: 'Farhoud', imageUrl: 'path/to/rand.jpg' },
+    { _id: 5, firstName: 'Randa', lastName: 'Tawasha', imageUrl: 'path/to/randa.jpg' },
+    { _id: 6, firstName: 'Muath', lastName: 'Ademar', imageUrl: 'path/to/muath.jpg' },
+  ],
+  onClickTab = () => { },
+  onCardClick = () => { }
 }) => {
   const [users, setUsers] = useState(initialUsers);
-  const handleFollowToggle = (id) => {
-    // Implement follow/unfollow logic
-  };
 
   const whenclick = (relationId, id) => {
     setUsers(users.filter(user => user._id !== id));
     if (index === 0 || index === 1) {
       onClickTab(relationId);
-    } else if(index == 2) {
+    } else if (index === 2) {
       onClickTab(id);
     }
   };
 
- 
-
-  let limitUsers;
-  if (index === 0) {
-    limitUsers = users.slice(0, 8);
-  } else {
-    limitUsers = users.slice(0, 4);
-  }
+  const limitUsers = useMemo(() => {
+    return index === 0 ? users.slice(0, 8) : users.slice(0, 4);
+  }, [index, users]);
 
   return (
     <Card style={{ width: '100%', maxWidth: '300px', margin: '0 auto', padding: '10px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}>
@@ -52,32 +44,41 @@ const UserList = ({
           {index === 0 ? 'Following' : index === 1 ? 'Followers' : index === 2 ? 'Suggestion' : 'Users'}
         </Typography>
         {limitUsers.map((user) => (
-          <Card 
-            key={user._id} 
-            style={{ marginBottom: 16, borderBottom: 'none', cursor: index === 4 ? 'pointer' : 'default' }}
+          <Card
+            key={user._id}
+            style={{
+
+              marginBottom: 16,
+              borderBottom: 'none',
+              cursor: index === 4 ? 'pointer' : 'default'
+            }}
           >
-            <CardContent 
-              style={{ 
-                maxHeight: '100vh', 
-                overflowY: 'auto', 
-                display: 'flex', 
+            <CardContent
+              style={{
+                maxHeight: '100vh',
+                overflowY: 'auto',
+                display: 'flex',
                 alignItems: 'center',
-                backgroundColor: index === 4 ? '#f0f0f0' : 'transparent',
+                color: user._id === reciver._id ? 'white' : 'black' ,
+                backgroundColor: user._id === reciver._id ? '#fe520a' : (index === 4 ? '#f0f0f0' : 'transparent'),
                 transition: 'background-color 0.3s ease-in-out'
               }}
               onMouseEnter={(e) => {
-                if (index === 4) e.currentTarget.style.backgroundColor = '#e0e0e0';
+                if (index === 4){
+                  e.currentTarget.style.backgroundColor = '#e0e0e0';
+                  e.currentTarget.style.color = 'black';
+                }
               }}
               onMouseLeave={(e) => {
-                if (index === 4) e.currentTarget.style.backgroundColor = '#f0f0f0';
+                if (index === 4 && user._id !== reciver._id) {
+                  e.currentTarget.style.color = 'black';
+                  e.currentTarget.style.backgroundColor = '#f0f0f0';}
+                else if (index === 4 && user._id === reciver._id){
+                  e.currentTarget.style.color = 'white';
+                  e.currentTarget.style.backgroundColor = '#fe520a';
+                } 
               }}
-              onClick={(e) =>{
-
-                  onCardClick(user._id); 
-                  // console.log("---------------------------")
-                  // console.log(user.firstName+" "+user._id) ;
-                  // console.log(owner.firstName+"  "+owner._id);
-              }}
+              onClick={() => onCardClick(user._id)}
             >
               <Avatar src={user.imageUrl} alt={user.firstName} style={{ marginRight: 10 }} />
               <Typography variant="body1" component="div" style={{ flexGrow: 1 }}>
