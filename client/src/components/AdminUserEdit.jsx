@@ -14,9 +14,8 @@ import axios from 'axios';
 //     { id: 6, firstName: 'Muath', lastName: 'Ademar', imageUrl: 'path/to/muath.jpg' },
 // ];
 
-const AdminUserEdit = ({onDelete}) => {
+const AdminUserEdit = ({onDelete, users}) => {
     const { user } = useContext(UserContext);
-    const [users, setUsers] = useState([])
 
     
     const handleDelete = (userId) => {
