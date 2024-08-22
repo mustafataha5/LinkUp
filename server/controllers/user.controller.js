@@ -13,7 +13,6 @@ module.exports.authenticate = (req, res, next) => {
       }
     });
   }
-  
 
 module.exports.checkauth =  (req, res) => {
     const token = req.cookies.usertoken; // Assuming you're using cookies to store the token
@@ -34,7 +33,6 @@ module.exports.checkauth =  (req, res) => {
 //create 
 module.exports.register=async (req,res) => {
     try{
-
         const user = await User.findOne({ email: req.body.email });
         console.log(user)
         if(user != null) {
@@ -58,7 +56,6 @@ module.exports.register=async (req,res) => {
     })
     .catch(err => res.status(400).json(err));
 } 
-
 
 //login 
 module.exports.login = async (req,res) => {
