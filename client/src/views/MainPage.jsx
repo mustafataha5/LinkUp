@@ -76,6 +76,7 @@ const MainPage = () => {
         console.error('Error fetching posts:', error);
       });
   }
+  
 
   if (loading) {
     return <div>Loading...</div>; // Optionally, replace with a spinner or skeleton UI
@@ -125,7 +126,7 @@ const MainPage = () => {
                 <Ads />
               </Grid>
               <Grid item>
-                <UserList initialUsers={users} index={3} sx={{ boxShadow: '40 10px 40px solid black' }}/>
+                <UserList initialUsers={users} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
               </Grid>
             </Grid>
           </Grid>

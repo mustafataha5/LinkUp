@@ -217,7 +217,7 @@ export default function PrimarySearchAppBar() {
              color="inherit"
              onClick={mailClick}
              >
-              <Badge color="error">
+              <Badge badgeContent={17} color="error">
                 <MailIcon />
               </Badge>
             </IconButton>
@@ -227,7 +227,7 @@ export default function PrimarySearchAppBar() {
               color="inherit"
               onClick={peopleClick}
               >
-              <Badge  color="error">
+              <Badge badgeContent="+"  color="error">
                 <PeopleIcon/>
               </Badge>
             </IconButton>
