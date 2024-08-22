@@ -26,4 +26,15 @@ require("./routers/like.route")(app);
 require("./routers/comment.route")(app) ;
 
 
-app.listen(port, () => console.log(`Listening on port: ${port}`) );
+const server = app.listen(port, () => console.log(`Listening on port: ${port}`) );
+
+
+const io = require('socket.io')(server, { cors: true });
+
+
+
+
+
+
+
+
