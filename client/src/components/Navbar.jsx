@@ -202,7 +202,7 @@ export default function PrimarySearchAppBar() {
               />
           </Search> */}
            
-          </Search>
+          {/* </Search> */}
           </Toolbar>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
