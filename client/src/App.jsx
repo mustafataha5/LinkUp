@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 // import './App.css'
@@ -16,7 +16,10 @@ import AutoPlaySwipeableViews from './views/PhotoSlider';
 import { UserContext } from './context/UserContext'
 import Profile from './views/Profile'
 import axios from 'axios'
-import AdminStat from './components/AdminStat'
+import AdminStatPie from './components/AdminStatPie';
+import AdminUserEdit from './components/AdminUserEdit';
+import AdminStatBar from './components/AdminStatBar';
+import AdminUserList from './views/AdminUserList';
 
 function App() {
   const [user,setUser] = useState(null) ;
@@ -36,20 +39,20 @@ function App() {
           //navigate("/403")
         })
     },[])
-   
 
-  return (
+  return (         
     <>
      <UserContext.Provider value={ {user, setUser} }>
       <Routes>
+        {/* <Route path='/randatest' element={<AdminStatBar/>}/> */}
+        <Route path='/randatest' element={<AdminUserList/>}/>
+      {/* <Route path='/randatest' element={<AdminStatPie/>}/> */}
       <Route path='/profile/:id' element={<Profile/>}/>
-      <Route path='/muath' element={<AdminStat/>}/>
       {/* <Route path='/randatest' element={<AutoPlaySwipeableViews />} /> */}
-        <Route path='/randatest' element={<Ads />} />
-        {/* <Route path='/randatest' element={<AutoPlaySwipeableViews />} /> */}
-        <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login />} />
-        <Route path="/register" element={<Register flag={true} />} />
+      {/* <Route path='/randatest' element={<Ads />} /> */}
+      <Route path='/' element={<Home />} />
+      <Route path='/login' element={<Login />} />
+      <Route path="/register" element={<Register flag={true} />} />
       { user && <Route
                             path={"/register/" + user._id}
                             element={

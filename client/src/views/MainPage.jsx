@@ -1,7 +1,6 @@
 import { AppBar, Box, Container, Grid } from '@mui/material';
 import { useState, useEffect, useContext } from 'react';
-import { UserContext } from '../context/UserContext'
-
+import { UserContext } from '../context/UserContext';
 import Navbar from '../components/Navbar';
 import PostList from '../components/PostList';
 import FollowerList from './FollowerList';
