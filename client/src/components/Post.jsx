@@ -186,7 +186,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   }
 
   return (
-    <Card sx={{ maxWidth: 500, margin: '20px auto' }}>
+    <Card sx={{ maxWidth: 500, margin: '20px auto', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}>
       <CardHeader
         avatar={<Avatar src={post.user.imageUrl} alt={post.user.firstName + post.user.lastName} />}
         action={
@@ -226,7 +226,11 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
 
         }
         // The header part of the post {user name, user image, date and time }
-        title={post.user.firstName + ' ' + post.user.lastName}
+        title={
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+            {post.user.firstName} {post.user.lastName}
+          </Typography>
+        }
         subheader={new Date(post.timestamp).toLocaleString('en-US', {
           year: 'numeric', // e.g., '2024'
           month: 'long', // e.g., 'August'
@@ -253,7 +257,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
         /> :
         // If not just display the post information
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" fontWeight="bold">
             {post.content}
           </Typography>
         </CardContent>

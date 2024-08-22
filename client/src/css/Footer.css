@@ -1,19 +1,21 @@
 .footer {
-    background-color: rgb(254 82 10);;
-    color: white;
+    /* background-color: #555; */
+    color: black;
     padding: 20px 0;
     text-align: center;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
+    font-weight:600;
 }
 
 .footer-links a {
-    color: white;
+    color: black;
     text-decoration: none;
     margin: 0 15px;
     display: inline-block;
+    font-weight: 600;
 }
 
 .footer-links a:hover {
