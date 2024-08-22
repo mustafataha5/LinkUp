@@ -3,8 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserContext'
 
 import Navbar from '../components/Navbar';
-import PostList from '../components/PostList';
-import FollowerList from './FollowerList';
+
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CreatePostSection from './CreatePostSection';
@@ -99,7 +98,7 @@ const MainPage = () => {
                   <CreatePostSection user={user} getPosts={getPosts} />
                   <Box
                     sx={{
-                      maxHeight: '800px',
+                      maxHeight: '590px',
                       overflowY: 'auto',
                       '&::-webkit-scrollbar': {
                         width: '8px',
