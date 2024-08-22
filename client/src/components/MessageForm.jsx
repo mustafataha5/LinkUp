@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const MessageForm = ({renderMessage}) => {
+const MessageForm = ({onFromSubmit}) => {
     const [value,setValue] = useState('') ;
     // const[Error,setErro] = useState('') ; 
     const submitHandle = (e) => {
@@ -8,6 +8,7 @@ const MessageForm = ({renderMessage}) => {
         if(value.length<1){
             return ; 
         }
+        onFromSubmit(value)
        // renderMessage(value) ; 
         setValue('');
     }      

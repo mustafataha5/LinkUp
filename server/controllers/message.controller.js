@@ -23,7 +23,7 @@ module.exports.getMessages = async (req,res) => {
             {sender:user2Id,reciver:user1Id}
         ]}).sort({timestamp: 1});
         //console.log(messages)
-        res.status(200).json({ data: messages });
+        res.status(200).json({ messages: messages });
     }
     catch(err){
         res.status(500).json({ message: 'An error occurred while retrieving messages.', err });
