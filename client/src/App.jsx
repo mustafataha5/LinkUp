@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-// import './App.css'
+// import './App.css';
 import Home from './views/Home'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import Register from './components/Register'
@@ -13,13 +13,14 @@ import Page403 from './components/Page403'
 import FriendPage from './views/FriendPage'
 import MessagePage from './views/MessagePage'
 import { UserContext } from './context/UserContext'
-import Profile from './views/Profile'
+import Profile from './views/Profile';
 import axios from 'axios'
 import AdminStatPie from './components/AdminStatPie';
 import AdminUserEdit from './components/AdminUserEdit';
 import AdminStatBar from './components/AdminStatBar';
 import AdminUserList from './views/AdminUserList';
 import AdminNavbar from './components/AdminNavbar';
+import AdminPage from './views/AdminPage';
 
 function App() {
   const [user, setUser] = useState(null) ;
@@ -45,9 +46,11 @@ function App() {
      <UserContext.Provider value={ {user, setUser} }>
       <Routes>
         {/* <Route path='/randatest' element={<AdminStatBar/>}/> */}
-        <Route path='/admin/dashboard' element={<AdminNavbar />}/>
+        <Route path='/admin/dashboard' element={<AdminPage />}/>
         <Route path='/randatest' element={<AdminUserList/>}/>
       {/* <Route path='/randatest' element={<AdminStatPie/>}/> */}
+      
+      {/* Profile displays BACKEND api */}
       <Route path='/profile/:id' element={<Profile/>}/>
       {/* <Route path='/randatest' element={<AutoPlaySwipeableViews />} /> */}
       {/* <Route path='/randatest' element={<Ads />} /> */}
@@ -78,4 +81,5 @@ function App() {
     </>
   )
 }
+
 export default App
