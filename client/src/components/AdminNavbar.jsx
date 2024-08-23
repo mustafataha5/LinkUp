@@ -1,12 +1,7 @@
 // import * as React from 'react';
-<<<<<<< HEAD
 import React, { useState, useEffect, useContext } from 'react';
 import { alpha } from '@mui/material/styles';
 import { styled } from '@mui/system';
-=======
-import React, { useState, useContext } from 'react';
-import { styled, alpha } from '@mui/material/styles';
->>>>>>> 069abea9b74a221bf625460a3c04feb0747453d7
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
