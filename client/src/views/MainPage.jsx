@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Grid } from '@mui/material';
+import { AppBar, Box, Container, Grid, Skeleton } from '@mui/material';
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import Navbar from '../components/Navbar';
@@ -10,92 +10,91 @@ import PostSection from './PostSection';
 import UserList from '../components/UserList';
 import Ads from '../components/Ads';
 
-
 const MainPage = () => {
-  // To save the logged in user object 
-  //const [user, setUser] = useState(null); // Use null initially
-  const [loading, setLoading] = useState(true); // Loading state
-  // State to hold the posts
-  const [posts, setPosts] = useState([]);
-  const { user,setUser } = useContext(UserContext); 
-  const [users,setUsers] = useState([]) ; 
-  const [suggested, setSuggested] = useState([])
+  const [loading, setLoading] = useState(true);      // Loading state
+  const [posts, setPosts] = useState([]);            // State to save posts
+  const { user, setUser } = useContext(UserContext); // Logged-in user 
+  const [users, setUsers] = useState([]);            // Follower list 
+  const [suggested, setSuggested] = useState([]);    // Suggested list 
   const navigate = useNavigate();
 
   // Get the user (we will get the id from the cookies then find the user)
   useEffect(() => {
-    // console.log(">>>>><<<<<"+user);
-    // console.log(user)
-    //setLoading(false);
-    getUser()
+    getUser();
   }, []);
-
-  
 
   const getUser = async () => {
-    await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
-      .then( response => {
-       // console.log("inside", response.data.user)
-        getfollowed(response.data.user._id);
-        setUser(response.data.user);
-        getSuggested(response.data.user._id)
-      })
-      .catch(error => {
-        console.error('Error checking authentication', error);
-        navigate('/403'); // Redirect to login if not authenticated
-      })
-      // .finally(() => {
-      //   setLoading(false); // Stop loading
-      // });
-  }
+    try {
+      const response = await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true });
+      setUser(response.data.user);
 
-  // Fetch the posts when the component is mounted
-  useEffect(() => {
-    getPosts()
-  }, []);
+      // Use Promise.allSettled to handle both successful and failed requests
+      await Promise.allSettled([
+        getPosts(),
+        getFollowed(response.data.user._id),
+        getSuggested(response.data.user._id),
+      ]);
+    } catch (error) {
+      console.error('Error checking authentication', error);
+      navigate('/403'); // Redirect to login if not authenticated
+    } finally {
+      setLoading(false); // Ensure loading is false even if requests fail
+    }
+  };
 
-  const getPosts = () => {
-    axios.get('http://localhost:8000/api/posts')
-      .then((response) => {
-        console.log("Posts= ", response.data.posts)
-        setPosts(response.data.posts); // Assuming the API returns { posts: [] }
-      })
-      .catch((error) => {
-        console.error('Error fetching posts:', error);
-      });
-  }
+  // Send get request to the server to get all posts from DB
+  const getPosts = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/posts');
+      setPosts(response.data.posts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
 
+  // Send get request to the server to get following list
+  const getFollowed = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/follows/followed/${id}`);
+      setUsers(response.data.followings);
+    } catch (error) {
+      console.error('Error fetching followed users:', error);
+    }
+  };
 
-  const getfollowed = (id) => {
-    axios.get('http://localhost:8000/api/follows/followed/'+id)
-      .then((response) => {
-        console.log( response.data)
-        setUsers( response.data.followings)
-       // setLoading(false); // Stop loading
-      //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
-      })
-      .catch((error) => {
-        console.error('Error fetching posts:', error);
-      });
-  }
-  const getSuggested = (id) =>{
-    axios.get('http://localhost:8000/api/follows/notfollowed/'+id)
-    .then ((response) =>{
-      console.log(response.data.notFollowedUsers)
-      setSuggested(response.data.notFollowedUsers)
-      console.log('Suggested Users:', suggested);
+  // Send get request to the server to get suggested list
+  const getSuggested = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/follows/notfollowed/${id}`);
+      setSuggested(response.data.notFollowedUsers);
+    } catch (error) {
+      console.error('Error fetching suggested users:', error);
+    }
+  };
 
-      setLoading(false); // Stop loading
-      //  setPosts(response.data.posts); // Assuming the API returns { posts: [] }
-      })
-      .catch((error) => {
-        console.error('Error fetching posts:', error);
-      });
-  } 
-  
-
+  // Render skeleton while loading, show the data once loading is complete
   if (loading) {
-    return <div>Loading...</div>; // Optionally, replace with a spinner or skeleton UI
+    return (
+      <div>
+        <Navbar />
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+          <Container>
+            <Grid container spacing={5}>
+              <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
+                <Skeleton variant="rectangular" height={400} />
+              </Grid>
+              <Grid item xs={6}>
+                <Skeleton variant="rectangular" height={50} />
+                <Skeleton variant="rectangular" height={590} sx={{ marginTop: 2 }} />
+              </Grid>
+              <Grid item xs={3} sx={{ marginTop: 6 }}>
+                <Skeleton variant="rectangular" height={400} />
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
+      </div>
+    );
   }
 
   return (
@@ -106,9 +105,9 @@ const MainPage = () => {
         <Container>
           <Grid container spacing={5}>
             <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
-              <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }}/>
+              <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
             </Grid>
-            <Grid item xs={6} >
+            <Grid item xs={6}>
               {/* Only render the CreatePostSection and PostSection if user data is available */}
               {user && (
                 <>
@@ -132,17 +131,17 @@ const MainPage = () => {
                       },
                     }}
                   >
-                  <PostSection user={user}  posts={posts} setPosts={setPosts} />
+                    <PostSection user={user} posts={posts} setPosts={setPosts} />
                   </Box>
                 </>
               )}
             </Grid>
             <Grid item xs={3} container direction="column" spacing={2} sx={{ marginRight: -10 }}>
-              <Grid item sx={{marginTop: 6}}>
+              <Grid item sx={{ marginTop: 6 }}>
                 <Ads />
               </Grid>
               <Grid item>
-                <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
+                <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '40 10px 40px solid black' }} />
               </Grid>
             </Grid>
           </Grid>

@@ -21,6 +21,7 @@ import AdminStatBar from './components/AdminStatBar';
 import AdminUserList from './views/AdminUserList';
 import AdminNavbar from './components/AdminNavbar';
 import AdminPage from './views/AdminPage';
+import AdminDashboard from './views/AdminDashboard' ;
 
 function App() {
   const [user, setUser] = useState(null) ;
