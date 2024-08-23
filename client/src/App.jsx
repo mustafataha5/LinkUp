@@ -21,6 +21,7 @@ import AdminStatBar from './components/AdminStatBar';
 import AdminUserList from './views/AdminUserList';
 import AdminNavbar from './components/AdminNavbar';
 import AdminPage from './views/AdminPage';
+import AdminDashboard from './views/AdminDashboard' ;
 
 function App() {
   const [user, setUser] = useState(null) ;
@@ -46,9 +47,8 @@ function App() {
      <UserContext.Provider value={ {user, setUser} }>
       <Routes>
         {/* <Route path='/randatest' element={<AdminStatBar/>}/> */}
-        <Route path='/admin/dashboard' element={<AdminPage />}/>
-        <Route path='/randatest' element={<AdminUserList/>}/>
-      {/* <Route path='/randatest' element={<AdminStatPie/>}/> */}
+        <Route path='/admin/dashboard' element={<AdminDashboard />}/>
+        <Route path='/admin/users' element={<AdminUserList/>}/>
       
       {/* Profile displays BACKEND api */}
       <Route path='/profile/:id' element={<Profile/>}/>
