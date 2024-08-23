@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AdminStatBar from "../components/AdminStatBar";
 import AdminStatPie from "../components/AdminStatPie";
 import AdminNavbar from "../components/AdminNavbar";
-import '../css/AdminStat.css';
+import '../css/AdminStats.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 const AdminPage = () => {
