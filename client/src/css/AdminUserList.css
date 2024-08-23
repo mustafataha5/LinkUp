@@ -1,0 +1,10 @@
+.navbar {
+    /* height: 25px;              */
+    margin-bottom: 50px;
+ }
+ 
+.title { 
+    text-align: center; 
+    font-weight: 500;
+    margin: 0 auto;
+}

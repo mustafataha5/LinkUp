@@ -6,7 +6,7 @@ import AdminNavbar from "../components/AdminNavbar";
 import '../css/AdminStats.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
-const AdminPage = () => {
+const AdminDashboard = () => {
   return (
 
     <div>
@@ -14,7 +14,7 @@ const AdminPage = () => {
 
         <div className="container">
         <div className="row">
-            {/* 1st Column */}
+            {/* 1st Column?? */}
             <div className="col-xs-6">
             <div className="centered-content">
                 <div>
@@ -54,8 +54,7 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
-
+export default AdminDashboard;
 
 
 {/* <Route path='/admin/dashboard' element={<AdminPage />}/> */}

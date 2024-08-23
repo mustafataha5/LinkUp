@@ -46,9 +46,8 @@ function App() {
      <UserContext.Provider value={ {user, setUser} }>
       <Routes>
         {/* <Route path='/randatest' element={<AdminStatBar/>}/> */}
-        <Route path='/admin/dashboard' element={<AdminPage />}/>
-        <Route path='/randatest' element={<AdminUserList/>}/>
-      {/* <Route path='/randatest' element={<AdminStatPie/>}/> */}
+        <Route path='/admin/dashboard' element={<AdminDashboard />}/>
+        <Route path='/admin/users' element={<AdminUserList/>}/>
       
       {/* Profile displays BACKEND api */}
       <Route path='/profile/:id' element={<Profile/>}/>
