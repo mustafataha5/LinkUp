@@ -3,8 +3,8 @@ import '../css/Footer.css' // Import the CSS file
 
 function Footer() {
     return (
-        <div className="footer">
-            <div className="footer-links">
+        <div className="footer" style={{backgroundColor:'#555', color:'white'}}>
+            <div className="footer-links" style={{ color:'white'}} >
                 <a href="#">Home</a>
                 <a href="#">About</a>
                 <a href="#">Services</a>
