@@ -4,6 +4,7 @@ import AdminStatPie from "../components/AdminStatPie";
 import AdminNavbar from "../components/AdminNavbar";
 import axios from 'axios';
 import '../css/AdminStats.css';
+import AgeAnalysisBarChart from '../components/AgeAnalysisBarChart';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 const AdminDashboard = () => {
@@ -51,8 +52,8 @@ const AdminDashboard = () => {
             <div className="col-xs-6">
             <div className="centered-content">
                 <div>
-                    <h2>2024 Monthly Membership</h2>
-                    <p> {< AdminStatBar  />}  </p>
+                    {/* <h2>Age Distribution</h2> */}
+                    <p> {< AgeAnalysisBarChart  />}  </p>
                 </div>
             </div>
             </div>
