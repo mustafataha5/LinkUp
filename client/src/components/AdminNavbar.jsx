@@ -1,26 +1,28 @@
 // import * as React from 'react';
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
+import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
-import MoreIcon from '@mui/icons-material/More';
-import ShowChartIcon from '@mui/icons-material/ShowChart'; // Import Statistics icon
-import GroupIcon from '@mui/icons-material/Group'; // Import User List icon
+import MoreIcon from '@mui/icons-material/More'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import SearchBar from './SearchBar';
-import { InputBase } from '@mui/material';
+import logo from '../images/logo.png'
+
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -46,6 +48,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -62,25 +65,28 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  // const [user, setUser]  = useState("")
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
+
+
   const { user, setUser } = useContext(UserContext);
 
   const LogOut = () => {
     axios.post('http://localhost:8000/api/logout', {}, { withCredentials: true })
       .then((res) => {
-        console.log(res);
+        console.log(res)
         setUser(null);
-        navigate('/');
+        navigate('/')
       })
-      .catch(err => console.log(err));
-  };
 
+      .catch(err => console.log(err))
+  }
   const profile = () => {
     navigate(`/profile/${user._id}`);
   };
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -101,21 +107,16 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const peopleClick = () => {
+    navigate("/people");
+  }
   const homeClick = () => {
     navigate("/success");
-  };
+  }
 
   const mailClick = () => {
     navigate("/message");
-  };
-
-  const statisticsClick = () => {
-    navigate("/statistics");
-  };
-
-  const userListClick = () => {
-    navigate("/user-list");
-  };
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -144,18 +145,18 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+      <MenuItem onClick={mailClick}>
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit" >
+          <Badge badgeContent={60} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="error">
-            {/* <PeopleIcon /> */}
+      <MenuItem onClick={peopleClick}>
+        <IconButton size="large" aria-label="show 17 new notifications" color="inherit"  >
+          <Badge badgeContent={18} color="error">
+            <PeopleIcon  />
           </Badge>
         </IconButton>
         <p>Followers</p>
@@ -178,56 +179,65 @@ export default function PrimarySearchAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Box sx={{ position: 'fixed', top: 0, width: "100%", zIndex: 1000 }}>
-        <AppBar sx={{ backgroundColor: "#fe520a" }} position="static">
+
+        <AppBar sx={{ backgroundColor: "#555" }} position="static">
           <Toolbar>
-            <Typography
+            <img src={logo} style={{width: "250px", height: "64px"}}/>
+            {/* <Typography
               variant="h6"
               noWrap
               component="div"
               sx={{ display: { xs: 'none', sm: 'block' } }}
             >
               LinkUp
-            </Typography>
+            </Typography> */}
             <Toolbar sx={{ justifyContent: 'center', width: "80%" }}>
+
               <SearchBar />
-            </Toolbar>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <IconButton
-                size="large"
-                aria-label="home"
-                color="inherit"
-                sx={{ mr: 2 }}
-                onClick={homeClick}
+              {/* <Search >
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+              />
+          </Search> */}
+           
+          {/* </Search> */}
+          </Toolbar>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <IconButton
+            size="large"
+            aria-label="home"
+            color="inherit"
+            sx={{ mr: 2 }}
+            onClick={homeClick}
+            >
+            <HomeIcon />
+            </IconButton>
+            <IconButton
+             size="large"
+             aria-label="show 4 new mails" 
+             color="inherit"
+             onClick={mailClick}
+             >
+              <Badge badgeContent={17} color="error">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              color="inherit"
+              onClick={peopleClick}
               >
-                <HomeIcon />
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={mailClick}
-              >
-                <Badge badgeContent={17} color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="statistics"
-                color="inherit"
-                onClick={statisticsClick}
-              >
-                <ShowChartIcon />
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="user list"
-                color="inherit"
-                onClick={userListClick}
-              >
-                <GroupIcon />
-              </IconButton>
+              <Badge badgeContent="+"  color="error">
+                <PeopleIcon/>
+              </Badge>
+            </IconButton>
+
               <IconButton
                 size="large"
                 edge="end"
