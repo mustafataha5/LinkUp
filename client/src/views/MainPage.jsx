@@ -13,7 +13,7 @@ import Ads from '../components/Ads';
 const MainPage = () => {
   const [loading, setLoading] = useState(true);      // Loading state
   const [posts, setPosts] = useState([]);            // State to save posts
-  const { user, setUser } = useContext(UserContext); // Loged in user 
+  const { user, setUser } = useContext(UserContext); // Logged-in user 
   const [users, setUsers] = useState([]);            // Follower list 
   const [suggested, setSuggested] = useState([]);    // Suggested list 
   const navigate = useNavigate();
@@ -24,60 +24,55 @@ const MainPage = () => {
   }, []);
 
   const getUser = async () => {
-    await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
-      .then(response => {
-        getfollowed(response.data.user._id);
-        setUser(response.data.user);
-        getSuggested(response.data.user._id);
-        setLoading(false); // Stop loading after data is fetched
-      })
-      .catch(error => {
-        console.error('Error checking authentication', error);
-        navigate('/403'); // Redirect to login if not authenticated
-      });
-  }
+    try {
+      const response = await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true });
+      setUser(response.data.user);
 
-  // Fetch the posts when the component is mounted
-  useEffect(() => {
-    getPosts();
-  }, []);
+      // Use Promise.allSettled to handle both successful and failed requests
+      await Promise.allSettled([
+        getPosts(),
+        getFollowed(response.data.user._id),
+        getSuggested(response.data.user._id),
+      ]);
+    } catch (error) {
+      console.error('Error checking authentication', error);
+      navigate('/403'); // Redirect to login if not authenticated
+    } finally {
+      setLoading(false); // Ensure loading is false even if requests fail
+    }
+  };
 
-  // Send get request to the server to get all posts form DB
-  const getPosts = () => {
-    axios.get('http://localhost:8000/api/posts')
-      .then(response => {
-        setPosts(response.data.posts);
-      })
-      .catch(error => {
-        console.error('Error fetching posts:', error);
-      });
-  }
+  // Send get request to the server to get all posts from DB
+  const getPosts = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/posts');
+      setPosts(response.data.posts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
 
   // Send get request to the server to get following list
-  const getfollowed = (id) => {
-    axios.get(`http://localhost:8000/api/follows/followed/${id}`)
-      .then(response => {
-        setUsers(response.data.followings);
-      })
-      .catch(error => {
-        console.error('Error fetching followed users:', error);
-      });
-  }
+  const getFollowed = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/follows/followed/${id}`);
+      setUsers(response.data.followings);
+    } catch (error) {
+      console.error('Error fetching followed users:', error);
+    }
+  };
 
-  // Send get request to the server to suggested list
-  const getSuggested = (id) => {
-    axios.get(`http://localhost:8000/api/follows/notfollowed/${id}`)
-      .then(response => {
-        setSuggested(response.data.notFollowedUsers);
-      })
-      .catch(error => {
-        console.error('Error fetching suggested users:', error);
-      });
-  }
+  // Send get request to the server to get suggested list
+  const getSuggested = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/follows/notfollowed/${id}`);
+      setSuggested(response.data.notFollowedUsers);
+    } catch (error) {
+      console.error('Error fetching suggested users:', error);
+    }
+  };
 
-  // Check if the website finsih loading the data
-  // If yes --> show the data 
-  // If no --> display skeleton 
+  // Render skeleton while loading, show the data once loading is complete
   if (loading) {
     return (
       <div>
@@ -113,6 +108,7 @@ const MainPage = () => {
               <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
             </Grid>
             <Grid item xs={6}>
+              {/* Only render the CreatePostSection and PostSection if user data is available */}
               {user && (
                 <>
                   <CreatePostSection user={user} getPosts={getPosts} />
