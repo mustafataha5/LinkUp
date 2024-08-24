@@ -246,7 +246,7 @@ console.error("Error sending message:", error.response?.data || error.message);
 
                             </Box>
                             {/* UserList component */}
-                            <Box
+                            {/* <Box
                                         sx={{
                                             maxHeight: '590px',
                                             overflowY: 'auto',
@@ -266,7 +266,7 @@ console.error("Error sending message:", error.response?.data || error.message);
                                         }}
                                     >
                             <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }}/>
-                            </Box>
+                            </Box> */}
                             </Box>
                         </Grid>
                         <Grid item xs={6}>
@@ -281,13 +281,13 @@ console.error("Error sending message:", error.response?.data || error.message);
                                 </>
                             )}
                         </Grid>
-                        <Box sx={{ position: 'fixed', right: '80px', top:"80px" }}>
+                        <Box sx={{ position: 'fixed', right: '65px', top:"80px" }}>
                             <Grid item sx={{ marginTop: 6, position: 'sticky', top: '90px' }}>
                             <Ads />
                             </Grid>
-                            <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
+                            {/* <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
                             <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
-                            </Grid>
+                            </Grid> */}
                         </Box>
                     </Grid>
                 </Container>

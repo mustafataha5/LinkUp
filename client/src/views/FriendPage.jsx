@@ -172,10 +172,10 @@ const FriendPage = () => {
 
                 <Grid container justifyContent="center" alignItems="center" margin={4} spacing={2}>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={6} sx={{marginTop: 3}}>
                         <BasicTabs />
                     </Grid>
-                    <Grid item xs={4} sx={{ marginTop: 12 }}>
+                    <Grid item xs={3} sx={{position: 'fixed', top: '120px', right:"40px"}}>
                         <Ads />
                     </Grid>
 
