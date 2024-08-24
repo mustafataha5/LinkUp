@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import AdminStatBar from "../components/AdminStatBar";
 import AdminStatPie from "../components/AdminStatPie";
 import AdminNavbar from "../components/AdminNavbar";
 import axios from 'axios';
 import '../css/AdminStats.css';
-import AgeAnalysisBarChart from '../components/AgeAnalysisBarChart';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
+import AdminStatAgeBar from '../components/AdminStatAgeBar';
 
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
@@ -52,8 +51,8 @@ const AdminDashboard = () => {
 
                     {/* Age Distribution Bar Chart */}
                     <div className="col-md-6">
-                        {/* <h2>Age Distribution</h2> */}
-                        <AdminStatAgeBar />
+                        <h2>Age Distribution</h2>
+                        <AdminStatAgeBar users={users} />
                     </div>
                 </div>
             </div>
