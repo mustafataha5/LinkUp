@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Grid, Skeleton, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Container, Grid, Skeleton, Typography, useMediaQuery } from '@mui/material';
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import Navbar from '../components/Navbar';
@@ -24,6 +24,19 @@ const MainPage = () => {
   const resposive1= useMediaQuery('(max-width: 900px)')
   const [socket, setSocket] = useState(() => io('http://localhost:8000')); 
 
+  const [isScreenSmall, setSmallScreen] = useState(window.innerWidth <= 900);
+  
+  useEffect(()=>{
+    const handleResize = () => {
+      setSmallScreen(window.innerWidth <= 900)
+    
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // Get the user (we will get the id from the cookies then find the user)
   useEffect(() => {
@@ -150,20 +163,40 @@ const MainPage = () => {
           <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
     {!resposive && (
 
-<Box sx={{ position: 'fixed' }}>
+
+<Box 
+  sx={{ 
+    position: 'fixed', 
+    borderRight: '4px solid #dede', 
+    maxHeight: '590px', 
+    overflowY: 'auto', 
+    '&::-webkit-scrollbar': {
+      width: '8px'
+    },
+    '&::-webkit-scrollbar-track': {
+      background: '#f1f1f1'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: '#888',
+      borderRadius: '10px'
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      background: '#555'
+    }
+  }} 
+  className="custom-scrollbar"
+>
+  <Typography variant='h6' sx={{ textAlign: 'center', borderBottom: '4px solid #dede', marginTop: -1 }}>
+    Followers
+  </Typography>
   <UserList
     initialUsers={users}
     index={0}
-    sx={{
-      position: 'sticky',
-      top: '90px', // Adjust this value to control the distance from the top
-      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
-    }}
   />
 </Box>
     )}      
 </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} >
               {/* Only render the CreatePostSection and PostSection if user data is available */}
               {user && (
                 <>
@@ -178,7 +211,7 @@ const MainPage = () => {
 
               <Grid item xs={3} container direction="column" spacing={2} sx={{ marginRight: -10 }}>
               <Box sx={{ position: 'fixed' }}>
-                <Grid item sx={{ marginTop: 6, position: 'sticky', top: '90px' }}>
+                <Grid item sx={{ marginTop: 8, position: 'sticky' }}>
                   <Ads />
                 </Grid>
                 <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
