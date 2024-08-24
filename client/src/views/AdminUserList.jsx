@@ -20,10 +20,6 @@ const AdminUserList = () => {
  }, []);
 
 
-
-
-
-
  const getUser = async () => {
    try {
      const response = await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true });

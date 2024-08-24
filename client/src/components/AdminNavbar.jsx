@@ -18,7 +18,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import logo from '../images/logo.png';
-import SearchBar from './SearchBar';
+
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -49,7 +51,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: '100%',
     [theme.breakpoints.up('md')]: {
       width: '100%', // Ensures the input takes full width in larger screens
-      // width: '60ch',
     },
   },
 }));
@@ -57,10 +58,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
-  // Get the user (we will get the id from the cookies then find the user)
 
   const LogOut = () => {
     axios.post('http://localhost:8000/api/logout', {}, { withCredentials: true })
@@ -107,6 +106,14 @@ export default function PrimarySearchAppBar() {
     navigate("/message");
   };
 
+  const statisticsClick = () => {
+    navigate("/admin/dashboard");
+  };
+  const superVisor = () =>{
+    navigate("/admin/users");
+  }
+ 
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -134,26 +141,27 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={mailClick}>
         <IconButton size="large" aria-label="show new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+          <Badge badgeContent={60} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={peopleClick}>
         <IconButton size="large" aria-label="show new notifications" color="inherit">
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={18} color="error">
             <PeopleIcon />
           </Badge>
         </IconButton>
         <p>Followers</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
+          size="large"
           aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
+          aria-controls={menuId}
           aria-haspopup="true"
           color="inherit"
         >
@@ -168,29 +176,50 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <Box sx={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000 }}>
         <AppBar sx={{ backgroundColor: "#555" }} position="static">
-        <Toolbar sx={{ paddingLeft: -2, paddingRight: -2, justifyContent: 'space-around' }}>
-            {/* Adjust marginLeft to control the distance from the edge */}
-            <img src={logo} style={{ width: "250px", height: "64px", marginLeft: '0px' }} /> 
+          <Toolbar>
+            <img src={logo} style={{ width: "250px", height: "64px" }} alt="Logo" />
             <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-              <SearchBar />
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </Search>
             </Box>
-
-            {/* <Box sx={{ flexGrow: 1 }} /> // comment out */}
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }} >
-            <Box sx={{ display: 'flex', gap: 4 }}>    {/* randa added */}
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <IconButton
                 size="large"
                 aria-label="home"
                 color="inherit"
-                // added ml: 2
-                sx={{ mr: 2, ml: 2 }} 
+                sx={{ mr: 2 }}
                 onClick={homeClick}
               >
-              <HomeIcon />
+                <HomeIcon />
               </IconButton>
               <IconButton
                 size="large"
-                aria-label="show 17 new mails"
+                aria-label="home"
+                color="inherit"
+                sx={{ mr: 2 }}
+                onClick={statisticsClick}
+              >
+                <EqualizerIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="home"
+                color="inherit"
+                sx={{ mr: 2 }}
+                onClick={superVisor}
+              >
+                <AdminPanelSettingsIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show new mails"
                 color="inherit"
                 onClick={mailClick}
               >
@@ -219,7 +248,7 @@ export default function PrimarySearchAppBar() {
               >
                 <AccountCircle />
               </IconButton>
-            </Box>  </Box>
+            </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
@@ -240,3 +269,4 @@ export default function PrimarySearchAppBar() {
     </Box>
   );
 }
+
