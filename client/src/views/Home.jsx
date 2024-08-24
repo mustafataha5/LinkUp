@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Footer from '../components/Footer'
 import '../css/Home.css' // Import the CSS file
 import logo from '../images/logo.png'
@@ -27,30 +27,30 @@ const wrapperStyles = {
 
 const Home = () => {
     const navigate = useNavigate()
-    const [errors, setErrors] = useState([])
+    const [errors, setErrors] = useState({})
    
+    useEffect(() => {
+      console.log("Updated errors:", errors);
+    }, [errors]);
 
     const handleLoginSubmit = (payload) => {
       axios
         .post('http://localhost:8000/api/login', payload, { withCredentials: true })
         .then((res) => {
-          console.log(res);
-          
+          console.log('Login successful:', res);
           navigate('/test');
         })
-        .catch(err=>{
-          console.log(err.response)
-          // const errorResponse = err.response.data.errors; // Get the errors from err.response.data
-          // const errorArr = []; // Define a temp error array to push the messages in
-          // for (const key of Object.keys(errorResponse)) { // Loop through all errors and get the messages
-          //     errorArr.push(errorResponse[key].message)
-          // }
-          // console.log('>>>>>>>>>>>>>>')
-          // console.log(errorArr)
-          // // Set Errors
-          // setErrors(errorArr);
-      })   
-    };
+        .catch((err) => {
+          console.log('Error response:', err.response?.data); // Log the error response
+          const errorResponse = err.response?.data || {};
+          setErrors({...errorResponse}); // Merge errors with previous ones
+        });
+  };
+  
+    
+    
+
+    
   return (
     <div>
     <div className='homeFeatures'>

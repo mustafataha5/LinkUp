@@ -14,7 +14,7 @@ import { UserContext } from './context/UserContext'
 import Profile from './views/Profile';
 import axios from 'axios';
 import AdminUserList from './views/AdminUserList';
-import AdminDashboard from './components/AdminDashboard';
+import AdminDashboard from './views/AdminDashboard';
 
 function App() {
   const [user, setUser] = useState(null);
