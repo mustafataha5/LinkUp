@@ -38,6 +38,12 @@ require("./routers/comment.route")(app);
 socketIo.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
 
+  socket.on("activeUser", (data) =>{
+    console.log("-------",data);
+    const {userId,status} = data ; 
+    socket.broadcast.emit("status",userId) ; 
+  } )
+
   // Listen for the 'joinRoom' event
   socket.on('joinRoom', ({ senderId, reciverId }) => {
     const roomName = generateRoomName(senderId, reciverId);
