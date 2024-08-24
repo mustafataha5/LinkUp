@@ -15,13 +15,9 @@ const Search = styled('div')(({ theme }) => ({
     '&:hover': {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    },
+    width: '55%', // Set the search bar's width to 55%
+    marginLeft: 'auto', // Center horizontally
+    marginRight: 'auto', // Center horizontally
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -36,14 +32,11 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
+    width: '100%', // Ensure the input takes full width
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
+        width: '100%', // Ensure the input text spans full width
     },
 }));
 
@@ -63,8 +56,6 @@ const SearchBar = () => {
             try {
                 const response = await axios.get(`http://localhost:8000/api/search?q=${encodeURIComponent(newQuery)}`);
                 setResults(Array.isArray(response.data) ? response.data : []);
-                console.log("results" , response.data)
-                response.data.map((result) => (console.log(result._id)))
             } catch (error) {
                 console.error('Error searching users:', error);
                 setResults([]);
@@ -93,7 +84,7 @@ const SearchBar = () => {
     }, []);
 
     return (
-        <Box sx={{ position: 'relative', width: '100%' , margin: '0 auto', display:'flex' ,justifyContent:'space-around' }}>
+        <Box sx={{ position: 'relative', width: '100%' }}>
             <Search>
                 <SearchIconWrapper>
                     <SearchIcon />
@@ -110,9 +101,9 @@ const SearchBar = () => {
                     ref={dropdownRef}
                     sx={{
                         position: 'absolute',
-                        width: '100%',
-                        top: '100%',
-                        left: 0,
+                        width: '55%', // Set the dropdown to match the search bar's width
+                        top: '100%', // Position it directly below the search bar
+                        left: '22.5%', // Align with search bar by setting left margin
                         zIndex: 10,
                         maxHeight: '300px', // Set a fixed max height
                         overflowY: 'auto', // Add scroll if content exceeds max height

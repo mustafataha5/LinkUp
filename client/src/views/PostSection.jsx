@@ -21,7 +21,7 @@ const PostSection = ({ posts, user, setPosts }) => {
 
       if (result.isConfirmed) {
         // Proceed with deletion
-        await axios.delete(`http://localhost:8000/api/posts/${postId}`);
+        await axios.delete(`http://localhost:8000/api/posts/${postId}`,{withCredentials:true});
         setPosts((prevPosts) => prevPosts.filter(post => post._id !== postId));
         Swal.fire('Deleted!', 'Your post has been deleted.', 'success');
       } else {
@@ -36,7 +36,7 @@ const PostSection = ({ posts, user, setPosts }) => {
   const handleUpdate = (id, post) => {
     console.log("post updated", post)
     console.log("post id",id)
-    axios.patch('http://localhost:8000/api/posts/' + id, post)
+    axios.patch('http://localhost:8000/api/posts/' + id, post,{withCredentials:true})
       .then(res => {
         const updatedPost = res.data.post;
 

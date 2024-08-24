@@ -26,7 +26,13 @@ module.exports.checkauth =  (req, res) => {
             return res.status(401).json({ authenticated: false, message: 'Invalid token' });
         }
         const user = await User.findById({_id:decoded.id}); 
-        res.status(200).json({ authenticated: true, user: user });
+        if( user.status === 'active') {
+            res.status(200).json({ authenticated: true, user: user });
+        }
+        else {
+            return res.status(403).json({ authenticated: false, message: 'Deactive user' });
+        }
+
     });
 } 
 
@@ -66,7 +72,11 @@ module.exports.login = async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
             errors.email = "Invalid Email"; // Add email error if user is not found
+            errors.password = "Invalid Password";
         } else {
+            if(user.status !== 'active'){
+                errors.email = "Deactived account"
+            }
             // If user exists, check if the password is correct
             const correctPassword = await bcrypt.compare(req.body.password, user.password);
             if (!correctPassword) {
@@ -135,8 +145,8 @@ module.exports.searchUsers = async (req, res) => {
         // Search for users by firstName or lastName (case-insensitive)
         const users = await User.find({
             $or: [
-                { firstName: { $regex: query, $options: 'i' } },
-                { lastName: { $regex: query, $options: 'i' } }
+                { firstName: { $regex: query, $options: 'i' } ,status:'active' },
+                { lastName: { $regex: query, $options: 'i' } ,status:'active' }
             ]
         }).select('firstName lastName _id'); // Select necessary fields
 
@@ -150,3 +160,25 @@ module.exports.searchUsers = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+module.exports.userDeactive = (req,res) =>{
+    User.findByIdAndUpdate({_id:req.params.id}
+        ,{status:'deactive'}
+        ,{new:true,runValidtor:true}
+    )
+    .then(user => {
+        res.clearCookie('usertoken');
+        res.json({user:user})
+    })
+    .catch(err => res.status(400).json(err));    
+}
+
+module.exports.userActive = (req,res) =>{
+    User.findByIdAndUpdate({_id:req.params.id}
+        ,{status:'active'}
+        ,{new:true,runValidtor:true}
+    ).then(user => {
+        res.json({user:user})
+    })
+    .catch(err => res.status(400).json(err));    
+}
