@@ -23,7 +23,7 @@ const PostForm = ({ postId, userId, userImage, name, onPostSubmit, errors, initi
   const [content, setContent] = useState(initialContent);
   const [imageUrl, setImageURL] = useState(initialImage);
   const [imageFile, setImageFile] = useState(null);
-  const { user, setUser } = useContext(UserContext); // Logged in user
+  // const { user, setUser } = useContext(UserContext); // Logged in user
 
 
   // Ref to clear the file input value when removing the image
@@ -146,5 +146,4 @@ const PostForm = ({ postId, userId, userImage, name, onPostSubmit, errors, initi
     </Card>
   );
 };
-
 export default PostForm;

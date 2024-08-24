@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react';
 import Home from './views/Home'
-import { Route, Routes, useNavigate } from 'react-router-dom'
-import Register from './components/Register'
-import Login from './components/Login'
-import Test from './components/Test'
-import MainPage from './views/MainPage'
-import Page403 from './components/Page403'
-import Page401 from './components/Page401'
-import Page404 from './components/Page404'
-import FriendPage from './views/FriendPage'
-import MessagePage from './views/MessagePage'
-import { UserContext } from './context/UserContext'
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import Register from './components/Register';
+import Login from './components/Login';
+import Test from './components/Test';
+import MainPage from './views/MainPage';
+import Page403 from './components/Page403';
+import Page401 from './components/Page401';
+import Page404 from './components/Page404';
+import FriendPage from './views/FriendPage';
+import MessagePage from './views/MessagePage';
+import { UserContext } from './context/UserContext';
 import Profile from './views/Profile';
 import axios from 'axios';
 import AdminUserList from './views/AdminUserList';
 import AdminDashboard from './views/AdminDashboard';
+
+
 import AboutUsPage from './views/AboutUs';
 import ServicesPage from './views/Serveces';
+import ContactUsForm from './components/ContactUsForm';
+import { styled } from '@mui/material/styles';
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -40,16 +45,18 @@ function App() {
     <>
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
-          {/* <Route path='/randatest' element={<AdminStatBar/>}/> */}
+           
+                
           <Route path='/services' element={<ServicesPage/>}/>
           <Route path='/about' element={<AboutUsPage/>}/>
+          <Route path='/contact' element={<ContactUsForm />} />
+
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/users' element={<AdminUserList />} />
+          {/* <Route path='/randatest' element={<Ads />} /> */}
 
           {/* Profile displays BACKEND api */}
           <Route path='/profile/:id' element={<Profile />} />
-          {/* <Route path='/randatest' element={<AutoPlaySwipeableViews />} /> */}
-          {/* <Route path='/randatest' element={<Ads />} /> */}
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path="/register" element={<Register flag={true} />} />
