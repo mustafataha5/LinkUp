@@ -205,13 +205,27 @@ const Profile = () => {
                                     color: '#fe520a',
                                     '&:hover': {
                                     borderColor: '#fe520a',
-                                    backgroundColor: 'rgba(254, 82, 10, 0.1)', // Optional: Change background color on hover
-                                    color: '#fe520a',
+                                    backgroundColor: '#fe520a', // Optional: Change background color on hover
+                                    color: '#fff',
                                     },
                                 }}
                                 >
                                 Edit your profile
                             </Button>}
+                            {user._id !== urlUser._id &&
+                                <Button variant='outlined'
+                                sx={{
+                                    borderColor: '#fe520a',
+                                    color: '#fe520a',
+                                    '&:hover': {
+                                    borderColor: '#fe520a',
+                                    backgroundColor: '#fe520a', // Optional: Change background color on hover
+                                    color: '#fff',
+                                    },
+                                }}
+                                >Message</Button>
+                            }
+
                             </Box>
                             {/* UserList component */}
                             <Box
