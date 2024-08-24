@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   Avatar,
   Box,
@@ -14,11 +14,13 @@ import {
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 const PostForm = ({ postId, userId, userImage, name, onPostSubmit, errors, initialContent = '', initialImage = null, isEdit = false }) => {
   const [content, setContent] = useState(initialContent);
   const [imageUrl, setImageURL] = useState(initialImage);
   const [imageFile, setImageFile] = useState(null);
+  const { user, setUser } = useContext(UserContext); // Logged in user
 
   // Ref to clear the file input value when removing the image
   const fileInputRef = useRef(null);
@@ -82,7 +84,7 @@ const PostForm = ({ postId, userId, userImage, name, onPostSubmit, errors, initi
     <Card sx={{ maxWidth: 500, margin: '20px auto', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', borderRadius: '8px' }}>
       <CardHeader
         avatar={<Avatar src={userImage} alt="User" />}
-        title={<Typography variant="h6" sx={{ fontWeight: 'bold' }}>{name}</Typography>}
+        title={<Typography variant="h6" sx={{ fontWeight: 'bold' }}><Link to={`profile/${userId}`}>{name}</Link></Typography>}
       />
       <CardContent>
         <TextField
