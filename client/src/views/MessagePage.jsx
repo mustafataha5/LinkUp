@@ -9,6 +9,7 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import AdminNavbar from '../components/AdminNavbar'; 
 
+
 const MessagePage = () => {
   const { user, setUser } = useContext(UserContext);
   const [friends, setFriends] = useState([]);
@@ -40,6 +41,10 @@ const MessagePage = () => {
   }, [socket]);
 
   useEffect(() => {
+
+    socket.on('status',(data) =>{
+      LogOut() ; 
+    }) 
     if (user && reciver._id) {
       console.log('Socket connected:', socket.id);
       console.log('Emitting joinRoom with:', { senderId: user._id, reciverId: reciver._id });
@@ -121,6 +126,15 @@ const MessagePage = () => {
     } catch (err) {
       console.error('Error fetching messages', err);
     }
+  };
+
+  const LogOut = () => {
+    axios.post('http://localhost:8000/api/logout', {}, { withCredentials: true })
+      .then(() => {
+        setUser(null);
+        navigate('/');
+      })
+      .catch(err => console.log(err));
   };
 
   if (loading) {

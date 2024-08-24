@@ -7,15 +7,22 @@ import AdminUserEdit from '../components/AdminUserEdit';
 import AdminNavbar from '../components/AdminNavbar';
 import '../css/AdminUserList.css';
 import { useNavigate } from 'react-router-dom';
+import io from 'socket.io-client';
 
 const AdminUserList = () => {
     const [users, setUsers] = useState([]);
     const [loading,setLoading] = useState(true)
     const navigate = useNavigate() ; 
+    const [socket, setSocket] = useState(() => io('http://localhost:8000'));
     // Get the user (we will get the id from the cookies then find the user)
  useEffect(() => {
    getUser();
  }, []);
+
+
+
+
+
 
  const getUser = async () => {
    try {
@@ -40,6 +47,7 @@ const AdminUserList = () => {
         .then(response => {
             //console.log("Deactive ",response.data.user) ; 
             if (response.data.user) {
+                socket.emit("activeUser",{userId,status:'deactive'}) ; 
                 setUsers(users.map(user => {
                     if(user._id === userId){
                         return { ...user, status: "deactive" };
