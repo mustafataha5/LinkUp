@@ -4,6 +4,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 export default function AdminStatPie({genderCounts}) {
   return (
     <div style={{ textAlign: 'center' }}>
+      <h2 style={{textAlign: 'center'}}>Gender Distribution</h2>
       <PieChart
         series={[
           {

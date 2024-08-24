@@ -42,16 +42,14 @@ const AdminDashboard = () => {
             <div className='navbar'> { <AdminNavbar /> } </div>
 
             <div className="container">
-                <div className="row">
+                <div className="row charts-row">
                     {/* Gender Distribution Pie Chart */}
-                    <div className="col-md-6">
-                        <h2>Gender Distribution</h2>
+                    <div className="col-md-6 chart-container">
                         <AdminStatPie genderCounts={genderCounts} />
                     </div>
 
                     {/* Age Distribution Bar Chart */}
-                    <div className="col-md-6">
-                        <h2>Age Distribution</h2>
+                    <div className="col-md-6 chart-container">
                         <AdminStatAgeBar users={users} />
                     </div>
                 </div>

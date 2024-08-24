@@ -52,7 +52,7 @@ const AdminStatAgeBar = ({ users = [] }) => {
 
     return (
         <div>
-            <h2>Age Distribution of Users</h2>
+            <h2>Users Age Distribution</h2>
             {ageData.labels.length > 0 ? (
                 <Bar
                     data={chartData}
