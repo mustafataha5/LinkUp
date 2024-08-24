@@ -145,8 +145,8 @@ module.exports.searchUsers = async (req, res) => {
         // Search for users by firstName or lastName (case-insensitive)
         const users = await User.find({
             $or: [
-                { firstName: { $regex: query, $options: 'i' } },
-                { lastName: { $regex: query, $options: 'i' } }
+                { firstName: { $regex: query, $options: 'i' } ,status:'active' },
+                { lastName: { $regex: query, $options: 'i' } ,status:'active' }
             ]
         }).select('firstName lastName _id'); // Select necessary fields
 
