@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import AdminStatBar from "../components/AdminStatBar";
 import AdminStatPie from "../components/AdminStatPie";
 import AdminNavbar from "../components/AdminNavbar";
 import axios from 'axios';
 import '../css/AdminStats.css';
-import AgeAnalysisBarChart from '../components/AgeAnalysisBarChart';
+import AdminStatAgeBar from './AdminStatAgeBar';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 const AdminDashboard = () => {
@@ -51,9 +50,9 @@ const AdminDashboard = () => {
             {/* 1st Column?? */}
             <div className="col-xs-6">
             <div className="centered-content">
-                <div>
-                    {/* <h2>Age Distribution</h2> */}
-                    <p> {< AgeAnalysisBarChart  />}  </p>
+            <div>
+                    <h2>Gender Distribution</h2>
+                    <p> { < AdminStatPie genderCounts={genderCounts} /> }</p>
                 </div>
             </div>
             </div>
@@ -61,9 +60,10 @@ const AdminDashboard = () => {
             {/* 2nd Column */}
             <div className="col-xs-6">
             <div className="centered-content">
-                <div>
-                    <h2>Gender Distribution</h2>
-                    <p> { < AdminStatPie genderCounts={genderCounts} /> }</p>
+            <div>
+                    {/* <h2>Age Distribution</h2> */}
+                    <p> {< AdminStatAgeBar  />}  </p>
+                </div>
                 </div>
             </div>
             </div>
@@ -84,11 +84,7 @@ const AdminDashboard = () => {
         `}
         </style>
         </div>
-    </div>
+    // </div>
   );
 };
-
 export default AdminDashboard;
-
-
-{/* <Route path='/admin/dashboard' element={<AdminPage />}/> */}

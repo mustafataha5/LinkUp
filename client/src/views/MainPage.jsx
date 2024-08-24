@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Grid, Skeleton } from '@mui/material';
+import { AppBar, Box, Container, Grid, Skeleton, useMediaQuery } from '@mui/material';
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import Navbar from '../components/Navbar';
@@ -18,6 +18,8 @@ const MainPage = () => {
   const [users, setUsers] = useState([]);            // Follower list 
   const [suggested, setSuggested] = useState([]);    // Suggested list 
   const navigate = useNavigate();
+  const resposive = useMediaQuery('(max-width: 600px)')
+  const resposive1= useMediaQuery('(max-width: 900px)')
 
   // Get the user (we will get the id from the cookies then find the user)
   useEffect(() => {
@@ -112,48 +114,48 @@ const MainPage = () => {
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
         <Container>
           <Grid container spacing={5}>
-            <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
-              <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
-            </Grid>
+          <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
+    {!resposive && (
+
+<Box sx={{ position: 'fixed' }}>
+  <UserList
+    initialUsers={users}
+    index={0}
+    sx={{
+      position: 'sticky',
+      top: '90px', // Adjust this value to control the distance from the top
+      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
+    }}
+  />
+</Box>
+    )}      
+</Grid>
             <Grid item xs={6}>
               {/* Only render the CreatePostSection and PostSection if user data is available */}
               {user && (
                 <>
                   <CreatePostSection user={user} getPosts={getPosts} />
-                  <Box
-                    sx={{
-                      maxHeight: '590px',
-                      overflowY: 'auto',
-                      '&::-webkit-scrollbar': {
-                        width: '8px',
-                      },
-                      '&::-webkit-scrollbar-track': {
-                        background: '#f1f1f1',
-                      },
-                      '&::-webkit-scrollbar-thumb': {
-                        background: '#888',
-                        borderRadius: '10px',
-                      },
-                      '&::-webkit-scrollbar-thumb:hover': {
-                        background: '#555',
-                      },
-                    }}
-                  >
+                  <Box>
                     <PostSection user={user} posts={posts} setPosts={setPosts} />
                   </Box>
                 </>
               )}
             </Grid>
-            <Grid item xs={3} container direction="column" spacing={2} sx={{ marginRight: -10 }}>
-              <Grid item sx={{ marginTop: 6 }}>
-                <Ads />
-              </Grid>
-              <Grid item>
-                <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '40 10px 40px solid black' }} />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Container>
+            {!resposive1 && (
+
+              <Grid item xs={3} container direction="column" spacing={2} sx={{ marginRight: -10 }}>
+              <Box sx={{ position: 'fixed' }}>
+                <Grid item sx={{ marginTop: 6, position: 'sticky', top: '90px' }}>
+                  <Ads />
+                </Grid>
+                <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
+                  <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
+                  </Grid>
+              </Box>
+                  </Grid>
+                )}
+                  </Grid>
+                </Container>
       </Box>
     </div>
   );

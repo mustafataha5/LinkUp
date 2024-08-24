@@ -30,6 +30,7 @@ const AdminUserEdit = ({onDelete, users}) => {
                         <TableCell>User Name</TableCell>
                         <TableCell>Delete</TableCell>
                         <TableCell>Edit Profile</TableCell>
+                        <TableCell>Deactivate Profile</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

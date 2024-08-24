@@ -176,12 +176,14 @@ const Profile = () => {
                 <Container>
                     <Grid container spacing={5}>
                         {/* Profile Section (Left) */}
-                        <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
+                        
+                        <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3}}>
+                        <Box sx={{ position: 'fixed', left: "80px", width: "20%"  }}>
                             <Box sx={{ marginBottom: 3, textAlign: 'center', boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)', padding: 3}} > {/* Adds space between profile and UserList */}
                                 <img 
                                     src={urlUser.imageUrl} 
                                     alt="Profile" 
-                                    style={{ width: '100%', borderRadius: '100%', height:"200px", marginBottom: 14 }} 
+                                    style={{ width: '90%', borderRadius: '100%', height:"200px", marginBottom: 14 }} 
                                     onClick={handleImageClick}
                                 />
                                 <h6>{urlUser.firstName} {urlUser.lastName}</h6>
@@ -223,43 +225,28 @@ const Profile = () => {
                                     >
                             <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }}/>
                             </Box>
+                            </Box>
                         </Grid>
                         <Grid item xs={6}>
                             {urlUser && (
                                 <>
                                     <CreatePostSection user={urlUser} getPosts={getPosts} />
                                     <Box
-                                        sx={{
-                                            maxHeight: '590px',
-                                            overflowY: 'auto',
-                                            '&::-webkit-scrollbar': {
-                                                width: '8px',
-                                            },
-                                            '&::-webkit-scrollbar-track': {
-                                                background: '#f1f1f1',
-                                            },
-                                            '&::-webkit-scrollbar-thumb': {
-                                                background: '#888',
-                                                borderRadius: '10px',
-                                            },
-                                            '&::-webkit-scrollbar-thumb:hover': {
-                                                background: '#555',
-                                            },
-                                        }}
+                                        
                                     >
                                         <PostSection user={urlUser} posts={posts} setPosts={setPosts} />
                                     </Box>
                                 </>
                             )}
                         </Grid>
-                        <Grid item xs={3} container direction="column" spacing={2} sx={{ marginRight: -10 }}>
-                            <Grid item sx={{ marginTop: 6 }}>
-                                <Ads />
+                        <Box sx={{ position: 'fixed', right: '80px', top:"80px" }}>
+                            <Grid item sx={{ marginTop: 6, position: 'sticky', top: '90px' }}>
+                            <Ads />
                             </Grid>
-                            <Grid item>
-                                <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '40 10px 40px solid black' }}/>
+                            <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
+                            <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
                             </Grid>
-                        </Grid>
+                        </Box>
                     </Grid>
                 </Container>
             </Box>
