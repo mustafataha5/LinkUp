@@ -22,7 +22,7 @@ import { UserContext } from '../context/UserContext';
 import SearchBar from './SearchBar';
 import { InputBase } from '@mui/material';
 import logo from '../images/logo.png'
-
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -231,7 +231,7 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
                 onClick={superVisor}
               >
-              
+              <AdminPanelSettingsIcon />
               </IconButton>
               <IconButton
                 size="large"
