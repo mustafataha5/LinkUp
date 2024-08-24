@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   Avatar,
   Box,
@@ -14,6 +14,7 @@ import {
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 const PostForm = ({
   postId,
@@ -29,6 +30,7 @@ const PostForm = ({
   const [content, setContent] = useState(initialContent);
   const [imageUrl, setImageURL] = useState(initialImage);
   const [imageFile, setImageFile] = useState(null);
+  const { user, setUser } = useContext(UserContext); // Logged in user
 
   // Ref to clear the file input value when removing the image
   const fileInputRef = useRef(null);

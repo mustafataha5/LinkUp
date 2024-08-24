@@ -10,6 +10,8 @@ import PostSection from './PostSection';
 import UserList from '../components/UserList';
 import Ads from '../components/Ads';
 import AdminNavbar from "../components/AdminNavbar";
+import io from 'socket.io-client';
+
 
 const MainPage = () => {
   const [loading, setLoading] = useState(true);      // Loading state
@@ -20,6 +22,8 @@ const MainPage = () => {
   const navigate = useNavigate();
   const resposive = useMediaQuery('(max-width: 600px)')
   const resposive1= useMediaQuery('(max-width: 900px)')
+  const [socket, setSocket] = useState(() => io('http://localhost:8000')); 
+
   const [isScreenSmall, setSmallScreen] = useState(window.innerWidth <= 900);
   
   useEffect(()=>{
@@ -58,6 +62,27 @@ const MainPage = () => {
     }
   };
 
+  useEffect(() => {
+    const handleStatus = (data) => {
+      console.log(data);
+      if (user._id === data) {
+        LogOut();
+      }
+    };
+  
+    socket.on('status', handleStatus);
+  
+    socket.on('disconnect', () => {
+      console.log('Socket disconnected');
+      // Optionally, you can attempt to reconnect or show a message to the user
+    });
+  
+    // Cleanup on component unmount
+    return () => {
+      socket.off('status', handleStatus); // Remove the status event listener
+      socket.disconnect(); // Disconnect the socket connection
+    };
+  }, [socket]);
   // Send get request to the server to get all posts from DB
   const getPosts = async () => {
     try {
@@ -88,6 +113,14 @@ const MainPage = () => {
     }
   };
 
+  const LogOut = () => {
+    axios.post('http://localhost:8000/api/logout', {}, { withCredentials: true })
+      .then(() => {
+        setUser(null);
+        navigate('/');
+      })
+      .catch(err => console.log(err));
+  };
   // Render skeleton while loading, show the data once loading is complete
   if (loading) {
     return (
