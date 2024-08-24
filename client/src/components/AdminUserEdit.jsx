@@ -4,6 +4,8 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import axios from 'axios';
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn'; 
+import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 
 // const initialUsers = [
 //     { id: 1, firstName: 'Mustafa', lastName: 'Taha', imageUrl: 'path/to/taha.jpg' },
@@ -14,13 +16,18 @@ import axios from 'axios';
 //     { id: 6, firstName: 'Muath', lastName: 'Ademar', imageUrl: 'path/to/muath.jpg' },
 // ];
 
-const AdminUserEdit = ({onDelete, users}) => {
+const AdminUserEdit = ({onDeactive,onActive, users}) => {
     const { user } = useContext(UserContext);
 
     
-    const handleDelete = (userId) => {
-      onDelete(userId)
+    const handleDeactive = (userId) => {
+      onDeactive(userId)
     };
+
+    const handleActive= (userId) => {
+        onActive(userId)
+      };
+
 
     return (
         <TableContainer component={Paper}>
@@ -28,35 +35,44 @@ const AdminUserEdit = ({onDelete, users}) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>User Name</TableCell>
-                        <TableCell>Delete</TableCell>
+                        <TableCell>Active/Deactive</TableCell>
                         <TableCell>Edit Profile</TableCell>
                         <TableCell>Deactivate Profile</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {users.map((user) => (
-                        <TableRow key={user.id}>
+                    {users.map((user,i) => (
+
+                            <TableRow key={i}>
                             <TableCell>
                                 <Box display="flex" alignItems="center">
                                     <Avatar src={user.imageUrl} alt={user.firstName} sx={{ marginRight: 2 }} />
                                     <Box>
                                         {user.firstName} {user.lastName}
-                                    </Box>
+                                        </Box>
                                 </Box>
                             </TableCell>
                             <TableCell>
-                                <IconButton onClick={() => handleDelete(user._id)} color="error">
-                                    <PersonRemoveIcon />
+                               {
+                                 user.role === 'user' &&( user.status === "active" ?
+                                 <IconButton onClick={() => handleDeactive(user._id)} color="error">
+                                    <DoDisturbOnIcon />
+                                    </IconButton>
+                                :
+                                <IconButton onClick={() => handleActive(user._id)} color="success">
+                                <DomainVerificationIcon />
                                 </IconButton>
+                            )} 
                             </TableCell>
                             <TableCell>
-                                <Link to={`/profile/${user._id}`}>Edit</Link>
+                            <Link to={`/profile/${user._id}`}>Edit</Link>
                             </TableCell>
-                        </TableRow>
+                            </TableRow> 
+                            
                     ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableBody>
+                    </Table>
+                    </TableContainer>
     );
 };
 
