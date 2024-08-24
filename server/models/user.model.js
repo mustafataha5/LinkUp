@@ -53,6 +53,10 @@ const userSchema = mongoose.Schema({
         type:String,
         default: "user"  
     },
+    status:{
+        type:String,
+        default: "active"  
+    },
 }, 
 {
     timetamps: true,

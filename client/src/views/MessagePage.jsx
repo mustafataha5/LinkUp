@@ -7,6 +7,7 @@ import Chat from '../components/Chat';
 import { UserContext } from '../context/UserContext';
 import axios from 'axios';
 import io from 'socket.io-client';
+import AdminNavbar from '../components/AdminNavbar'; 
 
 const MessagePage = () => {
   const { user, setUser } = useContext(UserContext);
@@ -111,12 +112,20 @@ const MessagePage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return  <>
+    
+      <Navbar />
+    </> 
   }
 
   return (
     <div>
-      <Navbar />
+      {
+        user.role === 'user' ? 
+        <Navbar />
+        :
+        <AdminNavbar />
+      }
       <Container>
         <Grid container spacing={1}>
           <Grid item xs={4} marginTop={15}>

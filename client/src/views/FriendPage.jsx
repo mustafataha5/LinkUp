@@ -9,6 +9,7 @@ import UserList from '../components/UserList';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Ads from '../components/Ads';
+import AdminNavbar from '../components/AdminNavbar'; 
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -124,6 +125,7 @@ function BasicTabs() {
     if(loading){
         return (
             <div>
+                <Navbar />
                 loading
             </div>
         )

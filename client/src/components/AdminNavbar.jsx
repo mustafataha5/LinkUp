@@ -20,7 +20,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import SearchBar from './SearchBar';
-import logo from '../images/logo.png'
+import logo from '../images/logo.png';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 
 
@@ -124,9 +126,7 @@ export default function PrimarySearchAppBar() {
   const superVisor = () =>{
     navigate("/admin/users");
   }
-  const userListClick = () => {
-    navigate("/admin/users");
-  };
+ 
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -226,6 +226,24 @@ export default function PrimarySearchAppBar() {
             onClick={homeClick}
             >
             <HomeIcon />
+            </IconButton>
+            <IconButton
+            size="large"
+            aria-label="home"
+            color="inherit"
+            sx={{ mr: 2 }}
+            onClick={superVisor}
+            >
+            <AdminPanelSettingsIcon />
+            </IconButton>
+            <IconButton
+            size="large"
+            aria-label="home"
+            color="inherit"
+            sx={{ mr: 2 }}
+            onClick={statisticsClick}
+            >
+            <EqualizerIcon />
             </IconButton>
             <IconButton
              size="large"
