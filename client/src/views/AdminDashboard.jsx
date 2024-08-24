@@ -5,11 +5,11 @@ import AdminNavbar from "../components/AdminNavbar";
 import axios from 'axios';
 import '../css/AdminStats.css';
 import AgeAnalysisBarChart from '../components/AgeAnalysisBarChart';
+import AdminStatAgeBar from '../components/AdminStatAgeBar';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
-
     const [users, setUsers] = useState([]);
     const [genderCounts, setGenderCounts] = useState({ male: 0, female: 0 });
     const [loading,setLoading] = useState(true)
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
     const getUsers = () => {
         axios.get(`http://localhost:8000/api/users`)
         .then(response => {
-            console.log(response.data)
+            console.log(response.data);
             setUsers(response.data.users);   
         })
     }
@@ -62,62 +62,26 @@ const AdminDashboard = () => {
         setGenderCounts(counts);
     }, [users]);
 
-    if(loading){
-        return (
-            <div>
-                <AdminNavbar/>
-            </div>
+    return (
+        <div>
+            <div className='navbar'> { <AdminNavbar /> } </div>
 
-        )
-    }
-  return (
+            <div className="container">
+                <div className="row">
+                    {/* Gender Distribution Pie Chart */}
+                    <div className="col-md-6">
+                        <h2>Gender Distribution</h2>
+                        <AdminStatPie genderCounts={genderCounts} />
+                    </div>
 
-    <div>
-        <div> {<AdminNavbar />} </div> 
-
-        <div className="container">
-        <div className="row">
-            {/* 1st Column?? */}
-            <div className="col-xs-6">
-            <div className="centered-content">
-                <div>
-                    {/* <h2>Age Distribution</h2> */}
-                    <p> {< AgeAnalysisBarChart  />}  </p>
+                    {/* Age Distribution Bar Chart */}
+                    <div className="col-md-6">
+                        {/* <h2>Age Distribution</h2> */}
+                        <AdminStatAgeBar />
+                    </div>
                 </div>
             </div>
-            </div>
-
-            {/* 2nd Column */}
-            <div className="col-xs-6">
-            <div className="centered-content">
-                <div>
-                    <h2>Gender Distribution</h2>
-                    <p> { < AdminStatPie genderCounts={genderCounts} /> }</p>
-                </div>
-            </div>
-            </div>
         </div>
-
-        <style jsx>
-            {`
-                // .centered-content {
-                //     display: flex;
-                //     justify-content: center; /* Horizontal centering */
-                //     align-items: center;     /* Vertical centering */
-                //     height: 100%;            /* Full height of the column */
-                //     margin-top: 75px;
-                // }
-                // .centered-content h2 { 
-                //      text-align: center; margin-bottom: 50px;}
-                // }
-        `}
-        </style>
-        </div>
-    </div>
-  );
+    );
 };
-
 export default AdminDashboard;
-
-
-{/* <Route path='/admin/dashboard' element={<AdminPage />}/> */}
