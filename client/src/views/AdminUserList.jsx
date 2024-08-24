@@ -35,11 +35,36 @@ const AdminUserList = () => {
  };
 
     // Handle delete request for a user from admin 
-    const onDelete = (userId) => {
-        axios.delete(`http://localhost:8000/api/users/${userId}`)
+    const onDeactive= (userId) => {
+        axios.patch(`http://localhost:8000/api/users/deactive/${userId}`,{withCredentials:true})
         .then(response => {
+            //console.log("Deactive ",response.data.user) ; 
             if (response.data.user) {
-                setUsers(users.filter(user => user._id !== userId));
+                setUsers(users.map(user => {
+                    if(user._id === userId){
+                        return { ...user, status: "deactive" };
+                    }
+                    return user ; 
+                }));
+            } else {
+                console.error('Error deleting user:', response.data);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    //on active click 
+    const onActive= (userId) => {
+        axios.patch(`http://localhost:8000/api/users/active/${userId}`,{withCredentials:true})
+        .then(response => {
+            //console.log("Active ",response.data.user) ; 
+            if (response.data.user) {
+                setUsers(users.map(user => {
+                    if(user._id === userId){
+                        return { ...user, status: "active" };
+                    }
+                    return user ; 
+                }));
             } else {
                 console.error('Error deleting user:', response.data);
             }
@@ -71,7 +96,7 @@ const AdminUserList = () => {
         
         <div>
             <div className='navbarUSER'> {<AdminNavbar />} </div>
-            <div> <AdminUserEdit onDelete={onDelete} users={users}  />
+            <div> <AdminUserEdit onDeactive={onDeactive} onActive={onActive} users={users}  />
             </div>
         </div>
     )

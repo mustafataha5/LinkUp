@@ -21,12 +21,15 @@ const MessagePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
-      getAuth();
-    } else {
-      getAllFriends(user._id);
-    }
-  }, [user]);
+   // console.log('ddddd')
+    // if (!user) {
+    //   getAuth();
+    // } else {
+    //   getAuth();
+    //  // getAllFriends(user._id);
+    // }
+    getAuth(); 
+  }, []);
 
   useEffect(() => {
     // Clean up the previous socket connection when component unmounts or receiver changes
@@ -62,8 +65,17 @@ const MessagePage = () => {
       setUser(response.data.user);
       getAllFriends(response.data.user._id);
     } catch (error) {
-      console.error('Error checking authentication', error);
-      navigate('/403');
+      // Handle different status codes
+      if (error.response.status === 401) {
+        //setError('Unauthorized: Please log in.');
+        navigate('/401'); // Redirect to login
+    } else if (error.response.status === 403) {
+        //setError('Access Denied: Your account is deactivated.');
+        navigate('/403'); // Redirect to a 403 Forbidden page
+    } else {
+      navigate('/403')
+       // setError('An unexpected error occurred.');
+    }
     }
   };
 
