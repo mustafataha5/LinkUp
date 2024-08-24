@@ -17,10 +17,10 @@ const Search = styled('div')(({ theme }) => ({
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: '100%',
+    width: '50%',
     [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        width: '70%',
     },
 }));
 
@@ -63,7 +63,7 @@ const SearchBar = () => {
             try {
                 const response = await axios.get(`http://localhost:8000/api/search?q=${encodeURIComponent(newQuery)}`);
                 setResults(Array.isArray(response.data) ? response.data : []);
-                console.log("results" , response.data)
+                console.log("results", response.data)
                 response.data.map((result) => (console.log(result._id)))
             } catch (error) {
                 console.error('Error searching users:', error);
@@ -93,7 +93,7 @@ const SearchBar = () => {
     }, []);
 
     return (
-        <Box sx={{ position: 'relative', width: '100%' , margin: '0 auto', display:'flex' ,justifyContent:'space-around' }}>
+        <Box sx={{ position: 'relative', width: '100%' }}>
             <Search>
                 <SearchIconWrapper>
                     <SearchIcon />
@@ -110,7 +110,7 @@ const SearchBar = () => {
                     ref={dropdownRef}
                     sx={{
                         position: 'absolute',
-                        width: '100%',
+                        width: '70%',
                         top: '100%',
                         left: 0,
                         zIndex: 10,
