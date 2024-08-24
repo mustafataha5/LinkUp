@@ -32,12 +32,12 @@ const UserList = ({
 
   return (
     <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto', padding: '10px' }}>
-      <Typography
+      {/* <Typography
         variant="h6"
         sx={{ borderBottom: 2, fontSize: 20, mb: 2, textAlign: "center" }}
       >
-        {index === 0 ? 'Following' : index === 1 ? 'Followers' : index === 2 ? 'Suggestion' : 'Users'}
-      </Typography>
+        {index === 0 ? 'Following' : index === 1 ? 'Followers' : index === 2 ? 'Suggestions' : 'Users'}
+      </Typography> */}
 
       {users.map((user) => (
         <div
