@@ -17,6 +17,7 @@ import AdminUserList from './views/AdminUserList';
 import AdminDashboard from './views/AdminDashboard';
 import ContactUsForm from './components/ContactUsForm';
 import { styled } from '@mui/material/styles';
+import ContactResponse from './components/ContactResponse';
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
           <Route path='/contact' element={<ContactUsForm />} />
+          <Route path='/contact/response' element={<ContactResponse />} />
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/users' element={<AdminUserList />} />
           {/* <Route path='/randatest' element={<Ads />} /> */}
