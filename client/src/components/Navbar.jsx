@@ -175,9 +175,9 @@ export default function PrimarySearchAppBar() {
         <AppBar sx={{ backgroundColor: "#555" }} position="static">
           <Toolbar>
             <img src={logo} style={{ width: "250px", height: "64px" }} alt="Logo" />
-            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+            {/* <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}> */}
               <SearchBar />
-            </Box>
+            {/* </Box> */}
 
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
