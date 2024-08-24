@@ -10,6 +10,33 @@
   margin-top: 75px;
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.charts-row {
+  display: flex;
+  width: 100%;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+  padding: 20px;
+}
+
+.chart-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
+}
+
 .bar-label {
   position: absolute;
   text-align: center;
@@ -34,10 +61,5 @@
     margin-bottom: 50px;
 }
 
-
-/* .chart-container {
-  position: relative;
-  margin-left: -5px;
-} */
 
   

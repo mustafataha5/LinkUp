@@ -5,12 +5,35 @@ import axios from 'axios';
 import '../css/AdminStats.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import AdminStatAgeBar from '../components/AdminStatAgeBar';
+import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [genderCounts, setGenderCounts] = useState({ male: 0, female: 0 });
+    const [loading,setLoading] = useState(true)
+    const navigate = useNavigate() ; 
+     // Get the user (we will get the id from the cookies then find the user)
+  useEffect(() => {
+    getUser();
+  }, []);
 
-    // Fetch users to display them in the admin page
+  const getUser = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true });
+        console.log(response.data.user)   
+      if(response.data.user.role === 'user'){
+            navigate('/401');
+           }
+    setLoading(false)    
+      
+    } catch (error) {
+      console.error('Error checking authentication', error);
+      navigate('/403'); // Redirect to login if not authenticated
+    } finally {
+      setLoading(false); // Ensure loading is false even if requests fail
+    }
+  };
+    // Get all users to display them in a table in admin page
     useEffect(() => {
         getUsers();
     }, []);
@@ -42,16 +65,14 @@ const AdminDashboard = () => {
             <div className='navbar'> { <AdminNavbar /> } </div>
 
             <div className="container">
-                <div className="row">
+                <div className="row charts-row">
                     {/* Gender Distribution Pie Chart */}
-                    <div className="col-md-6">
-                        <h2>Gender Distribution</h2>
+                    <div className="col-md-6 chart-container">
                         <AdminStatPie genderCounts={genderCounts} />
                     </div>
 
                     {/* Age Distribution Bar Chart */}
-                    <div className="col-md-6">
-                        <h2>Age Distribution</h2>
+                    <div className="col-md-6 chart-container">
                         <AdminStatAgeBar users={users} />
                     </div>
                 </div>

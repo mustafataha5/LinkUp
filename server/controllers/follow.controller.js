@@ -118,7 +118,14 @@ module.exports.getAllFriend = (req, res) => {
             }
         });
 
-        res.json({ friends: formattedFriends.filter(Boolean) });
+        // Remove duplicates using a Map to track unique _id values
+        const uniqueFriends = Array.from(
+            new Map(formattedFriends.map(friend => [friend._id.toString(), friend])).values()
+        );
+
+        res.json({ friends: uniqueFriends });
     })
     .catch(err => res.status(400).json(err));
 };
+
+

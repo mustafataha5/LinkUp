@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import PostSection from './PostSection';
 import UserList from '../components/UserList';
 import Ads from '../components/Ads';
+import AdminNavbar from "../components/AdminNavbar";
 
 const MainPage = () => {
   const [loading, setLoading] = useState(true);      // Loading state
@@ -78,7 +79,9 @@ const MainPage = () => {
   if (loading) {
     return (
       <div>
+        
         <Navbar />
+      
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
           <Container>
             <Grid container spacing={5}>
@@ -102,7 +105,12 @@ const MainPage = () => {
   return (
     <div>
       <ToastContainer />
-      <Navbar />
+      {
+          user.role === 'user' ? 
+        <Navbar />
+        :
+        <AdminNavbar />
+        }
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
         <Container>
           <Grid container spacing={5}>
