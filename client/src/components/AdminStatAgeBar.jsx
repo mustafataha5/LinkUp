@@ -110,3 +110,14 @@ const AdminStatAgeBar = () => {
     );
 };
 export default AdminStatAgeBar;
+
+
+// {/* 2nd Column */}
+// <div className="col-xs-6">
+// <div className="centered-content">
+//     <div>
+//         <h2>Gender Distribution</h2>
+//         <p> { < AdminStatPie genderCounts={genderCounts} /> }</p>
+//     </div>
+// </div>
+// </div>

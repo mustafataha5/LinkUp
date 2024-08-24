@@ -1,3 +1,15 @@
+.navbar {
+  margin-bottom: 150px;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 75px;
+}
+
 .bar-label {
   position: absolute;
   text-align: center;
