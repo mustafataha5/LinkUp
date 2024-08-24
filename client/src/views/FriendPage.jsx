@@ -10,6 +10,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Ads from '../components/Ads';
 import AdminNavbar from '../components/AdminNavbar';
+import io from 'socket.io-client';
+
+
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -42,21 +45,25 @@ function a11yProps(index) {
 }
 
 function BasicTabs() {
+
+    // const { user, setUser } = React.useContext(UserContext);
     const [value, setValue] = React.useState(0);
     const [users, setUsers] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
 
-    const [userId, setUserId] = React.useState()
+    const [user, setUser] = React.useState()
+    const [socket, setSocket] = React.useState(() => io('http://localhost:8000'));
     const navigate = useNavigate();
 
-
+    let userId = ''
 
 
     React.useEffect(() => {
         axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
             .then(async response => {
                 console.log(response.data)
-                setUserId(response.data.user._id);
+                userId = response.data.user._id ; 
+                setUser(response.data.user);
                 getFollowed(response.data.user._id)
                 //setLoading(false) ;
             })
@@ -75,6 +82,28 @@ function BasicTabs() {
             })
 
     }, []);
+
+    React.useEffect(() => {
+        const handleStatus = (data) => {
+          console.log(userId,"-----",data);
+          if (userId === data) {
+            LogOut();
+          }
+        };
+      
+        socket.on('status', handleStatus);
+      
+        socket.on('disconnect', () => {
+          console.log('Socket disconnected');
+          // Optionally, you can attempt to reconnect or show a message to the user
+        });
+      
+        // Cleanup on component unmount
+        return () => {
+          socket.off('status', handleStatus); // Remove the status event listener
+          socket.disconnect(); // Disconnect the socket connection
+        };
+      }, [socket]);
 
     const getFollowed = async (id) => {
         await axios.get("http://localhost:8000/api/follows/followed/" + id)
@@ -131,6 +160,15 @@ function BasicTabs() {
             .then(res => { console.log(res) })
             .catch(err => console.log(err));
     }
+
+    const LogOut = () => {
+        axios.post('http://localhost:8000/api/logout', {}, { withCredentials: true })
+          .then(() => {
+            navigate('/');
+          })
+          .catch(err => console.log(err));
+      };
+
 
     if (loading) {
         return (
