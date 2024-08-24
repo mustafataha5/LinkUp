@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import AdminStatBar from "../components/AdminStatBar";
 import AdminStatPie from "../components/AdminStatPie";
 import AdminNavbar from "../components/AdminNavbar";
 import axios from 'axios';
 import '../css/AdminStats.css';
-import AgeAnalysisBarChart from '../components/AgeAnalysisBarChart';
-import AdminStatAgeBar from '../components/AdminStatAgeBar';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
+import AdminStatAgeBar from '../components/AdminStatAgeBar';
 import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
@@ -67,17 +65,15 @@ const AdminDashboard = () => {
             <div className='navbar'> { <AdminNavbar /> } </div>
 
             <div className="container">
-                <div className="row">
+                <div className="row charts-row">
                     {/* Gender Distribution Pie Chart */}
-                    <div className="col-md-6">
-                        <h2>Gender Distribution</h2>
+                    <div className="col-md-6 chart-container">
                         <AdminStatPie genderCounts={genderCounts} />
                     </div>
 
                     {/* Age Distribution Bar Chart */}
-                    <div className="col-md-6">
-                        {/* <h2>Age Distribution</h2> */}
-                        <AdminStatAgeBar />
+                    <div className="col-md-6 chart-container">
+                        <AdminStatAgeBar users={users} />
                     </div>
                 </div>
             </div>
