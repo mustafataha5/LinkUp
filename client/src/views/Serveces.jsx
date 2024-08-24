@@ -24,11 +24,6 @@ const services = [
         description: 'Stay updated with the latest posts and activities from the people you follow. Create your own social network.',
         icon: <People sx={{ fontSize: 60, color: '#fe520a' }} />
     },
-    {
-        title: 'Future AI Features',
-        description: 'We’re working on integrating AI to enhance your experience. Stay tuned for smarter content recommendations, automated moderation, and more.',
-        icon: <SmartToy sx={{ fontSize: 60, color: '#fe520a' }} />
-    }
 ];
 
 const ServicesPage = () => {
@@ -43,7 +38,7 @@ const ServicesPage = () => {
                         Discover the key features that make our platform unique and how we’re planning to innovate in the future.
                     </Typography>
                 </Box>
-                <Grid container spacing={4} justifyContent="center">
+                <Grid container spacing={4} justifyContent="center" sx={{marginBottom: 6}}>
                     {services.map((service, index) => (
                         <Grid item xs={12} sm={6} md={3} key={index}>
                             <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, borderRadius: '16px', boxShadow: 3 }}>

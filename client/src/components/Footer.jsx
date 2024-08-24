@@ -9,7 +9,7 @@ function Footer() {
                 <Link to="/">Home</Link>
                 <Link to="/about">About</Link>
                 <Link to="/services">Services</Link>
-                <a href="#">Contact</a>
+                <Link to="/contact">Contact</Link>
             </div>
             <p>&copy; 2024 LinkUp. All rights reserved.</p>
         </div>
