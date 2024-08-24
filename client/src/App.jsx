@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Home from './views/Home'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import Register from './components/Register'
 import Login from './components/Login'
 import Test from './components/Test'
@@ -39,6 +39,7 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
           {/* <Route path='/randatest' element={<AdminStatBar/>}/> */}
+          <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/users' element={<AdminUserList />} />
 

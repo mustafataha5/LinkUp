@@ -152,11 +152,6 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
       <MenuItem>
         <IconButton
-          // size="large"
-          // aria-label="account of current user"
-          // aria-controls={menuId}
-          // aria-haspopup="true"
-          // color="inherit"
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
@@ -173,22 +168,25 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <Box sx={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000 }}>
         <AppBar sx={{ backgroundColor: "#555" }} position="static">
-          <Toolbar>
-            <img src={logo} style={{ width: "250px", height: "64px" }} alt="Logo" />
-            {/* <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}> */}
+        <Toolbar sx={{ paddingLeft: -2, paddingRight: -2, justifyContent: 'space-around' }}>
+            {/* Adjust marginLeft to control the distance from the edge */}
+            <img src={logo} style={{ width: "250px", height: "64px", marginLeft: '0px' }} /> 
+            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
               <SearchBar />
-            {/* </Box> */}
+            </Box>
 
-            <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            {/* <Box sx={{ flexGrow: 1 }} /> // comment out */}
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }} >
+            <Box sx={{ display: 'flex', gap: 4 }}>    {/* randa added */}
               <IconButton
                 size="large"
                 aria-label="home"
                 color="inherit"
-                sx={{ mr: 2 }}
+                // added ml: 2
+                sx={{ mr: 2, ml: 2 }} 
                 onClick={homeClick}
               >
-                <HomeIcon />
+              <HomeIcon />
               </IconButton>
               <IconButton
                 size="large"
@@ -221,7 +219,7 @@ export default function PrimarySearchAppBar() {
               >
                 <AccountCircle />
               </IconButton>
-            </Box>
+            </Box>  </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
