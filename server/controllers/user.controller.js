@@ -58,35 +58,39 @@ module.exports.register=async (req,res) => {
 } 
 
 //login 
-module.exports.login = async (req,res) => {
-    const user = await User.findOne({ email: req.body.email });
- 
-    if(user === null) {
-        // email not found in users collection
-        return res.sendStatus(400);
+module.exports.login = async (req, res) => {
+    try {
+        const errors = {}; // Initialize an empty object to store errors
+
+        // Check if the user exists by email
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            errors.email = "Invalid Email"; // Add email error if user is not found
+        } else {
+            // If user exists, check if the password is correct
+            const correctPassword = await bcrypt.compare(req.body.password, user.password);
+            if (!correctPassword) {
+                errors.password = "Invalid Password"; // Add password error if password is incorrect
+            }
+        }
+
+        // If there are any errors, return them in the response
+        if (Object.keys(errors).length > 0) {
+            console.log(errors);
+            return res.status(400).json(errors);
+        }
+
+        // If no errors, proceed to generate and send the JWT token
+        const userToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
+        return res.cookie("usertoken", userToken, { httpOnly: true }).json({ msg: "success!" });
+
+    } catch (err) {
+        console.error(err); // Log any unexpected errors
+        return res.status(500).json({ msg: "Internal Server Error" }); // Return a 500 error if something goes wrong
     }
- 
-    // if we made it this far, we found a user with this email address
-    // let's compare the supplied password to the hashed password in the database
-    const correctPassword = await bcrypt.compare(req.body.password, user.password);
- 
-    if(!correctPassword) {
-        // password wasn't a match!
-        return res.sendStatus(400);
-    }
- 
-    // if we made it this far, the password was correct
-    const userToken = jwt.sign({
-        id: user._id
-    }, process.env.SECRET_KEY);
- 
-    // note that the response object allows chained calls to cookie and json
-    res
-        .cookie("usertoken", userToken, {
-            httpOnly: true
-        })
-        .json({ msg: "success!" });
-}
+};
+
+
 
 //logout
 module.exports.logout = (req, res) => {

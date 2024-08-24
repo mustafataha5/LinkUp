@@ -5,6 +5,7 @@ import { Avatar, Box, IconButton, Link, Paper, Table, TableBody, TableCell, Tabl
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove'; 
 import AdminUserEdit from '../components/AdminUserEdit';
 import AdminNavbar from '../components/AdminNavbar';
+import '../css/AdminUserList.css';
 
 const AdminUserList = () => {
     const [users, setUsers] = useState([]);
@@ -36,12 +37,11 @@ const AdminUserList = () => {
     }
 
     return (
-        <div> {<AdminNavbar />} 
-            <div>
-                <AdminUserEdit onDelete={onDelete} users={users} />
+        <div>
+            <div className='navbarUSER'> {<AdminNavbar />} </div>
+            <div> <AdminUserEdit onDelete={onDelete} users={users}  />
             </div>
         </div>
     )
 }
-
 export default AdminUserList;

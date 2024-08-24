@@ -24,6 +24,7 @@ const Profile = () => {
     const [users, setUsers] = useState([])
     const [imageUrl, setNewImageUrl] = useState('');
     const [open, setOpen] = useState(false); 
+    const [message, setMessage] = useState("")
     const navigate = useNavigate();
 
 
@@ -82,6 +83,22 @@ const Profile = () => {
             });
     };
 
+
+const sendMessage = async () => {
+    try {
+    const payload = {
+        sender: user._id,
+        reciver: urlUser._id, 
+        content: "Hello there"
+    };
+
+        const response = await axios.post('http://localhost:8000/api/messages/send', payload, { withCredentials: true });
+        console.log("Message sent successfully:", response.data);
+        navigate("/message")
+    } catch (error) {
+console.error("Error sending message:", error.response?.data || error.message);
+    }
+};
 
 
     const handleImageClick = () => {
@@ -195,13 +212,28 @@ const Profile = () => {
                                     color: '#fe520a',
                                     '&:hover': {
                                     borderColor: '#fe520a',
-                                    backgroundColor: 'rgba(254, 82, 10, 0.1)', // Optional: Change background color on hover
-                                    color: '#fe520a',
+                                    backgroundColor: '#fe520a', // Optional: Change background color on hover
+                                    color: '#fff',
                                     },
                                 }}
                                 >
                                 Edit your profile
                             </Button>}
+                            {user._id !== urlUser._id &&
+                                <Button variant='outlined'
+                                onClick={sendMessage}
+                                sx={{
+                                    borderColor: '#fe520a',
+                                    color: '#fe520a',
+                                    '&:hover': {
+                                    borderColor: '#fe520a',
+                                    backgroundColor: '#fe520a', // Optional: Change background color on hover
+                                    color: '#fff',
+                                    },
+                                }}
+                                >Message</Button>
+                            }
+
                             </Box>
                             {/* UserList component */}
                             <Box
