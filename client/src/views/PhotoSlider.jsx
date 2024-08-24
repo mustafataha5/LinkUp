@@ -54,7 +54,7 @@ function SwipeableTextMobileStepper() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          height: 50,
+          height: 60,
           justifyContent: 'center',
           bgcolor: 'background.default',
         }}

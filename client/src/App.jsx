@@ -15,6 +15,8 @@ import Profile from './views/Profile';
 import axios from 'axios';
 import AdminUserList from './views/AdminUserList';
 import AdminDashboard from './views/AdminDashboard';
+import AboutUsPage from './views/AboutUs';
+import ServicesPage from './views/Serveces';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -39,6 +41,8 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
           {/* <Route path='/randatest' element={<AdminStatBar/>}/> */}
+          <Route path='/services' element={<ServicesPage/>}/>
+          <Route path='/about' element={<AboutUsPage/>}/>
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/users' element={<AdminUserList />} />
 
