@@ -13,6 +13,9 @@ import { ToastContainer } from 'react-toastify'; // Ensure you import ToastConta
 import 'react-toastify/dist/ReactToastify.css'; // Add ToastContainer's CSS if not already included
 import UserList from '../components/UserList';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import AdminNavbar from '../components/AdminNavbar'; 
+
+
 
 const Profile = () => {
     const { id } = useParams();
@@ -178,7 +181,9 @@ console.error("Error sending message:", error.response?.data || error.message);
             navigate(`/register/${urlUser._id}`)
           }
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>
+            <Navbar />
+            Loading...</div>;
     }
 
     if (!urlUser) {
@@ -188,7 +193,12 @@ console.error("Error sending message:", error.response?.data || error.message);
     return (
         <>
             <ToastContainer /> {/* Ensure ToastContainer is imported if needed */}
-            <Navbar />
+            {
+        user.role === 'user' ? 
+        <Navbar />
+        :
+        <AdminNavbar />
+      }
             <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
                 <Container>
                     <Grid container spacing={5}>

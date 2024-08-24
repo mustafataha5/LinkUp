@@ -6,9 +6,33 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import AdminUserEdit from '../components/AdminUserEdit';
 import AdminNavbar from '../components/AdminNavbar';
 import '../css/AdminUserList.css';
+import { useNavigate } from 'react-router-dom';
 
 const AdminUserList = () => {
     const [users, setUsers] = useState([]);
+    const [loading,setLoading] = useState(true)
+    const navigate = useNavigate() ; 
+    // Get the user (we will get the id from the cookies then find the user)
+ useEffect(() => {
+   getUser();
+ }, []);
+
+ const getUser = async () => {
+   try {
+     const response = await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true });
+       console.log(response.data.user)   
+     if(response.data.user.role === 'user'){
+           navigate('/401');
+          }
+          setLoading(false)
+     
+   } catch (error) {
+     console.error('Error checking authentication', error);
+     navigate('/403'); // Redirect to login if not authenticated
+   } finally {
+     setLoading(false); // Ensure loading is false even if requests fail
+   }
+ };
 
     // Handle delete request for a user from admin 
     const onDelete = (userId) => {
@@ -35,8 +59,16 @@ const AdminUserList = () => {
             setUsers(response.data.users);   
         })
     }
+    if(loading){
+        return (
+            <div>
+                <AdminNavbar/>
+            </div>
 
+        )
+    }
     return (
+        
         <div>
             <div className='navbarUSER'> {<AdminNavbar />} </div>
             <div> <AdminUserEdit onDelete={onDelete} users={users}  />
