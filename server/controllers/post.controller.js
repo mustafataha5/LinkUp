@@ -1,4 +1,5 @@
 const  Post= require('../models/post.model');
+const User = require('../models/user.model');
 
 module.exports.updatePost = (request, response) => {
     // {new: true}: returns the NEWLY updated document, not original one
@@ -66,10 +67,30 @@ module.exports.getAllPostOfUserByUserID = (request, response) => {
             response.status(500).json({ message: 'Server error', error: err });
         });
 };
+
 // The method below is new
-module.exports.createPost  = (request, response) => {
-    const {user,content, imageUrl} = request.body
-    Post.create({user,content,imageUrl})  
-        .then(post  => response.json({post:post}))   
-        .catch(err => response.status(400).json(err));
-}
+module.exports.createPost = async (req, res) => {
+    const { user: userId, content, imageUrl } = req.body;
+
+    try {
+        // Find the user by their ID
+        const user = await User.findById(userId);
+
+        // Check if the user exists
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the user is active
+        if (user.status !== 'active') {
+            return res.status(403).json({ message: 'User is deactivated and cannot create posts' });
+        }
+
+        // Create the post
+        const post = await Post.create({ user: userId, content, imageUrl });
+
+        return res.status(201).json({ post });
+    } catch (err) {
+        return res.status(400).json({ error: err.message });
+    }
+};

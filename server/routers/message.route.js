@@ -2,12 +2,12 @@
 
 
 const MessageController = require('../controllers/message.controller');
-
+const { authenticate } = require('../config/jwt.config');
 module.exports = function(app){
      //messages
      app.get("/api/messages",MessageController.getAllMessages)
-     app.post("/api/messages/send",MessageController.sendMessage);
      app.get("/api/messages/:user1Id/:user2Id",MessageController.getMessages);
-     app.patch("/api/messages/read/:messageId",MessageController.setMessageReaded)
-     app.delete("/api/messages/:messageId",MessageController.deleteMessage)
+     app.post("/api/messages/send",authenticate,MessageController.sendMessage);
+     app.patch("/api/messages/read/:messageId",authenticate,MessageController.setMessageReaded)
+     app.delete("/api/messages/:messageId",authenticate,MessageController.deleteMessage)
 }
