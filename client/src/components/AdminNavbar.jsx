@@ -21,6 +21,8 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import SearchBar from './SearchBar';
 import { InputBase } from '@mui/material';
+import logo from '../images/logo.png'
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -110,11 +112,13 @@ export default function PrimarySearchAppBar() {
   };
 
   const statisticsClick = () => {
-    navigate("/statistics");
+    navigate("/admin/dashboard");
   };
-
+  const superVisor = () =>{
+    navigate("/admin/users");
+  }
   const userListClick = () => {
-    navigate("/user-list");
+    navigate("/admin/users");
   };
 
   const menuId = 'primary-search-account-menu';
@@ -178,16 +182,17 @@ export default function PrimarySearchAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Box sx={{ position: 'fixed', top: 0, width: "100%", zIndex: 1000 }}>
-        <AppBar sx={{ backgroundColor: "#fe520a" }} position="static">
-          <Toolbar>
-            <Typography
+        <AppBar sx={{ backgroundColor: "#555" }} position="static">
+        <Toolbar>
+            <img src={logo} style={{width: "250px", height: "64px"}}/>
+            {/* <Typography
               variant="h6"
               noWrap
               component="div"
               sx={{ display: { xs: 'none', sm: 'block' } }}
             >
               LinkUp
-            </Typography>
+            </Typography> */}
             <Toolbar sx={{ justifyContent: 'center', width: "80%" }}>
               <SearchBar />
             </Toolbar>
@@ -219,6 +224,14 @@ export default function PrimarySearchAppBar() {
                 onClick={statisticsClick}
               >
                 <ShowChartIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="statistics"
+                color="inherit"
+                onClick={superVisor}
+              >
+              
               </IconButton>
               <IconButton
                 size="large"

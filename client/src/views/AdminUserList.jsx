@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Avatar, Box, IconButton, Link, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove'; 
 import AdminUserEdit from '../components/AdminUserEdit';
+import AdminNavbar from "../components/AdminNavbar";
 
 const AdminUserList = () => {
     const [users, setUsers] = useState([]);
@@ -35,7 +36,9 @@ const AdminUserList = () => {
     }
 
     return (
+        
         <div>
+            <AdminNavbar />
             <AdminUserEdit onDelete={onDelete} users={users} />
         </div>
     )

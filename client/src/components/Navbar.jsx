@@ -73,7 +73,8 @@ export default function PrimarySearchAppBar() {
 
 
   const { user, setUser } = useContext(UserContext);
-
+   // Get the user (we will get the id from the cookies then find the user)
+ 
   const LogOut = () => {
     axios.post('http://localhost:8000/api/logout', {}, { withCredentials: true })
       .then((res) => {
@@ -116,6 +117,10 @@ export default function PrimarySearchAppBar() {
 
   const mailClick = () => {
     navigate("/message");
+  }
+
+  const toAdmin = ()=>{
+    navigate("/admin/dashboard");
   }
 
   const menuId = 'primary-search-account-menu';

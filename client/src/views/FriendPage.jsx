@@ -56,7 +56,8 @@ function BasicTabs() {
             .then(async response => {
                 console.log(response.data)
                 setUserId(response.data.user._id);
-                setLoading(false) ;
+                getFollowed(response.data.user._id)
+                //setLoading(false) ;
             })
             .catch(error => {
                 console.error('Error checking authentication', error);
@@ -64,7 +65,15 @@ function BasicTabs() {
            
     }, []);
 
- 
+    const getFollowed = async(id) =>{
+        await axios.get("http://localhost:8000/api/follows/followed/" + id)
+        .then(res => {
+           console.log(res.data.followings)
+            setUsers(res.data.followings)
+            setLoading(false) ; 
+        })
+        .catch(err => console.log(err))
+    }
     const handleChange = (event, newValue) => {
         setLoading(true) ; 
         if (newValue === 0) {

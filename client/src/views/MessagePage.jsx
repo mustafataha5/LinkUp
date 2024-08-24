@@ -15,7 +15,7 @@ const MessagePage = () => {
   const [reciver, setReciver] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const [socket] = useState(() => io('http://localhost:8000'));
+  const [socket, setSocket] = useState(() => io('http://localhost:8000'));
 
   const navigate = useNavigate();
 
@@ -28,20 +28,32 @@ const MessagePage = () => {
   }, [user]);
 
   useEffect(() => {
-    if (user && reciver._id) {
-      socket.emit('joinRoom', { ownerId: user._id, reciverId: reciver._id });
-    }
-  }, [user, reciver._id, socket]);
-
-  useEffect(() => {
-    socket.on('message', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
+    // Clean up the previous socket connection when component unmounts or receiver changes
     return () => {
-      socket.off('message'); // Cleanup listener on unmount
+      console.log('Cleaning up socket');
+      socket.disconnect();
     };
   }, [socket]);
+
+  useEffect(() => {
+    if (user && reciver._id) {
+      console.log('Socket connected:', socket.id);
+      console.log('Emitting joinRoom with:', { senderId: user._id, reciverId: reciver._id });
+      socket.emit('joinRoom', { senderId: user._id, reciverId: reciver._id });
+
+      // Listen for incoming messages
+      socket.on('message', (message) => {
+        console.log('Received message:', message);
+        setMessages((prevMessages) => [...prevMessages, message]);
+      });
+    }
+
+    // Cleanup listener on unmount
+    return () => {
+      console.log('Cleaning up socket listeners');
+      socket.off('message');
+    };
+  }, [user, reciver._id, socket]);
 
   const getAuth = async () => {
     try {
@@ -59,7 +71,9 @@ const MessagePage = () => {
       const res = await axios.get(`http://localhost:8000/api/follows/allfrind/${id}`);
       const friendsList = res.data.friends;
       if (friendsList.length > 0) {
+        setReciver(friendsList[0]);
         getMessages(friendsList[0]._id);
+        setLoading(false);
       }
       setFriends(friendsList);
       setLoading(false);
@@ -68,12 +82,11 @@ const MessagePage = () => {
     }
   };
 
-  const createMessage = async (sender, reciver, content) => {
+  const createMessage = async (senderId, reciverId, content) => {
     try {
-      const res = await axios.post('http://localhost:8000/api/messages/send', { sender, reciver, content }, { withCredentials: true });
+      const res = await axios.post('http://localhost:8000/api/messages/send', { sender: senderId, reciver: reciverId, content }, { withCredentials: true });
       const message = res.data.message;
-      socket.emit('privateMessage', { senderId: sender._id, reciverId: reciver._id, message });
-      setMessages((prevMessages) => [...prevMessages, message]);
+      socket.emit('privateMessage', { senderId, reciverId, message });
     } catch (err) {
       console.error('Error sending message', err);
     }
@@ -84,7 +97,9 @@ const MessagePage = () => {
       const recv = friends.find((friend) => friend._id === friendId);
       if (recv) {
         setReciver(recv);
-        socket.emit('joinRoom', { ownerId: user._id, reciverId: recv._id });
+      //  console.log(user._id, "-----------", recv._id);
+        const senderId = user._id;
+        socket.emit('joinRoom', { senderId, reciverId: recv._id });
         setMessages([]);
         const res = await axios.get(`http://localhost:8000/api/messages/${friendId}/${user._id}`, { withCredentials: true });
         setMessages(res.data.messages);

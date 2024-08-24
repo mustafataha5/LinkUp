@@ -7,7 +7,7 @@ const Page403 = () => {
 
     // Redirect to the login page or root route
     const handleGoLogin = () => {
-        navigate('/login');
+        navigate('/');
     }
 
     return (
