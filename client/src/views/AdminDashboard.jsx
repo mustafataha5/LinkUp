@@ -70,7 +70,7 @@ const AdminDashboard = () => {
         <div>
             <div className='navbar'>{<AdminNavbar />}</div>
 
-            <div className="container">
+            <div className="container p-3">
                 {/* Cards Row */}
                 <div className="row mb-4">
                     <div className="col-md-4">
