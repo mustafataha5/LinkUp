@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { Box, Avatar, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Box, Avatar, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import axios from 'axios';
-import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn'; 
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 
 // const initialUsers = [
@@ -16,62 +16,73 @@ import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 //     { id: 6, firstName: 'Muath', lastName: 'Ademar', imageUrl: 'path/to/muath.jpg' },
 // ];
 
-const AdminUserEdit = ({onDeactive,onActive, users}) => {
+const AdminUserEdit = ({ onDeactive, onActive, users }) => {
     const { user } = useContext(UserContext);
 
-    
+
     const handleDeactive = (userId) => {
-      onDeactive(userId)
+        onDeactive(userId)
     };
 
-    const handleActive= (userId) => {
+    const handleActive = (userId) => {
         onActive(userId)
-      };
+    };
 
 
     return (
-        <TableContainer component={Paper}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>User Name</TableCell>
-                        <TableCell>Active/Deactive</TableCell>
-                        <TableCell>Edit Profile</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {users.map((user,i) => (
+        <Container >
+
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>User Name</TableCell>
+                            <TableCell>Active/Deactive</TableCell>
+                            <TableCell>Edit Profile</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {users.map((user, i) => (
 
                             <TableRow key={i}>
-                            <TableCell>
-                                <Box display="flex" alignItems="center">
-                                    <Avatar src={user.imageUrl} alt={user.firstName} sx={{ marginRight: 2 }} />
-                                    <Box>
-                                        {user.firstName} {user.lastName}
+                                <TableCell>
+                                    <Box display="flex" alignItems="center">
+                                        <Avatar src={user.imageUrl} alt={user.firstName} sx={{ marginRight: 2 }} />
+                                        <Box>
+                                            {user.firstName} {user.lastName}
                                         </Box>
-                                </Box>
-                            </TableCell>
-                            <TableCell>
-                               {
-                                 user.role === 'user' &&( user.status === "active" ?
-                                 <IconButton onClick={() => handleDeactive(user._id)} color="error">
-                                    <DoDisturbOnIcon />
-                                    </IconButton>
-                                :
-                                <IconButton onClick={() => handleActive(user._id)} color="success">
-                                <DomainVerificationIcon />
-                                </IconButton>
-                            )} 
-                            </TableCell>
-                            <TableCell>
-                            <Link to={`/profile/${user._id}`}>Edit</Link>
-                            </TableCell>
-                            </TableRow> 
-                            
-                    ))}
+                                    </Box>
+                                </TableCell>
+                                <TableCell>
+                                    {
+                                        user.role === 'user' && (user.status === "active" ?
+                                            <IconButton onClick={() => handleDeactive(user._id)} 
+                                            color="error"
+                                            sx={{ display: 'flex', alignItems: 'flex-end' }}
+                                            >
+                                               <div> <DoDisturbOnIcon /></div> 
+                                                <small className='mx-1'>Deactive</small>
+                                            </IconButton>
+                                            :
+                                            <IconButton onClick={() => handleActive(user._id)} 
+                                            color="success"
+                                            sx={{ display: 'flex', alignItems: 'flex-end' }}
+                                            >
+                                                <div><DomainVerificationIcon /></div>
+                                                <small className='mx-1'>Active</small>
+                                            </IconButton>
+                                        )}
+                                </TableCell>
+                                <TableCell>
+                                    <Link to={`/profile/${user._id}`} className='btn btn-secondary' >Edit</Link>
+                                </TableCell>
+                            </TableRow>
+
+                        ))}
                     </TableBody>
-                    </Table>
-                    </TableContainer>
+                </Table>
+            </TableContainer>
+        </Container>
     );
 };
 
