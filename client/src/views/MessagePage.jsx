@@ -146,7 +146,7 @@ const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websock
       }
       <Container>
         <Grid container spacing={1}>
-          <Grid item xs={4} marginTop={15}>
+          <Grid item xs={4} marginTop={15} >
             <UserList
               onCardClick={getMessages}
               owner={user}

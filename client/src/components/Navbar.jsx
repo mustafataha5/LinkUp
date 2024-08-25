@@ -116,6 +116,7 @@ export default function PrimarySearchAppBar() {
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
+      sx={{ mt: 4 }}
       onClose={handleMenuClose}
     >
       <MenuItem onClick={profile}>Profile</MenuItem>
