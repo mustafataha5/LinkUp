@@ -38,9 +38,9 @@ const PostForm = ({postId,
   };
 
   const handleSubmit = () => {
-    if( imageUrl.length >1 && content.length < 1){
-      setContent('.') ;
-    }
+    // if( imageUrl.length >1 && content.length < 1){
+    //   setContent('.') ;
+    // }
   
     if (isEdit){
         console.log('-------**********************************')
@@ -66,7 +66,22 @@ console.log("errors=====================",errors)
       
       <CardHeader
         avatar={<Avatar src={userImage} alt="User" />}
-        title={<Typography variant="h6" sx={{ fontWeight: 'bold' }}><Link style={{textDecoration:"none"}} to={`/profile/${userId}`}>{name}</Link></Typography>}
+        title={<Typography 
+  variant="body1" 
+  component="div" 
+  style={{ flexGrow: 1, fontWeight: 'bold', color: 'black' }}
+>
+  <Link 
+    to={`/profile/${userId}`} 
+    style={{ 
+      textDecoration: 'none', 
+      color: 'inherit', 
+      transition: 'color 0.3s' 
+    }}
+    onMouseEnter={e => e.target.style.color = 'blue'}
+    onMouseLeave={e => e.target.style.color = 'inherit'}
+  >
+          {name}</Link></Typography>}
       />
       <CardContent>
         <TextField
@@ -105,10 +120,20 @@ console.log("errors=====================",errors)
           </Typography>
         </Box>
         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-          <Button variant="contained" sx={{backgroundColor:'#fe520a'}}onClick={handleSubmit}>
-            {isEdit ? 'Update' : 'Post'}
-          </Button>
-        </Box>
+  <Button 
+    variant="contained" 
+    sx={{ 
+      backgroundColor: '#fe520a', 
+      '&:hover': {
+        backgroundColor: '#fe520a',
+      },
+    }} 
+    onClick={handleSubmit}
+  >
+    {isEdit ? 'Update' : 'Post'}
+  </Button>
+</Box>
+
       </CardContent>
     </Card>
   );

@@ -13,10 +13,12 @@ const MessageForm = ({onFromSubmit}) => {
         setValue('');
     }      
   return (
-    <div>
-      <form className='d-flex flex-row justify-contents-start ' onSubmit={submitHandle}>
+    <div >
+      <form className='d-flex flex-row justify-contents-start '
+      style={{backgroundColor:'rgb(242 240 240)'}}  
+      onSubmit={submitHandle}>
         <input className='flex-fill p-2 mx-3' type="text" value={value} required onChange={(e)=>setValue(e.target.value)} placeholder='Enter Message' />
-        <button className='btn btn-primary '>Send</button>
+        <button style={{backgroundColor: '#fe520a', color:'white'}} className='btn'>Send</button>
       </form>
     </div>
   )

@@ -15,7 +15,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import MoreIcon from '@mui/icons-material/More';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import logo from '../images/logo.png';
 import SearchBar from './SearchBar';
@@ -170,7 +170,7 @@ export default function PrimarySearchAppBar() {
         <AppBar sx={{ backgroundColor: "#555" }} position="static">
         <Toolbar sx={{ paddingLeft: -2, paddingRight: -2, justifyContent: 'space-around' }}>
             {/* Adjust marginLeft to control the distance from the edge */}
-            <img src={logo} style={{ width: "250px", height: "64px", marginLeft: '0px' }} /> 
+            <Link to={'/success'}><img src={logo} style={{ width: "250px", height: "64px", marginLeft: '0px' }} /></Link> 
             <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
               <SearchBar />
             </Box>

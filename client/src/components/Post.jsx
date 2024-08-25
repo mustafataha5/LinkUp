@@ -228,8 +228,23 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
         }
         // The header part of the post {user name, user image, date and time }
         title={
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            <Link style={{textDecoration:"none"}} to={`/profile/${post.user._id}`}>{post.user.firstName} {post.user.lastName}</Link>
+          <Typography
+            variant="body1"
+            component="div"
+            style={{ flexGrow: 1, fontWeight: 'bold', color: 'black' }}
+          >
+            <Link
+              to={`/profile/${user._id}`}
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                transition: 'color 0.3s'
+              }}
+              onMouseEnter={e => e.target.style.color = 'blue'}
+              onMouseLeave={e => e.target.style.color = 'inherit'}
+            >
+              {post.user.firstName} {post.user.lastName}
+            </Link>
           </Typography>
         }
         subheader={new Date(post.timestamp).toLocaleString('en-US', {
@@ -269,7 +284,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
           component="img"
           image={post.imageUrl}
           alt="Post image"
-          sx={{ maxHeight: 300, objectFit: 'cover' }}
+          sx={{ maxHeight: 350, objectFit: 'cover', padding: 2, borderRadius: "25px" }}
         />
 
       )}
@@ -277,7 +292,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
       <CardActions disableSpacing>
         <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
           <IconButton aria-label="like" onClick={() => handleLike(post._id)}>
-            <ThumbUpIcon color={isLiked ? 'primary' : 'action'} />
+            <ThumbUpIcon sx={{ color: isLiked ? '#fe520a' : 'action' }} />
           </IconButton>
           <Typography variant="body2" color="text.secondary">
             {numOfLikes}
@@ -338,12 +353,19 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
               />
               <Button
                 variant="contained"
-                color="primary"
                 onClick={handleAddComment}
-                sx={{ mt: 1 }}
+                sx={{
+                  mt: 1,
+                  backgroundColor: '#fe520a',
+                  '&:hover': {
+                    backgroundColor: '#fe520a', // Maintain the same color on hover
+                    boxShadow: 'none', // Remove any shadow effects on hover
+                  },
+                }}
               >
                 Comment
               </Button>
+
             </Box>
           </CardContent>
         </>

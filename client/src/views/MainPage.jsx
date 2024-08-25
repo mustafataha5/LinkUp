@@ -112,7 +112,14 @@ const MainPage = () => {
       console.error('Error fetching suggested users:', error);
     }
   };
-
+  const deleteFollowed =async (followId) => {
+    console.log(followId)
+    await axios.delete('http://localhost:8000/api/follows/'+followId)
+    .then(res =>{
+        console.log(res)
+    } )    
+    .catch(err => console.log(err)) ; 
+}
   const LogOut = () => {
     axios.post('http://localhost:8000/api/logout', {}, { withCredentials: true })
       .then(() => {
@@ -190,7 +197,7 @@ const MainPage = () => {
                       color: '#333'
                     }}
                   >
-                    Followers
+                    Following
                   </Typography>
                   <Box 
                     sx={{ 
@@ -210,6 +217,7 @@ const MainPage = () => {
                     >
                       <UserList
                         initialUsers={users.slice(0, followersLimit)}
+                        onClickTab={deleteFollowed}
                         index={0}
                         sx={{
                           '& .user-item': {
@@ -236,21 +244,42 @@ const MainPage = () => {
                       />
                     </Box>
                     {users.length > followersLimit && (
-                      <Button
+                      <Typography
+  variant="body1"
   sx={{
-    color: '#fff',
-    backgroundColor: '#fe520a',
     marginTop: '16px',
     alignSelf: 'center',
+    cursor: 'pointer',
+    color: '#fe520a', // Initial color
+    fontWeight: 'bold',
+    textDecoration: 'underline',
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
     '&:hover': {
-      backgroundColor: '#fe520a', // Match the background color on hover
-      boxShadow: 'none', // Disable any shadow effects on hover if not needed
+      color: '#fe520a', // Maintain the color on hover
+      textDecoration: 'none',
+    },
+    '&:hover::after': {
+      content: '"→"', // Unicode arrow
+      position: 'absolute',
+      right: '-20px',
+      opacity: 1,
+      transition: 'opacity 0.3s ease',
+    },
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      right: '-20px',
+      opacity: 0,
+      transition: 'opacity 0.3s ease',
     },
   }}
   onClick={() => navigate('/people')}
 >
   View More
-</Button>
+</Typography>
+
                     )}
                   </Box>
                 </Box>

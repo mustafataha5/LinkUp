@@ -49,9 +49,10 @@ const UserList = ({
             display: 'flex',
             alignItems: 'center',
             padding: '10px',
-            backgroundColor: user._id === reciver._id ? '#555555' : (index === 4 ? '#f0f0f0' : 'transparent'),
+            backgroundColor: user._id === reciver._id ? '#ccc' : (index === 4 ? '#f0f0f0' : 'transparent'),
             color: user._id === reciver._id ? 'white' : 'black',
             transition: 'background-color 0.3s ease-in-out',
+            borderRadius: "25px"
           }}
           onMouseEnter={(e) => {
             if (index === 4){
@@ -65,15 +66,31 @@ const UserList = ({
               e.currentTarget.style.backgroundColor = '#f0f0f0';}
             else if (index === 4 && user._id === reciver._id){
               e.currentTarget.style.color = 'white';
-              e.currentTarget.style.backgroundColor = '#555555';
+              e.currentTarget.style.backgroundColor = '#bbb';
             } 
           }}
           onClick={() => onCardClick(user._id)}
         >
           <Avatar src={user.imageUrl} alt={user.firstName} style={{ marginRight: 10 }} />
-          <Typography variant="body1" component="div" style={{ flexGrow: 1, fontWeight: 'bold', textDecoration: 'none' }}>
-            <Link to={`/profile/${user._id}`}>{user.firstName} {user.lastName}</Link>
-          </Typography>
+          <Typography 
+  variant="body1" 
+  component="div" 
+  style={{ flexGrow: 1, fontWeight: 'bold', color: 'black' }}
+>
+  <Link 
+    to={`/profile/${user._id}`} 
+    style={{ 
+      textDecoration: 'none', 
+      color: 'inherit', 
+      transition: 'color 0.3s' 
+    }}
+    onMouseEnter={e => e.target.style.color = 'blue'}
+    onMouseLeave={e => e.target.style.color = 'inherit'}
+  >
+    {user.firstName} {user.lastName}
+  </Link>
+</Typography>
+
           <div>
             {index === 0 && (
               <IconButton
