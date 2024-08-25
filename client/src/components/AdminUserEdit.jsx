@@ -37,7 +37,6 @@ const AdminUserEdit = ({onDeactive,onActive, users}) => {
                         <TableCell>User Name</TableCell>
                         <TableCell>Active/Deactive</TableCell>
                         <TableCell>Edit Profile</TableCell>
-                        <TableCell>Deactivate Profile</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

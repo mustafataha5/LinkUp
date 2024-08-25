@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../css/ContactUs.css';
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Box,
+  Alert
+} from '@mui/material';
 
-function ContactUsForm({ setAcknowledgmentMessage }) {
+function ContactUsForm() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const navigate = useNavigate();
+  const [acknowledgmentMessage, setAcknowledgmentMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -18,27 +24,62 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
     setAcknowledgmentMessage(
       `Dear ${formData.name},\n\nThank you for contacting us! We have received your message and are reviewing your inquiry. One of our team members will get back to you as soon as possible.\n\nThank you for your patience and for reaching out to us!\n\nBest regards,\nYour Company Name`
     );
-    navigate('/contact/response');
+    setFormData({ name: '', email: '', message: '' }); // Reset the form
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Message:</label>
-          <textarea name="message" value={formData.message} onChange={handleChange} required />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Box 
+        component="form" 
+        onSubmit={handleSubmit} 
+        sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}
+      >
+        <Typography variant="h5" component="h1" gutterBottom>
+          Contact Us
+        </Typography>
+        <TextField
+          label="Name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+        <TextField
+          label="Email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          fullWidth
+          type="email"
+        />
+        <TextField
+          label="Message"
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          required
+          fullWidth
+          multiline
+          rows={4}
+        />
+        <Button type="submit" variant="contained" sx={{ backgroundColor: 'orange' }}>
+          Submit
+        </Button>
+      </Box>
+
+      {acknowledgmentMessage && (
+        <Box sx={{ mt: 4 }}>
+          <Alert severity="success">
+            <Typography variant="body1" component="p" whiteSpace="pre-line">
+              {acknowledgmentMessage}
+            </Typography>
+          </Alert>
+        </Box>
+      )}
+    </Container>
   );
 }
+
 export default ContactUsForm;
