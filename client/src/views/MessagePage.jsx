@@ -98,6 +98,7 @@ const MessagePage = () => {
     try {
       const recv = friends.find((friend) => friend._id === friendId);
       if (recv) {
+        console.log('===============================')
         setReciver(recv);
         const senderId = user._id;
         socket.emit('joinRoom', { senderId, reciverId: recv._id });

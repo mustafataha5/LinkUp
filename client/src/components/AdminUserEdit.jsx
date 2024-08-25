@@ -40,7 +40,7 @@ const AdminUserEdit = ({ onDeactive, onActive, users }) => {
                                 </TableCell>
                                 <TableCell>
                                     {
-                                        user.role === 'user' && (user.status === "active" ?
+                                        user.role === 'user' && (user.status === "deactive" ?
                                             <IconButton onClick={() => handleDeactive(user._id)} 
                                             color="error"
                                             sx={{ display: 'flex', alignItems: 'flex-end' }}
