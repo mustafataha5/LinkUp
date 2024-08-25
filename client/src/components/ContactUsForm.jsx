@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/ContactUs.css';
 
+
 function ContactUsForm({ setAcknowledgmentMessage }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const navigate = useNavigate();
