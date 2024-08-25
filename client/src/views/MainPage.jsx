@@ -22,7 +22,8 @@ const MainPage = () => {
   const navigate = useNavigate();
   const resposive = useMediaQuery('(max-width: 600px)')
   const resposive1= useMediaQuery('(max-width: 900px)')
-  const [socket, setSocket] =useState(() => io('http://51.20.56.131:8000'));
+  const socketUrl = 'http://51.20.56.131:8000'; // Update this to your public IP or domain
+const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websocket'] }));
 
   const [isScreenSmall, setSmallScreen] = useState(window.innerWidth <= 900);
   

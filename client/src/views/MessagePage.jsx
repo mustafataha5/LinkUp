@@ -16,7 +16,8 @@ const MessagePage = () => {
   const [reciver, setReciver] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const [socket, setSocket] = useState(() => io('http://51.20.56.131:8000'));
+  const socketUrl = 'http://51.20.56.131:8000'; // Update this to your public IP or domain
+const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websocket'] }));
 
   const navigate = useNavigate();
 
