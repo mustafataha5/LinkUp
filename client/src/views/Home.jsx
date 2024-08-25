@@ -5,7 +5,7 @@ import logo from '../images/logo.png'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Login from '../components/Login';
-import Navbar from '../components/Navbar'
+import DrawerAppBar from '../components/DrawerAppBar';
 
 const Home = () => {
   const navigate = useNavigate()
@@ -45,7 +45,7 @@ const Home = () => {
 
   return (
     <>
-    <Navbar />
+    <DrawerAppBar />
       <div className='row'>
         <div className='col-md-6 homeFeatures2'>
           <div className='homeFeatures'>

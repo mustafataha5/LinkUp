@@ -5,7 +5,7 @@ module.exports.updatePost = (request, response) => {
     // {new: true}: returns the NEWLY updated document, not original one
     const {user,content,imageUrl} = request.body ;
     console.log(request.body)
-    Post.findOneAndUpdate({_id: request.params.id,user:user}, {content:content},{new:true})
+    Post.findOneAndUpdate({_id: request.params.id}, {content:content, imageUrl:imageUrl},{new:true})
         // handles & returns successful update:
         .then(updatedPost  => response.json({post:updatedPost} ))
         // handles & returns any error during the process as JSON response

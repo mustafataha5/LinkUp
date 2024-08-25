@@ -1,4 +1,4 @@
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, CircularProgress } from '@mui/material';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserList from '../components/UserList';
@@ -8,7 +8,6 @@ import { UserContext } from '../context/UserContext';
 import axios from 'axios';
 import io from 'socket.io-client';
 import AdminNavbar from '../components/AdminNavbar'; 
-
 
 const MessagePage = () => {
   const { user, setUser } = useContext(UserContext);
@@ -22,18 +21,10 @@ const MessagePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-   // console.log('ddddd')
-    // if (!user) {
-    //   getAuth();
-    // } else {
-    //   getAuth();
-    //  // getAllFriends(user._id);
-    // }
     getAuth(); 
   }, []);
 
   useEffect(() => {
-    // Clean up the previous socket connection when component unmounts or receiver changes
     return () => {
       console.log('Cleaning up socket');
       socket.disconnect();
@@ -41,23 +32,20 @@ const MessagePage = () => {
   }, [socket]);
 
   useEffect(() => {
-
-    socket.on('status',(data) =>{
-      LogOut() ; 
-    }) 
+    socket.on('status', (data) => {
+      LogOut(); 
+    });
     if (user && reciver._id) {
       console.log('Socket connected:', socket.id);
       console.log('Emitting joinRoom with:', { senderId: user._id, reciverId: reciver._id });
       socket.emit('joinRoom', { senderId: user._id, reciverId: reciver._id });
 
-      // Listen for incoming messages
       socket.on('message', (message) => {
         console.log('Received message:', message);
         setMessages((prevMessages) => [...prevMessages, message]);
       });
     }
 
-    // Cleanup listener on unmount
     return () => {
       console.log('Cleaning up socket listeners');
       socket.off('message');
@@ -70,17 +58,13 @@ const MessagePage = () => {
       setUser(response.data.user);
       getAllFriends(response.data.user._id);
     } catch (error) {
-      // Handle different status codes
       if (error.response.status === 401) {
-        //setError('Unauthorized: Please log in.');
-        navigate('/401'); // Redirect to login
-    } else if (error.response.status === 403) {
-        //setError('Access Denied: Your account is deactivated.');
-        navigate('/403'); // Redirect to a 403 Forbidden page
-    } else {
-      navigate('/403')
-       // setError('An unexpected error occurred.');
-    }
+        navigate('/401');
+      } else if (error.response.status === 403) {
+        navigate('/403');
+      } else {
+        navigate('/403');
+      }
     }
   };
 
@@ -115,7 +99,6 @@ const MessagePage = () => {
       const recv = friends.find((friend) => friend._id === friendId);
       if (recv) {
         setReciver(recv);
-      //  console.log(user._id, "-----------", recv._id);
         const senderId = user._id;
         socket.emit('joinRoom', { senderId, reciverId: recv._id });
         setMessages([]);
@@ -138,18 +121,25 @@ const MessagePage = () => {
   };
 
   if (loading) {
-    return  <>
-    
-      <Navbar />
-    </> 
+    return (
+      <>
+        {user && (user.role === 'user' ? <Navbar /> : <AdminNavbar />)}
+        <Container>
+          <Grid container spacing={1} alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
+            <Grid item>
+              <CircularProgress />
+            </Grid>
+          </Grid>
+        </Container>
+      </>
+    );
   }
 
   return (
     <div>
-      {
-        user.role === 'user' ? 
+      {user.role === 'user' ? 
         <Navbar />
-        :
+        : 
         <AdminNavbar />
       }
       <Container>
