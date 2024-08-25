@@ -61,15 +61,14 @@ const PostForm = ({postId,
   };
 console.log("errors=====================",errors)
   return (
-    <Card sx={{ maxWidth: 500,
-      margin: '20px auto',
-      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Adjust shadow as needed
-      borderRadius: '8px', // Optional: Rounded corners
-    }}>
-        <CardHeader
-          avatar={<Avatar src={userImage} alt="User" />}
-          title={<Typography variant="h6" sx={{ fontWeight: 'bold' }}>{name}</Typography>}
-        />
+
+    <Card sx={{ maxWidth: 500, margin: '20px auto', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', borderRadius: '8px' }}>
+      
+      <CardHeader
+        avatar={<Avatar src={userImage} alt="User" />}
+        title={<Typography variant="h6" sx={{ fontWeight: 'bold' }}><Link style={{textDecoration:"none"}} to={`/profile/${userId}`}>{name}</Link></Typography>}
+      />
+
       <CardContent>
         <TextField
           fullWidth

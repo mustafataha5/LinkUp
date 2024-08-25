@@ -40,8 +40,14 @@ const ServicesPage = () => {
                 </Box>
                 <Grid container spacing={4} justifyContent="center" sx={{marginBottom: 6}}>
                     {services.map((service, index) => (
-                        <Grid item xs={12} sm={6} md={3} key={index}>
-                            <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, borderRadius: '16px', boxShadow: 3 }}>
+                        <Grid item xs={12}  sm={6} md={3} key={index}>
+                            <Card sx={{ display: 'flex',
+                                  flexDirection: 'column',
+                                   alignItems: 'center', 
+                                   p: 2,
+                                    borderRadius: '16px',
+                                    boxShadow: 3,
+                                    height: '300px' }}>
                                 <Box sx={{ mb: 2 }}>
                                     {service.icon}
                                 </Box>
