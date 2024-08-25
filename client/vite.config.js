@@ -13,9 +13,4 @@ export default defineConfig({
     ],
   },
 
-<<<<<<< HEAD
 })
-=======
-})
-
->>>>>>> master
