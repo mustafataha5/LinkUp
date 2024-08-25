@@ -14,7 +14,7 @@ import {
   Tooltip
 } from '@mui/material';
 import { UserContext } from '../context/UserContext';
-
+import '../css/Register.css'
 const styles = {
   paper: {
     padding: '2rem',
@@ -24,15 +24,24 @@ const styles = {
   input: {
     marginBottom: '0.5rem',
   },
-  button: {
-    width: '100%',
-    marginBottom: '1.00rem',
-    backgroundColor: "#fe520a"
+    button: {
+    width: "100%",
+    margin: "1rem 0 ",
+    backgroundColor: "#fe8228"
   },
   button1: {
     width: "100%",
-    backgroundColor: "#9b1fe9",
+    backgroundColor: "#524C42",
   },
+  // button: {
+  //   width: '100%',
+  //   marginBottom: '1.00rem',
+  //   backgroundColor: "#fe520a"
+  // },
+  // button1: {
+  //   width: "100%",
+  //   backgroundColor: "#9b1fe9",
+  // },
   error: {
     color: 'red',
     fontSize: '0.875rem',
@@ -56,6 +65,7 @@ const wrapperStyles = {
   justifyContent: 'center',
   alignItems: 'center',
   height: '100vh',
+  position:'relative',
   backgroundColor: '#f0f0f0',
 };
 
@@ -169,6 +179,8 @@ if (flag){
     
     return (
     <div style={wrapperStyles}>
+            <div className="animated-frame-register">
+
       <Paper elevation={10} style={styles.paper}>
         <Typography
           variant="h1"
@@ -452,6 +464,7 @@ if (flag){
           </Grid>
         </form>
       </Paper>
+    </div>
     </div>
   );
 };

@@ -28,7 +28,7 @@ const CreatePostSection = ({ user, getPosts }) => {
                     //setError('Access Denied: Your account is deactivated.');
                     navigate('/403'); // Redirect to a 403 Forbidden page
                 }
-                console.log(err.response.data.errors)
+                console.log("create err ======",err.response)
                 const errorResponse = err.response.data.errors;
                 setErrors(errorResponse);
             })

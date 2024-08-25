@@ -181,7 +181,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
 
   // Handle clicking on edit button to update the post information 
   const handleUpdate = (id, newData) => {
-    onUpdate(post._id, newData)  // Send patch request to the server with the new data
+    onUpdate(id, newData)         // Send patch request to the server with the new data
     setIsEditing(false)          // To close the editing area
   }
 
