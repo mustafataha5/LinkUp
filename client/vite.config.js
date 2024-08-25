@@ -12,15 +12,5 @@ export default defineConfig({
       '@mui/material/Tooltip'
     ],
   },
-
-  server:{port:3000},
-  optimizeDeps: {
-    include: [
- 
-      '@mui/material/styled', 
-      '@mui/material/Tooltip'
-    ],
-  },
-
 })
 
