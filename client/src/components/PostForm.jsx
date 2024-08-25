@@ -22,7 +22,7 @@ const PostForm = ({postId,
       name,
        onPostSubmit, 
        errors,
-        initialContent = '', initialImage = null, isEdit = false, setNewPost }) => {
+        initialContent = '', initialImage = '', isEdit = false, setNewPost }) => {
   const [content, setContent] = useState(initialContent);
   const [imageUrl, setImageURL] = useState(initialImage);
 
@@ -38,7 +38,7 @@ const PostForm = ({postId,
   };
 
   const handleSubmit = () => {
-    if(imageUrl.length >1 && content.length < 1){
+    if( imageUrl.length >1 && content.length < 1){
       setContent('.') ;
     }
   
@@ -53,7 +53,7 @@ const PostForm = ({postId,
     }
     if (Object.keys(errors).length === 0) {
       setContent('');
-      setImageURL(null);
+      setImageURL('');
       toast.success(`${isEdit ? 'Post updated' : 'Post submitted'} successfully!`, {
         position: 'top-center',
         autoClose: 3000,
