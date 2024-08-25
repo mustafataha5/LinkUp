@@ -43,7 +43,7 @@ function a11yProps(index) {
 function BasicTabs() {
     const [value, setValue] = React.useState(0);
     const [users, setUsers] = React.useState([]);
-    const [loading ,setLoading] = React.useState(true) ;
+    const [loading, setLoading] = React.useState(true);
 
     const [userId, setUserId] = React.useState()
     const navigate = useNavigate();
@@ -62,26 +62,26 @@ function BasicTabs() {
             .catch(error => {
                 console.error('Error checking authentication', error);
             })
-           
+
     }, []);
 
-    const getFollowed = async(id) =>{
+    const getFollowed = async (id) => {
         await axios.get("http://localhost:8000/api/follows/followed/" + id)
-        .then(res => {
-           console.log(res.data.followings)
-            setUsers(res.data.followings)
-            setLoading(false) ; 
-        })
-        .catch(err => console.log(err))
+            .then(res => {
+                console.log(res.data.followings)
+                setUsers(res.data.followings)
+                setLoading(false);
+            })
+            .catch(err => console.log(err))
     }
     const handleChange = (event, newValue) => {
-        setLoading(true) ; 
+        setLoading(true);
         if (newValue === 0) {
             axios.get("http://localhost:8000/api/follows/followed/" + userId)
                 .then(res => {
-                   console.log(res.data.followings)
+                    console.log(res.data.followings)
                     setUsers(res.data.followings)
-                    setLoading(false) ; 
+                    setLoading(false);
                 })
                 .catch(err => console.log(err))
         }
@@ -89,47 +89,41 @@ function BasicTabs() {
             axios.get("http://localhost:8000/api/follows/follower/" + userId)
                 .then(res => {
                     //console.log(res.data.followers)
-                    setUsers(res.data.followers) 
-                    setLoading(false) ; 
+                    setUsers(res.data.followers)
+                    setLoading(false);
                 })
                 .catch(err => console.log(err))
         }
         else if (newValue === 2) {
-           
+
             axios.get("http://localhost:8000/api/follows/notfollowed/" + userId)
                 .then(res => {
                     //console.log(res.data.notFollowedUsers)
-                    setUsers(res.data.notFollowedUsers) 
-                    setLoading(false) ; 
+                    setUsers(res.data.notFollowedUsers)
+                    setLoading(false);
                 })
                 .catch(err => console.log(err))
         }
-       
+
         setValue(newValue);
     };
 
 
     const addFollow = (followed) => {
-        axios.post("http://localhost:8000/api/follows",{follower:userId,followed},{withCredentials:true})
-        .then(res => {console.log(res)})
-        .catch(err => console.log(err)) ;
+        axios.post("http://localhost:8000/api/follows", { follower: userId, followed }, { withCredentials: true })
+            .then(res => { console.log(res) })
+            .catch(err => console.log(err));
     }
 
     const delFollow = (relatioId) => {
-        axios.delete("http://localhost:8000/api/follows/"+relatioId,{withCredentials:true})
-        .then(res => {console.log(res)})
-        .catch(err => console.log(err)) ;
+        axios.delete("http://localhost:8000/api/follows/" + relatioId, { withCredentials: true })
+            .then(res => { console.log(res) })
+            .catch(err => console.log(err));
     }
 
-    if(loading){
+    if (loading) {
         return (
-            <div>
-                loading
-            </div>
-        )
-    }
-    return (
-        <Box sx={{ width: '85%', marginTop: 6  }}>
+            <Box sx={{ width: '85%', marginTop: 6 }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Following" {...a11yProps(0)} />
@@ -137,16 +131,39 @@ function BasicTabs() {
                     <Tab label="Suggestion" {...a11yProps(2)} />
                 </Tabs>
             </Box>
-            <Grid>
-            <CustomTabPanel value={value} index={0}>
-                <UserList onClickTab={delFollow} initialUsers={users} index={0} />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-                <UserList onClickTab={delFollow} initialUsers={users} index={1} />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-                <UserList onClickTab={addFollow} initialUsers={users} index={2}/>
-            </CustomTabPanel>
+            <Grid sx={{ border: '1px solid #777', margin: '9px', borderRadius: '10px' }}>
+                <CustomTabPanel value={value} index={0}>
+                    <UserList onClickTab={delFollow} initialUsers={users} index={0} />
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={1}>
+                    <UserList onClickTab={delFollow} initialUsers={users} index={1} />
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={2}>
+                    <UserList onClickTab={addFollow} initialUsers={users} index={2} />
+                </CustomTabPanel>
+            </Grid>
+        </Box>
+        )
+    }
+    return (
+        <Box sx={{ width: '85%', marginTop: 6 }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center' }}>
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tab label="Following" {...a11yProps(0)} />
+                    <Tab label="Follower" {...a11yProps(1)} />
+                    <Tab label="Suggestion" {...a11yProps(2)} />
+                </Tabs>
+            </Box>
+            <Grid sx={{ border: '1px solid #777', margin: '9px', borderRadius: '10px' }}>
+                <CustomTabPanel value={value} index={0}>
+                    <UserList onClickTab={delFollow} initialUsers={users} index={0} />
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={1}>
+                    <UserList onClickTab={delFollow} initialUsers={users} index={1} />
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={2}>
+                    <UserList onClickTab={addFollow} initialUsers={users} index={2} />
+                </CustomTabPanel>
             </Grid>
         </Box>
     );
@@ -160,12 +177,12 @@ const FriendPage = () => {
 
                 <Grid container justifyContent="center" alignItems="center" margin={4} spacing={2}>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={6} sx={{ alignSelf: 'flex-start'}} >
                         <BasicTabs />
                     </Grid>
-                    <Grid item xs={4} sx={{marginTop: 12}}>
+                    {/* <Grid item xs={4} sx={{ alignSelf: 'flex-start', marginTop: 13 }}>
                         <Ads />
-                    </Grid>
+                    </Grid> */}
 
                 </Grid>
             </Container>

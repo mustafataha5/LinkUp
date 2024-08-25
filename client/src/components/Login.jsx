@@ -62,7 +62,7 @@ const Login = ({ onSubmitProp, errors = {} }) => {
     <div style={wrapperStyles}>
       <div className="animated-frame">
         <form onSubmit={handleSubmit}>
-          <Typography variant="h1" sx={{ textAlign: 'center', fontSize: 50, marginBottom: "1rem" }}>
+          <Typography variant="h1" sx={{ textAlign: 'center', fontSize: 50, marginBottom: "1rem", color: 'black' }}>
             Login
           </Typography>
           <FormControl variant="outlined" fullWidth style={styles.input} error={!!errors.email}>
