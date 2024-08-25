@@ -21,15 +21,15 @@ const MainPage = () => {
   const [suggested, setSuggested] = useState([]);    // Suggested list 
   const navigate = useNavigate();
   const resposive = useMediaQuery('(max-width: 600px)')
-  const resposive1= useMediaQuery('(max-width: 900px)')
-  const [socket, setSocket] = useState(() => io('http://localhost:8000')); 
+  const resposive1 = useMediaQuery('(max-width: 900px)')
+  const [socket, setSocket] = useState(() => io('http://localhost:8000'));
 
   const [isScreenSmall, setSmallScreen] = useState(window.innerWidth <= 900);
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     const handleResize = () => {
       setSmallScreen(window.innerWidth <= 900)
-    
+
     }
 
     window.addEventListener('resize', handleResize)
@@ -69,14 +69,14 @@ const MainPage = () => {
         LogOut();
       }
     };
-  
+
     socket.on('status', handleStatus);
-  
+
     socket.on('disconnect', () => {
       console.log('Socket disconnected');
       // Optionally, you can attempt to reconnect or show a message to the user
     });
-  
+
     // Cleanup on component unmount
     return () => {
       socket.off('status', handleStatus); // Remove the status event listener
@@ -125,9 +125,9 @@ const MainPage = () => {
   if (loading) {
     return (
       <div>
-        
+
         <Navbar />
-      
+
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
           <Container>
             <Grid container spacing={5}>
@@ -152,50 +152,50 @@ const MainPage = () => {
     <div>
       <ToastContainer />
       {
-          user.role === 'user' ? 
-        <Navbar />
-        :
-        <AdminNavbar />
-        }
+        user.role === 'user' ?
+          <Navbar />
+          :
+          <AdminNavbar />
+      }
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
         <Container>
           <Grid container spacing={5}>
-          <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
-    {!resposive && (
+            <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
+              {!resposive && (
 
 
-<Box 
-  sx={{ 
-    position: 'fixed', 
-    borderRight: '4px solid #dede', 
-    maxHeight: '590px', 
-    overflowY: 'auto', 
-    '&::-webkit-scrollbar': {
-      width: '8px'
-    },
-    '&::-webkit-scrollbar-track': {
-      background: '#f1f1f1'
-    },
-    '&::-webkit-scrollbar-thumb': {
-      background: '#888',
-      borderRadius: '10px'
-    },
-    '&::-webkit-scrollbar-thumb:hover': {
-      background: '#555'
-    }
-  }} 
-  className="custom-scrollbar"
->
-  <Typography variant='h6' sx={{ textAlign: 'center', borderBottom: '4px solid #dede', marginTop: -1 }}>
-    Followers
-  </Typography>
-  <UserList
-    initialUsers={users}
-    index={0}
-  />
-</Box>
-    )}      
-</Grid>
+                <Box
+                  sx={{
+                    position: 'fixed',
+                    borderRight: '4px solid #dede',
+                    maxHeight: '590px',
+                    overflowY: 'auto',
+                    '&::-webkit-scrollbar': {
+                      width: '8px'
+                    },
+                    '&::-webkit-scrollbar-track': {
+                      background: '#f1f1f1'
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      background: '#888',
+                      borderRadius: '10px'
+                    },
+                    '&::-webkit-scrollbar-thumb:hover': {
+                      background: '#555'
+                    }
+                  }}
+                  className="custom-scrollbar"
+                >
+                  <Typography variant='h6' sx={{ textAlign: 'center', borderBottom: '4px solid #dede', marginTop: -1 }}>
+                    Followers
+                  </Typography>
+                  <UserList
+                    initialUsers={users}
+                    index={0}
+                  />
+                </Box>
+              )}
+            </Grid>
             <Grid item xs={6} >
               {/* Only render the CreatePostSection and PostSection if user data is available */}
               {user && (
@@ -210,18 +210,18 @@ const MainPage = () => {
             {!resposive1 && (
 
               <Grid item xs={3} container direction="column" spacing={2} sx={{ marginRight: -10 }}>
-              <Box sx={{ position: 'fixed' }}>
-                <Grid item sx={{ marginTop: 8, position: 'sticky' }}>
-                  <Ads />
-                </Grid>
-                <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
-                  <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
+                <Box sx={{ position: 'fixed' }}>
+                  <Grid item sx={{ marginTop: 8, position: 'sticky' }}>
+                    <Ads />
                   </Grid>
-              </Box>
+                  <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
+                    <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
                   </Grid>
-                )}
-                  </Grid>
-                </Container>
+                </Box>
+              </Grid>
+            )}
+          </Grid>
+        </Container>
       </Box>
     </div>
   );

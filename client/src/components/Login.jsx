@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {
   Paper,
   FormControl,
@@ -8,25 +7,28 @@ import {
   OutlinedInput,
   Button,
   FormHelperText,
-  Typography,
-  Tooltip
+  Typography
 } from '@mui/material';
+import '../css/Login.css'; // Ensure this imports the updated CSS
 
 const styles = {
   paper: {
-    width: "20rem", padding: "1rem"
+    width: "100%", // Use 100% to fill the container
+    height: "100%", // Use 100% to match the container's height
+    padding: "0", // Remove padding since the form padding is handled in the CSS
+    position: "relative",
   },
   input: {
     marginBottom: "1rem"
   },
   button: {
     width: "100%",
-    marginBottom: "1rem", // Add margin bottom to space buttons
+    marginBottom: "1rem",
     backgroundColor: "#fe520a"
   },
   button1: {
     width: "100%",
-    backgroundColor: "#9b1fe9", // Replace with your desired color
+    backgroundColor: "#9b1fe9",
   }
 };
 
@@ -35,21 +37,17 @@ const wrapperStyles = {
   justifyContent: "center",
   alignItems: "center",
   height: "100vh",
-  // optional, adds a background color
+  position: "relative",
 };
 
 const Login = ({ onSubmitProp, errors = {} }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  console.log(errors)
 
   const handleRegister = () => {
     navigate('/register');
   };
-
-
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,39 +60,38 @@ const Login = ({ onSubmitProp, errors = {} }) => {
 
   return (
     <div style={wrapperStyles}>
-      <Paper elevation={9} style={styles.paper}>
-        <Typography variant="h1" sx={{ textAlign: 'center', fontSize: 50 }}>
-          Login
-        </Typography>
+      <div className="animated-frame">
         <form onSubmit={handleSubmit}>
-        <FormControl variant="outlined" fullWidth style={styles.input} error={!!errors.email}>
-    <InputLabel>E-mail</InputLabel>
-    <OutlinedInput
-        type="email"
-        id="email"
-        name="email"
-        value={email}
-        label='E-mail'
-        onChange={e => setEmail(e.target.value)}
-        required
-    />
-    {errors.email && <FormHelperText style={{ color: 'red', fontSize: '14px' }}>{errors.email}</FormHelperText>}
-</FormControl>
+          <Typography variant="h1" sx={{ textAlign: 'center', fontSize: 50, marginBottom: "1rem" }}>
+            Login
+          </Typography>
+          <FormControl variant="outlined" fullWidth style={styles.input} error={!!errors.email}>
+            <InputLabel>E-mail</InputLabel>
+            <OutlinedInput
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              label='E-mail'
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+            {errors.email && <FormHelperText style={{ color: 'red', fontSize: '14px' }}>{errors.email}</FormHelperText>}
+          </FormControl>
 
-<FormControl variant="outlined" fullWidth style={styles.input} error={!!errors.password}>
-    <InputLabel>Password</InputLabel>
-    <OutlinedInput
-        type="password"
-        id="password"
-        name="password"
-        label='Password'
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        required
-    />
-    {errors.password && <FormHelperText style={{ color: 'red', fontSize: '14px' }}>{errors.password}</FormHelperText>}
-</FormControl>
-
+          <FormControl variant="outlined" fullWidth style={styles.input} error={!!errors.password}>
+            <InputLabel>Password</InputLabel>
+            <OutlinedInput
+              type="password"
+              id="password"
+              name="password"
+              label='Password'
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+            {errors.password && <FormHelperText style={{ color: 'red', fontSize: '14px' }}>{errors.password}</FormHelperText>}
+          </FormControl>
 
           <Button type="submit" variant="contained" color="primary" style={styles.button}>
             Login
@@ -103,8 +100,9 @@ const Login = ({ onSubmitProp, errors = {} }) => {
             Register
           </Button>
         </form>
-      </Paper>
+      </div>
     </div>
   );
 };
-export default Login
+
+export default Login;

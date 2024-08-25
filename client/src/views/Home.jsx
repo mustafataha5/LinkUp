@@ -1,65 +1,67 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../components/Footer'
-import '../css/Home.css' // Import the CSS file
+import '../css/Home.css'
 import logo from '../images/logo.png'
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Login from '../components/Login';
-// import { UserContext } from '../context/UserContext';
-const styles = {
-  paper: {
-      width: "20rem", padding: "1rem"
-  },
-  input: {
-      marginBottom: "1rem"
-  },
-  button: {
-      width: "100%"
-  }
-}
-const wrapperStyles = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100vh",
-   // optional, adds a background color
-};
 
 const Home = () => {
-    const navigate = useNavigate()
-    const [errors, setErrors] = useState({})
-   
-    useEffect(() => {
-      console.log("Updated errors:", errors);
-    }, [errors]);
+  const navigate = useNavigate()
+  const [errors, setErrors] = useState({})
+  const texts = ["Connecting you to possibilities.", "Welcome to Link Up."];
+  const [currentText, setCurrentText] = useState(texts[0]);
+  const [fade, setFade] = useState(true);
 
-    const handleLoginSubmit = (payload) => {
-      axios
-        .post('http://localhost:8000/api/login', payload, { withCredentials: true })
-        .then((res) => {
-          console.log('Login successful:', res);
-          navigate('/test');
-        })
-        .catch((err) => {
-          console.log('Error response:', err.response?.data); // Log the error response
-          const errorResponse = err.response?.data || {};
-          setErrors({...errorResponse}); // Merge errors with previous ones
-        });
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setCurrentText(prev => texts[(texts.indexOf(prev) + 1) % texts.length]);
+        setFade(true);
+      }, 500);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    console.log("Updated errors:", errors);
+  }, [errors]);
+
+  const handleLoginSubmit = (payload) => {
+    axios
+      .post('http://localhost:8000/api/login', payload, { withCredentials: true })
+      .then((res) => {
+        console.log('Login successful:', res);
+        navigate('/test');
+      })
+      .catch((err) => {
+        console.log('Error response:', err.response?.data); // Log the error response
+        const errorResponse = err.response?.data || {};
+        setErrors({ ...errorResponse }); // Merge errors with previous ones
+      });
   };
-  
-    
-    
 
-    
+
+
+
+
   return (
-    <div>
-    <div className='homeFeatures'>
-      <img src={logo} className='header' height="200" width="450" alt='logo'></img>
-      <div className="m-5">
-        <Login onSubmitProp ={handleLoginSubmit} errors={errors}/>
+    <div className='row'>
+      <div className='col-md-6 homeFeatures2'>
+        <div className='homeFeatures'>
+          <img src={logo} className='header' height="130" width="350" alt='logo'></img>
+          <div className='textContainer'>
+            <div style={{ opacity: fade ? 1 : 0, transition: 'opacity 0.5s ease-in-out' }}>
+              {currentText}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <Footer/>
+      <div className="col-md-6">
+        <Login onSubmitProp={handleLoginSubmit} errors={errors} />
+      </div>
+      <Footer />
     </div>
   )
 }

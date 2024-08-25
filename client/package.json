@@ -32,7 +32,9 @@
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.12",
     "sweetalert2": "^11.12.4",
-    "swiper": "^11.1.10"
+    "swiper": "^11.1.10",
+    "text-writer": "^0.1.1",
+    "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
