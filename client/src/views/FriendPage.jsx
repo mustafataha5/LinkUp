@@ -134,6 +134,7 @@ function BasicTabs() {
             </Box>
             <Grid sx={{ border: '1px solid #777', margin: '9px', borderRadius: '10px' }}>
                 <CustomTabPanel value={value} index={0}>
+                    {console.log(users)}
                     <UserList onClickTab={delFollow} initialUsers={users} index={0} />
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
