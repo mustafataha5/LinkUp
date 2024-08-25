@@ -1,4 +1,4 @@
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, CircularProgress } from '@mui/material';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserList from '../components/UserList';
@@ -7,7 +7,7 @@ import Chat from '../components/Chat';
 import { UserContext } from '../context/UserContext';
 import axios from 'axios';
 import io from 'socket.io-client';
-import AdminNavbar from '../components/AdminNavbar';
+import AdminNavbar from '../components/AdminNavbar'; 
 
 const MessagePage = () => {
   const { user, setUser } = useContext(UserContext);
@@ -32,17 +32,14 @@ const MessagePage = () => {
   }, [socket]);
 
   useEffect(() => {
-    
     socket.on('status', (data) => {
       LogOut(); 
     });
-
     if (user && reciver._id) {
       console.log('Socket connected:', socket.id);
       console.log('Emitting joinRoom with:', { senderId: user._id, reciverId: reciver._id });
       socket.emit('joinRoom', { senderId: user._id, reciverId: reciver._id });
 
-      // Listen for incoming messages
       socket.on('message', (message) => {
         console.log('Received message:', message);
         setMessages((prevMessages) => [...prevMessages, message]);
@@ -62,9 +59,9 @@ const MessagePage = () => {
       getAllFriends(response.data.user._id);
     } catch (error) {
       if (error.response.status === 401) {
-        navigate('/401'); // Redirect to login
+        navigate('/401');
       } else if (error.response.status === 403) {
-        navigate('/403'); // Redirect to a 403 Forbidden page
+        navigate('/403');
       } else {
         navigate('/403');
       }
@@ -77,13 +74,13 @@ const MessagePage = () => {
       const friendsList = res.data.friends;
       if (friendsList.length > 0) {
         setReciver(friendsList[0]);
-        getMessages(friendsList[0]._id); // Ensure messages are fetched before setting loading to false
+        getMessages(friendsList[0]._id);
+        setLoading(false);
       }
       setFriends(friendsList);
       setLoading(false);
     } catch (err) {
       console.error('Error fetching friends', err);
-      setLoading(false);
     }
   };
 
@@ -107,7 +104,7 @@ const MessagePage = () => {
         setMessages([]);
         const res = await axios.get(`http://localhost:8000/api/messages/${friendId}/${user._id}`, { withCredentials: true });
         setMessages(res.data.messages);
-        console.log(res.data.messages)
+        setLoading(false);
       }
     } catch (err) {
       console.error('Error fetching messages', err);
@@ -126,15 +123,25 @@ const MessagePage = () => {
   if (loading) {
     return (
       <>
-        <Navbar />
-        <div>Loading...</div> {/* Optional: Add a loading spinner or message */}
+        {user && (user.role === 'user' ? <Navbar /> : <AdminNavbar />)}
+        <Container>
+          <Grid container spacing={1} alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
+            <Grid item>
+              <CircularProgress />
+            </Grid>
+          </Grid>
+        </Container>
       </>
     );
   }
 
   return (
     <div>
-      {user.role === 'user' ? <Navbar /> : <AdminNavbar />}
+      {user.role === 'user' ? 
+        <Navbar />
+        : 
+        <AdminNavbar />
+      }
       <Container>
         <Grid container spacing={1}>
           <Grid item xs={4} marginTop={15}>
@@ -146,15 +153,18 @@ const MessagePage = () => {
               index={4}
             />
           </Grid>
-          <Grid item xs={8} sx={{ height: '100vh' }}>
-            { (
-              <Chat
-                owner={user}
-                reciver={reciver}
-                messages={messages}
-                createMessage={createMessage}
-              />
-            )}
+          <Grid
+            item xs={8}
+            sx={{
+              height: '100vh',
+            }}
+          >
+            <Chat
+              owner={user}
+              reciver={reciver}
+              messages={messages}
+              createMessage={createMessage}
+            />
           </Grid>
         </Grid>
       </Container>
