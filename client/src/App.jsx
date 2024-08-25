@@ -21,9 +21,6 @@ import ContactUsForm from './components/ContactUsForm';
 import ContactResponse from './components/ContactResponse';
 
 
-
-
-
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true)
@@ -47,7 +44,7 @@ function App() {
     <>
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
-          <Route path="/contact" element={<ContactUsForm setAcknowledgmentMessage={setAcknowledgmentMessage} />}  />
+          <Route path="/contact" element={<ContactUsForm setAcknowledgmentMessage={setAcknowledgmentMessage} />} />
           <Route path="/contact/response" element={<ContactResponse acknowledgmentMessage={acknowledgmentMessage} />} />
     
           <Route path='/services' element={<ServicesPage/>}/>

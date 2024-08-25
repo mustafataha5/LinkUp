@@ -2,7 +2,6 @@ const User= require('../models/user.model')
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
-
 //auth
 module.exports.authenticate = (req, res, next) => {
     jwt.verify(req.cookies.usertoken, process.env.SECRET_KEY, (err, payload) => {
@@ -67,7 +66,6 @@ module.exports.register=async (req,res) => {
 module.exports.login = async (req, res) => {
     try {
         const errors = {}; // Initialize an empty object to store errors
-
         // Check if the user exists by email
         const user = await User.findOne({ email: req.body.email });
         if (!user) {

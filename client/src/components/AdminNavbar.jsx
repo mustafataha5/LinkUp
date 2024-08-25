@@ -21,6 +21,7 @@ import logo from '../images/logo.png';
 
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
+import SearchBar from './SearchBar';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -179,15 +180,7 @@ export default function PrimarySearchAppBar() {
           <Toolbar>
             <img src={logo} style={{ width: "250px", height: "64px" }} alt="Logo" />
             <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Search…"
-                  inputProps={{ 'aria-label': 'search' }}
-                />
-              </Search>
+              <SearchBar />
             </Box>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <IconButton

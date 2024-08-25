@@ -128,4 +128,19 @@ module.exports.getAllFriend = (req, res) => {
     .catch(err => res.status(400).json(err));
 };
 
-
+module.exports.isFollow = (req, res) => {
+    const { user1, user2 } = req.params;
+    console.log("usersId ===",req.body)
+    Follow.findOne({ followed:user2 , follower: user1 })
+        .then(ans => {
+            console.log(ans)
+            if (ans) {
+                res.json({ answer: true, followId: ans._id });
+            } else {
+                res.json({ answer: false, followId: null });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'An error occurred', details: err });
+        });
+};
