@@ -88,7 +88,7 @@ const Register = ({ flag = true, intialFirst = "", intialLast = "", initialEmail
     navigate('/')
   }
   const profile = () => {
-    navigate('/success')
+    navigate(`/profile/${user._id}`)
   }
 
   const handleSubmit = (e) => {
