@@ -3,9 +3,9 @@ import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 
-function ContactUsForm() {
+function ContactUsForm({ setAcknowledgmentMessage }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [acknowledgmentMessage, setAcknowledgmentMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -20,6 +20,7 @@ function ContactUsForm() {
     
     setAcknowledgmentMessage(message);
     setFormData({ name: '', email: '', message: '' }); // Reset the form
+    navigate('/contact/response');
   };
 
   return (
@@ -29,7 +30,7 @@ function ContactUsForm() {
         component="form" 
         onSubmit={handleSubmit} 
         sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}
-        >
+      >
         <Typography variant="h5" component="h1" gutterBottom>
           Contact Us
         </Typography>
@@ -40,7 +41,7 @@ function ContactUsForm() {
           onChange={handleChange}  
           required  
           fullWidth        
-          />
+        />
         <TextField
           label="Email"
           name="email"
@@ -49,7 +50,7 @@ function ContactUsForm() {
           required
           fullWidth
           type="email"
-          />
+        />
         <TextField
           label="Message"
           name="message"
@@ -64,15 +65,15 @@ function ContactUsForm() {
           type="submit" 
           variant="contained" 
           sx={{ backgroundColor: 'orange', '&:hover': { backgroundColor: 'darkorange' } }}
-        >
+          >
           Submit
         </Button>
       </Box>
       
     </Container>
-    <Footer />
+    
+    <Footer/>
     </>
-
   );
 }
 export default ContactUsForm;
