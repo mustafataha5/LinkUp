@@ -15,9 +15,11 @@ import Profile from './views/Profile';
 import axios from 'axios';
 import AdminUserList from './views/AdminUserList';
 import AdminDashboard from './views/AdminDashboard';
+import AboutUsPage from './views/AboutUs';
+import ServicesPage from './views/Serveces';
 import ContactUsForm from './components/ContactUsForm';
-import { styled } from '@mui/material/styles';
 import ContactResponse from './components/ContactResponse';
+import { styled } from '@mui/material/styles';
 
 
 function App() {
@@ -43,8 +45,14 @@ function App() {
     <>
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
+
           <Route path="/contact" element={<ContactUsForm setAcknowledgmentMessage={setAcknowledgmentMessage} />}  />
           <Route path="/contact/response" element={<ContactResponse acknowledgmentMessage={acknowledgmentMessage} />} />
+           
+       
+          <Route path='/services' element={<ServicesPage/>}/>
+          <Route path='/about' element={<AboutUsPage/>}/>
+
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/users' element={<AdminUserList />} />
           {/* <Route path='/randatest' element={<Ads />} /> */}

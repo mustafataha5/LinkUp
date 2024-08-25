@@ -3,6 +3,7 @@ import { CardContent, Typography, Avatar, IconButton } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import BlockIcon from '@mui/icons-material/Block';
+import { Link } from 'react-router-dom';
 
 const UserList = ({
   index = 0,
@@ -70,8 +71,8 @@ const UserList = ({
           onClick={() => onCardClick(user._id)}
         >
           <Avatar src={user.imageUrl} alt={user.firstName} style={{ marginRight: 10 }} />
-          <Typography variant="body1" component="div" style={{ flexGrow: 1, fontWeight: 'bold' }}>
-            {user.firstName} {user.lastName}
+          <Typography variant="body1" component="div" style={{ flexGrow: 1, fontWeight: 'bold', textDecoration: 'none' }}>
+            <Link to={`profile/${user._id}`}>{user.firstName} {user.lastName}</Link>
           </Typography>
           <div>
             {index === 0 && (

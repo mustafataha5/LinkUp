@@ -180,6 +180,10 @@ console.error("Error sending message:", error.response?.data || error.message);
           const edit = ()=>{
             navigate(`/register/${urlUser._id}`)
           }
+
+          const GoToFriend = () =>{
+            navigate('/people')
+          }
     if (loading) {
         return <div>
             <Navbar />
@@ -199,76 +203,126 @@ console.error("Error sending message:", error.response?.data || error.message);
         :
         <AdminNavbar />
       }
-            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 7 }}>
                 <Container>
                     <Grid container spacing={5}>
                         {/* Profile Section (Left) */}
                         
                         <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3}}>
-                        <Box sx={{ position: 'fixed', left: "80px", width: "20%"  }}>
-                            <Box sx={{ marginBottom: 3, textAlign: 'center', boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)', padding: 3}} > {/* Adds space between profile and UserList */}
-                                <img 
-                                    src={urlUser.imageUrl} 
-                                    alt="Profile" 
-                                    style={{ width: '90%', borderRadius: '100%', height:"200px", marginBottom: 14 }} 
-                                    onClick={handleImageClick}
-                                />
-                                <h6>{urlUser.firstName} {urlUser.lastName}</h6>
-                            {user._id === urlUser._id && <Button
-                                onClick={edit}
-                                variant='outlined'
-                                sx={{
-                                    borderColor: '#fe520a',
-                                    color: '#fe520a',
-                                    '&:hover': {
-                                    borderColor: '#fe520a',
-                                    backgroundColor: '#fe520a', // Optional: Change background color on hover
-                                    color: '#fff',
-                                    },
-                                }}
-                                >
-                                Edit your profile
-                            </Button>}
-                            {user._id !== urlUser._id &&
-                                <Button variant='outlined'
-                                onClick={sendMessage}
-                                sx={{
-                                    borderColor: '#fe520a',
-                                    color: '#fe520a',
-                                    '&:hover': {
-                                    borderColor: '#fe520a',
-                                    backgroundColor: '#fe520a', // Optional: Change background color on hover
-                                    color: '#fff',
-                                    },
-                                }}
-                                >Message</Button>
-                            }
-
-                            </Box>
-                            {/* UserList component */}
-                            {/* <Box
-                                        sx={{
-                                            maxHeight: '590px',
-                                            overflowY: 'auto',
-                                            '&::-webkit-scrollbar': {
-                                                width: '8px',
-                                            },
-                                            '&::-webkit-scrollbar-track': {
-                                                background: '#f1f1f1',
-                                            },
-                                            '&::-webkit-scrollbar-thumb': {
-                                                background: '#888',
-                                                borderRadius: '10px',
-                                            },
-                                            '&::-webkit-scrollbar-thumb:hover': {
-                                                background: '#555',
-                                            },
-                                        }}
-                                    >
-                            <UserList initialUsers={users} index={0} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }}/>
-                            </Box> */}
-                            </Box>
-                        </Grid>
+    <Box sx={{ position: 'fixed', left: "80px", width: "20%"  }}>
+        <Box sx={{
+            marginBottom: 3, 
+            textAlign: 'center', 
+            boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)', 
+            padding: 3, 
+            borderRadius: '8px', 
+            backgroundColor: '#f9f9f9' 
+        }}>
+            <img 
+                src={urlUser.imageUrl} 
+                alt="Profile" 
+                style={{ 
+                    width: '100%', 
+                    maxWidth: '180px', 
+                    borderRadius: '50%', 
+                    height: "180px", 
+                    marginBottom: '20px', 
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)'
+                }} 
+                onClick={handleImageClick}
+            />
+            <h6 style={{ 
+                fontSize: '1.1rem', 
+                fontWeight: '600', 
+                marginBottom: '10px',
+                color: '#333'
+            }}>
+                {urlUser.firstName} {urlUser.lastName}
+            </h6>
+            {user._id === urlUser._id && 
+                <Button
+                    onClick={edit}
+                    variant='outlined'
+                    sx={{
+                        backgroundColor: '#fe520a', // Bright orange
+                        borderColor: '#fe520a',
+                        color: 'white',
+                        padding: '6px 12px',
+                        fontSize: '14px',
+                        borderRadius: '10px',
+                        textTransform: 'none',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                        width: '60%',
+                        '&:hover': {
+                            backgroundColor: '#f57c00', // Darker orange
+                            borderColor: '#f57c00',
+                        },
+                    }}
+                >
+                    Edit your profile
+                </Button>
+            }
+            {user._id !== urlUser._id &&
+                <Button 
+                    variant='outlined'
+                    onClick={sendMessage}
+                    sx={{
+                        backgroundColor: '#fe520a', // Bright orange
+                        borderColor: '#fe520a',
+                        color: 'white',
+                        padding: '6px 12px',
+                        fontSize: '14px',
+                        borderRadius: '10px',
+                        textTransform: 'none',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                        width: '60%',
+                        '&:hover': {
+                            backgroundColor: '#f57c00', // Darker orange
+                            borderColor: '#f57c00',
+                        },
+                    }}
+                >
+                    Message
+                </Button>
+            }
+        </Box>
+        <Box 
+            sx={{ 
+                marginTop: 1, 
+                padding: 2, 
+                boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)', 
+                borderRadius: '8px', 
+                backgroundColor: '#fff' 
+            }}
+        >
+            <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '3px' }}>Friend List</h4>
+            <p style={{ fontSize: '12px', color: '#666', marginBottom: '12px' }}>
+                Connect with like-minded people and grow together.
+            </p>
+            <Button
+                variant="contained"
+                sx={{
+                    backgroundColor: '#fe520a', // Bright orange
+                    borderColor: '#fe520a',
+                    color: 'white',
+                    padding: '6px 12px',
+                    fontSize: '14px',
+                    borderRadius: '10px',
+                    textTransform: 'none',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                    width: '60%',
+                    '&:hover': {
+                        backgroundColor: '#f57c00', // Darker orange
+                        borderColor: '#f57c00',
+                    },
+                }}
+            >
+                Visit Friend Page
+            </Button>
+        </Box>
+    </Box>
+</Grid>
                         <Grid item xs={6}>
                             {urlUser && (
                                 <>
@@ -281,14 +335,48 @@ console.error("Error sending message:", error.response?.data || error.message);
                                 </>
                             )}
                         </Grid>
-                        <Box sx={{ position: 'fixed', right: '65px', top:"80px" }}>
-                            <Grid item sx={{ marginTop: 6, position: 'sticky', top: '90px' }}>
+                        <Box sx={{ position: 'fixed', right: '65px', top:"60px" }}>
+                            <Grid item sx={{ marginTop: 5.5, position: 'sticky', top: '90px' }}>
                             <Ads />
                             </Grid>
-                            {/* <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
-                            <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
-                            </Grid> */}
+                            <Box 
+            sx={{ 
+                marginTop: 1, 
+                padding: 2, 
+                boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)', 
+                borderRadius: '8px', 
+                backgroundColor: '#fff' 
+            }}
+        >
+            <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '3px' }}>Friend List</h4>
+            <p style={{ fontSize: '12px', color: '#666', marginBottom: '12px' }}>
+                Connect with like-minded people and grow together.
+            </p>
+            <Button
+    variant="contained"
+    sx={{
+        backgroundColor: '#fe520a', // Bright orange
+        borderColor: '#fe520a',
+        color: 'white',
+        padding: '6px 12px',
+        fontSize: '14px',
+        borderRadius: '10px',
+        textTransform: 'none',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+        width: '60%',
+        '&:hover': {
+            backgroundColor: '#f57c00', // Darker orange
+            borderColor: '#f57c00',
+        },
+    }}
+    onClick={GoToFriend}
+>
+    Connect Now !
+</Button>
+
+        </Box>
                         </Box>
+                        
                     </Grid>
                 </Container>
             </Box>
