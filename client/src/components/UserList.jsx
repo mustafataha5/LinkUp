@@ -72,7 +72,7 @@ const UserList = ({
         >
           <Avatar src={user.imageUrl} alt={user.firstName} style={{ marginRight: 10 }} />
           <Typography variant="body1" component="div" style={{ flexGrow: 1, fontWeight: 'bold', textDecoration: 'none' }}>
-            <Link to={`profile/${user._id}`}>{user.firstName} {user.lastName}</Link>
+            <Link to={`/profile/${user._id}`}>{user.firstName} {user.lastName}</Link>
           </Typography>
           <div>
             {index === 0 && (
