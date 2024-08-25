@@ -14,6 +14,7 @@ import {
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 const PostForm = ({postId,
      userId, 
@@ -61,14 +62,12 @@ const PostForm = ({postId,
   };
 console.log("errors=====================",errors)
   return (
-
     <Card sx={{ maxWidth: 500, margin: '20px auto', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', borderRadius: '8px' }}>
       
       <CardHeader
         avatar={<Avatar src={userImage} alt="User" />}
         title={<Typography variant="h6" sx={{ fontWeight: 'bold' }}><Link style={{textDecoration:"none"}} to={`/profile/${userId}`}>{name}</Link></Typography>}
       />
-
       <CardContent>
         <TextField
           fullWidth
