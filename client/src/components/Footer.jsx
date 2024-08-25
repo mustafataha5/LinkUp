@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
     return (
-        <div className="footer" style={{position:'absolute' ,bottom: 0 , backgroundColor:'#555', color:'white'}}>
+        <div className="footer" style={{position:'fixed' ,bottom: 0 , backgroundColor:'#555', color:'white'}}>
             <div className="footer-links" style={{ color:'white'}} >
                 <Link to="/">Home</Link>
                 <Link to="/about">About</Link>
