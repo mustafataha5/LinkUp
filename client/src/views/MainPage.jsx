@@ -236,13 +236,21 @@ const MainPage = () => {
                       />
                     </Box>
                     {users.length > followersLimit && (
-                      <Button 
-                        variant='outlined' 
-                        sx={{ marginTop: '16px', alignSelf: 'center' }}
-                        onClick={() => navigate('/people')}
-                      >
-                        View More
-                      </Button>
+                      <Button
+  sx={{
+    color: '#fff',
+    backgroundColor: '#fe520a',
+    marginTop: '16px',
+    alignSelf: 'center',
+    '&:hover': {
+      backgroundColor: '#fe520a', // Match the background color on hover
+      boxShadow: 'none', // Disable any shadow effects on hover if not needed
+    },
+  }}
+  onClick={() => navigate('/people')}
+>
+  View More
+</Button>
                     )}
                   </Box>
                 </Box>

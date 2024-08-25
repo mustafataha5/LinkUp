@@ -97,7 +97,7 @@ console.log("errors=====================",errors)
           />
           <label htmlFor="upload-image">
             <IconButton color="primary" component="span">
-              <PhotoCamera />
+              <PhotoCamera sx={{color: '#fe520a'}} />
             </IconButton>
           </label>
           <Typography variant="body2" sx={{ ml: 2 }}>
@@ -105,7 +105,7 @@ console.log("errors=====================",errors)
           </Typography>
         </Box>
         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
+          <Button variant="contained" sx={{backgroundColor:'#fe520a'}}onClick={handleSubmit}>
             {isEdit ? 'Update' : 'Post'}
           </Button>
         </Box>
