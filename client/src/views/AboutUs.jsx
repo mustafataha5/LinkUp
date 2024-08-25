@@ -37,7 +37,7 @@ const AboutUsPage = () => {
     return (
         <div>
             <Container maxWidth="lg">
-                <Box sx={{ textAlign: 'center', mt: 8, mb: 6 }}>
+                <Box sx={{ textAlign: 'center', mt: 4, mb: 6 }}>
                     <Typography variant="h2" gutterBottom>
                         About Us
                     </Typography>
