@@ -3,13 +3,15 @@ import { Container, Grid, Typography, Card, CardContent, Box, Avatar, Divider } 
 import Footer from '../components/Footer';
 import Muath from '../images/Muath.jpg'
 import Mustafa from '../images/Mustafa.jpeg'
+import Rand2 from '../images/Rand2.jfif'
+import Randa from '../images/Randa.png'
 
 const teamMembers = [
     {
         name: 'Rand Farhoud',
         position: 'Full Stack Developer',
         description: `A junior full stack developer seeking an entry-level web development role, eager to refine software engineering skills and apply logical thinking to craft innovative website solutions`,
-        imageUrl: '/path/to/john-doe.jpg'
+        imageUrl: Rand2
     },
     {
         name: 'Mustafa Taha',
@@ -23,7 +25,7 @@ I'm a full stack developer with expertise in Python and JavaScript, passionate a
         name: 'Randa Twasha',
         position: 'Full Stack Developer',
         description: 'Alice is responsible for product development, focusing on creating features that enhance user engagement and make our platform user-friendly and effective.',
-        imageUrl: '/path/to/alice-johnson.jpg'
+        imageUrl: Randa
     },
     {
         name: 'Muath Ez Zughayyar',
