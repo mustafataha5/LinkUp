@@ -16,7 +16,7 @@ const MessagePage = () => {
   const [reciver, setReciver] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const [socket, setSocket] = useState(() => io('http://localhost:8000'));
+  const [socket, setSocket] = useState(() => io('http://51.20.56.131:8000'));
 
   const navigate = useNavigate();
 
@@ -98,7 +98,7 @@ const MessagePage = () => {
     try {
       const recv = friends.find((friend) => friend._id === friendId);
       if (recv) {
-        console.log('===============================')
+       
         setReciver(recv);
         const senderId = user._id;
         socket.emit('joinRoom', { senderId, reciverId: recv._id });
