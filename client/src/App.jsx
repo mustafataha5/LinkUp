@@ -21,8 +21,6 @@ import ContactUsForm from './components/ContactUsForm';
 import ContactResponse from './components/ContactResponse';
 
 
-
-
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true)
