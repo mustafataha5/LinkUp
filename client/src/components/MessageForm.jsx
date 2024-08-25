@@ -14,9 +14,9 @@ const MessageForm = ({onFromSubmit}) => {
     }      
   return (
     <div>
-      <form className='d-flex' onSubmit={submitHandle}>
+      <form className='d-flex flex-row justify-contents-start ' onSubmit={submitHandle}>
         <input className='flex-fill p-2 mx-3' type="text" value={value} required onChange={(e)=>setValue(e.target.value)} placeholder='Enter Message' />
-        <button className='btn btn-primary'>Send</button>
+        <button className='btn btn-primary '>Send</button>
       </form>
     </div>
   )
