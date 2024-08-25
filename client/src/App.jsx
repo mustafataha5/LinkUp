@@ -23,6 +23,7 @@ import ContactResponse from './components/ContactResponse';
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true)
+  const [acknowledgmentMessage, setAcknowledgmentMessage] = useState('');
 
   useEffect(() => {
 
@@ -42,8 +43,8 @@ function App() {
     <>
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
-          <Route path='/contact' element={<ContactUsForm />} />
-          <Route path='/contact/response' element={<ContactResponse />} />
+          <Route path="/contact" element={<ContactUsForm setAcknowledgmentMessage={setAcknowledgmentMessage} />}  />
+          <Route path="/contact/response" element={<ContactResponse acknowledgmentMessage={acknowledgmentMessage} />} />
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/users' element={<AdminUserList />} />
           {/* <Route path='/randatest' element={<Ads />} /> */}

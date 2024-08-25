@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/ContactUs.css'; 
-
+import '../css/ContactUs.css';
 
 function ContactUsForm({ setAcknowledgmentMessage }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [acknowledgmentMessage, setAcknowledgmentMessage] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Set the acknowledgment message
     setAcknowledgmentMessage(
       `Dear ${formData.name},\n\nThank you for contacting us! We have received your message and are reviewing your inquiry. One of our team members will get back to you as soon as possible.\n\nThank you for your patience and for reaching out to us!\n\nBest regards,\nYour Company Name`
     );
-
-    // Redirect to the response page
     navigate('/contact/response');
   };
 
@@ -49,6 +46,7 @@ export default ContactUsForm;
 
 
 
+
 // import React, { useState } from 'react';
 // import '../css/ContactUs.css'; 
 
@@ -62,11 +60,9 @@ export default ContactUsForm;
 
 //   const handleSubmit = (e) => {
 //     e.preventDefault();
-    
 //     setAcknowledgmentMessage(
 //       `Dear ${formData.name},\n\nThank you for contacting us! We have received your message and are reviewing your inquiry. One of our team members will get back to you as soon as possible.\n\nThank you for your patience and for reaching out to us!\n\nBest regards,\nYour Company Name`
 //     );
-
 //     setFormData({ name: '', email: '', message: '' });
 //   };
 
