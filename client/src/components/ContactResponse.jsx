@@ -1,8 +1,10 @@
 import React from 'react';
 import { Container, Box, Typography, Paper } from '@mui/material';
+import Footer from './Footer';
 
 function ContactResponse({ acknowledgmentMessage }) {
   return (
+    <>
     <Container maxWidth="sm">
       <Box sx={{ mt: 8 }}>
         <Paper 
@@ -22,6 +24,8 @@ function ContactResponse({ acknowledgmentMessage }) {
         </Paper>
       </Box>
     </Container>
+    <Footer />
+    </>
   );
 }
 

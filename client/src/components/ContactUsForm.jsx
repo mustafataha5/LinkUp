@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Footer from './Footer';
 
 function ContactUsForm({ setAcknowledgmentMessage }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -23,12 +24,13 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
   };
 
   return (
+    <>
     <Container maxWidth="sm">
       <Box 
         component="form" 
         onSubmit={handleSubmit} 
         sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}
-      >
+        >
         <Typography variant="h5" component="h1" gutterBottom>
           Contact Us
         </Typography>
@@ -39,7 +41,7 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
           onChange={handleChange}  
           required  
           fullWidth        
-        />
+          />
         <TextField
           label="Email"
           name="email"
@@ -48,7 +50,7 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
           required
           fullWidth
           type="email"
-        />
+          />
         <TextField
           label="Message"
           name="message"
@@ -58,7 +60,7 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
           fullWidth
           multiline
           rows={4}
-        />
+          />
         <Button 
           type="submit" 
           variant="contained" 
@@ -67,7 +69,11 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
           Submit
         </Button>
       </Box>
+      
     </Container>
+    <Footer />
+    </>
+
   );
 }
 export default ContactUsForm;

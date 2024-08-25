@@ -28,7 +28,7 @@ const services = [
 
 const ServicesPage = () => {
     return (
-        <div>
+        <>
             <Container maxWidth="lg">
                 <Box sx={{ textAlign: 'center', mt: 8, mb: 6 }}>
                     <Typography variant="h2" gutterBottom>
@@ -64,8 +64,9 @@ const ServicesPage = () => {
                     ))}
                 </Grid>
             </Container>
+
             <Footer/>
-        </div>
+        </>
     );
 };
 
