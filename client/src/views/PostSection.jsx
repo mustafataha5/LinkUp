@@ -43,7 +43,7 @@ const PostSection = ({ posts, user, setPosts }) => {
         // Update the posts state
         setPosts((prevPosts) => 
           prevPosts.map((post) => 
-            post._id === id ? { ...post, content: updatedPost.content } : post
+            post._id === id ? { ...post, content: updatedPost.content, imageUrl:updatedPost.imageUrl} : post
           )
         );
         console.log(res)

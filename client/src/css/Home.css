@@ -6,22 +6,22 @@ body {
 
 .homeFeatures2 {
     display: flex;
-    align-items: center; /* Centers vertically */
-    justify-content: center; /* Centers horizontally */
+    align-items: center; 
+    justify-content: center;
     height: 90vh;
-    gap: 5rem; /* Space between logo and form */
-    padding: 1rem; /* Padding for smaller screens */
+    gap: 5rem; 
+    padding: 1rem; 
 }
 
 /* Hiding the logo and text column on smaller screens */
 @media (max-width: 768px) {
     .homeFeatures2 {
-        display: none; /* Hide the logo and text column */
+        display: none; 
     }
 
     .col-md-6 {
-        margin: 2rem auto; /* Add margin around the form */
-        width: 80%; /* Adjust the form width */
+        margin: 3rem auto; 
+        width: 80%; 
     }
 }
 
@@ -60,8 +60,8 @@ body {
 /* For the login form column on smaller screens */
 @media (max-width: 768px) {
     .col-md-6 {
-        margin: 2rem auto; /* Add margin around the form to center it */
-        width: 80%; /* Adjust width to fit the screen better */
+        margin: 2rem auto;
+        width: 80%; 
         padding: 1rem;
     }
 }

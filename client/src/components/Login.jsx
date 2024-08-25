@@ -23,12 +23,12 @@ const styles = {
   },
   button: {
     width: "100%",
-    marginBottom: "1rem",
-    backgroundColor: "#fe520a"
+    margin: "1rem 0 ",
+    backgroundColor: "#fe8228"
   },
   button1: {
     width: "100%",
-    backgroundColor: "#9b1fe9",
+    backgroundColor: "#524C42",
   }
 };
 
@@ -96,7 +96,7 @@ const Login = ({ onSubmitProp, errors = {} }) => {
           <Button type="submit" variant="contained" color="primary" style={styles.button}>
             Login
           </Button>
-          <Button onClick={handleRegister} variant="contained" color="primary" style={styles.button}>
+          <Button onClick={handleRegister} variant="contained" color="primary" style={styles.button1}>
             Register
           </Button>
         </form>

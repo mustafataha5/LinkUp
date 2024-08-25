@@ -5,6 +5,7 @@ import logo from '../images/logo.png'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Login from '../components/Login';
+import Navbar from '../components/Navbar'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -42,27 +43,26 @@ const Home = () => {
       });
   };
 
-
-
-
-
   return (
-    <div className='row'>
-      <div className='col-md-6 homeFeatures2'>
-        <div className='homeFeatures'>
-          <img src={logo} className='header' height="130" width="350" alt='logo'></img>
-          <div className='textContainer'>
-            <div style={{ opacity: fade ? 1 : 0, transition: 'opacity 0.5s ease-in-out' }}>
-              {currentText}
+    <>
+    <Navbar />
+      <div className='row'>
+        <div className='col-md-6 homeFeatures2'>
+          <div className='homeFeatures'>
+            <img src={logo} className='header' height="130" width="350" alt='logo'></img>
+            <div className='textContainer'>
+              <div style={{ opacity: fade ? 1 : 0, transition: 'opacity 0.5s ease-in-out' }}>
+                {currentText}
+              </div>
             </div>
           </div>
         </div>
+        <div className="col-md-6">
+          <Login onSubmitProp={handleLoginSubmit} errors={errors} />
+        </div>
+        <Footer />
       </div>
-      <div className="col-md-6">
-        <Login onSubmitProp={handleLoginSubmit} errors={errors} />
-      </div>
-      <Footer />
-    </div>
+    </>
   )
 }
 
