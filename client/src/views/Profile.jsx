@@ -16,6 +16,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import AdminNavbar from '../components/AdminNavbar';
 import MessageIcon from '@mui/icons-material/Message';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import { PersonRemove } from '@mui/icons-material';
 
 
 
@@ -30,6 +32,7 @@ const Profile = () => {
     const [imageUrl, setNewImageUrl] = useState('');
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState("")
+    const [Followed, setFollowed] = useState('')
     const navigate = useNavigate();
 
 
@@ -38,7 +41,8 @@ const Profile = () => {
     const getAuth = async () => {
         await axios.get('http://localhost:8000/api/check-auth', { withCredentials: true })
             .then(response => {
-                console.log(response.data);
+                console.log(response.data.user._id);
+                isFollowed(response.data.user._id,id)
                 setUser(response.data.user);
             })
             .catch(error => {
@@ -54,6 +58,14 @@ const Profile = () => {
         }
 
     }, []);
+
+    // useEffect(() => {
+    //     const checkFollowStatus =  () => {
+    //         const following = isFollowed(user, urlUser);
+    //         setFollowed(following);
+    //     };
+    //     checkFollowStatus();
+    // }, [user, urlUser]);
 
 
     const handleSave = (e) => {
@@ -88,6 +100,15 @@ const Profile = () => {
             });
     };
 
+    const isFollowed = async (userId,urlId) =>{
+        
+        await axios.get(`http://localhost:8000/api/follows/isfollow/${userId}/${urlId}`, {},{ withCredentials: true })
+        .then(res =>{
+            console.log(res)
+            setFollowed(res.data.followId)
+
+        }).catch(err => console.log(err))
+    }
 
     const sendMessage = async () => {
         try {
@@ -179,6 +200,27 @@ const Profile = () => {
                 console.error('Error fetching posts:', error);
             });
     }
+
+    const deleteFollowed =async (followId) => {
+        await axios.delete('http://localhost:8000/api/follows/'+followId)
+        .then(res =>{
+            console.log(res)
+            setFollowed('');
+        
+        } )    
+        .catch(err => console.log(err)) ; 
+    }
+
+    const addFollowed =async (userId,urlId) => {
+        await axios.post('http://localhost:8000/api/follows/',{follower:userId, followed:urlId},{withCredentials:true})
+        .then(res =>{
+            console.log(res.data.follow)
+            setFollowed(res.data.follow._id);
+        
+        } )    
+        .catch(err => console.log(err)) ; 
+    }
+
     const edit = () => {
         navigate(`/register/${urlUser._id}`)
     }
@@ -186,6 +228,8 @@ const Profile = () => {
     const GoToFriend = () => {
         navigate('/people')
     }
+
+
     if (loading) {
         return <div>
             <Navbar />
@@ -195,6 +239,8 @@ const Profile = () => {
     if (!urlUser) {
         return <div>User not found</div>;
     }
+
+
 
     return (
         <>
@@ -280,13 +326,26 @@ const Profile = () => {
                     marginRight: 2
                 }}
             />
-            <PersonAddIcon
+            {   
+               (Followed && Followed.length>0) ? 
+                <PersonRemove
+                onClick={() => deleteFollowed(Followed)}
                 sx={{
                     fontSize: 30,
                     color: '#fe520a',
                     cursor: 'pointer'
                 }}
-            />
+                />
+                :
+                <PersonAddIcon
+                onClick={() => addFollowed(user._id,id)}
+                sx={{
+                    fontSize: 30,
+                    color: '#fe520a',
+                    cursor: 'pointer'
+                }}
+                />
+            }
         </Box>
     }
 </Box>
