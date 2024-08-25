@@ -286,41 +286,11 @@ console.error("Error sending message:", error.response?.data || error.message);
                     Message
                 </Button>
             }
+            {user._id !== urlUser._id &&
+            <Button>Follow</Button>
+}
         </Box>
-        <Box 
-            sx={{ 
-                marginTop: 1, 
-                padding: 2, 
-                boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)', 
-                borderRadius: '8px', 
-                backgroundColor: '#fff' 
-            }}
-        >
-            <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '3px' }}>Friend List</h4>
-            <p style={{ fontSize: '12px', color: '#666', marginBottom: '12px' }}>
-                Connect with like-minded people and grow together.
-            </p>
-            <Button
-                variant="contained"
-                sx={{
-                    backgroundColor: '#fe520a', // Bright orange
-                    borderColor: '#fe520a',
-                    color: 'white',
-                    padding: '6px 12px',
-                    fontSize: '14px',
-                    borderRadius: '10px',
-                    textTransform: 'none',
-                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                    width: '60%',
-                    '&:hover': {
-                        backgroundColor: '#f57c00', // Darker orange
-                        borderColor: '#f57c00',
-                    },
-                }}
-            >
-                Visit Friend Page
-            </Button>
-        </Box>
+        
     </Box>
 </Grid>
                         <Grid item xs={6}>
