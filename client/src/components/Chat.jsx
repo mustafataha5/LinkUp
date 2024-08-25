@@ -18,7 +18,7 @@ const Chat = ({ reciver, owner, messages, createMessage }) => {
     }
     return (
         <div style={{ height: '90%', position: 'fixed', right: 0, bottom: 0, width: '66.666%' }}>
-            <div className="m-5 p-3 border border-1 border-dark overflow-auto" style={{ height: 'calc(90% - 100px)' }}>
+            <div className="m-3 mt-5  p-3 border border-1 border-dark overflow-auto" style={{ height: 'calc(90% - 120px)' }}>
                 {messages.length > 0 &&
                     messages.map((message, i) => (
                         owner._id !== message.sender ? (
