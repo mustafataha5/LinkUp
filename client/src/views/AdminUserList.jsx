@@ -13,7 +13,7 @@ const AdminUserList = () => {
     const [users, setUsers] = useState([]);
     const [loading,setLoading] = useState(true)
     const navigate = useNavigate() ; 
-    const [socket, setSocket] = useState(() => io('http://localhost:8000'));
+    const [socket, setSocket] = useState(() => io('http://51.20.56.131:8000'));
     // Get the user (we will get the id from the cookies then find the user)
  useEffect(() => {
    getUser();
