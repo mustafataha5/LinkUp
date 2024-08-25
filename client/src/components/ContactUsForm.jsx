@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
-import {
-  TextField,
-  Button,
-  Container,
-  Typography,
-  Box,
-  Alert
-} from '@mui/material';
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 
-function ContactUsForm() {
+function ContactUsForm({ setAcknowledgmentMessage }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [acknowledgmentMessage, setAcknowledgmentMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -26,9 +20,11 @@ function ContactUsForm() {
     
     setAcknowledgmentMessage(message);
     setFormData({ name: '', email: '', message: '' }); // Reset the form
+    navigate('/contact/response');
   };
 
   return (
+    <>
     <Container maxWidth="sm">
       <Box 
         component="form" 
@@ -64,16 +60,20 @@ function ContactUsForm() {
           fullWidth
           multiline
           rows={4}
-        />
+          />
         <Button 
           type="submit" 
           variant="contained" 
           sx={{ backgroundColor: 'orange', '&:hover': { backgroundColor: 'darkorange' } }}
-        >
+          >
           Submit
         </Button>
       </Box>
+      
     </Container>
+    
+    <Footer/>
+    </>
   );
 }
 export default ContactUsForm;
