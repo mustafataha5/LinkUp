@@ -26,6 +26,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import ReportIcon from '@mui/icons-material/Report';
 import PostForm from './PostForm';
 import { UserContext } from '../context/UserContext';
+import { Link } from 'react-router-dom';
 
 const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -228,7 +229,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
         // The header part of the post {user name, user image, date and time }
         title={
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            {post.user.firstName} {post.user.lastName}
+            <Link style={{textDecoration:"none"}} to={`/profile/${post.user._id}`}>{post.user.firstName} {post.user.lastName}</Link>
           </Typography>
         }
         subheader={new Date(post.timestamp).toLocaleString('en-US', {

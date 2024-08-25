@@ -89,7 +89,7 @@ const PostForm = ({ postId, userId, userImage, name, onPostSubmit, errors, initi
       
       <CardHeader
         avatar={<Avatar src={userImage} alt="User" />}
-        title={<Typography variant="h6" sx={{ fontWeight: 'bold' }}><Link style={{textDecoration:"none"}} to={`profile/${userId}`}>{name}</Link></Typography>}
+        title={<Typography variant="h6" sx={{ fontWeight: 'bold' }}><Link style={{textDecoration:"none"}} to={`/profile/${userId}`}>{name}</Link></Typography>}
       />
       <CardContent>
         <TextField
