@@ -3,9 +3,9 @@ import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 
-function ContactUsForm({ setAcknowledgmentMessage }) {
+function ContactUsForm() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const navigate = useNavigate();
+  const [acknowledgmentMessage, setAcknowledgmentMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -20,7 +20,6 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
     
     setAcknowledgmentMessage(message);
     setFormData({ name: '', email: '', message: '' }); // Reset the form
-    navigate('/contact/response');
   };
 
   return (

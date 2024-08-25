@@ -16,5 +16,4 @@ function Ads(props) {
     </div>
   );
 }
-
 export default Ads;

@@ -1,21 +1,22 @@
 .navbar {
-  margin-bottom: 150px;
+  margin-bottom: 80px;
 }
 
-.row {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  margin-top: 75px;
+.bg-light-orange {
+  background-color: #ffa5004a !important; /* Light orange background */
 }
 
-/* .container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-} */
+.card {
+  padding: 50px; /* Increase padding for larger cards */
+  font-size: 1.25rem; /* Increase font size for better readability */
+  border: none; /* Remove border if you prefer */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for better visibility */
+  margin-bottom: 50px;
+}
+
+.card-text {
+  font-size: 1.25rem; /* Larger text font size */
+}
 
 .charts-row {
   display: flex;
@@ -61,5 +62,37 @@
     margin-bottom: 50px;
 }
 
+/* Define keyframes for the gradient animation */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* Card with animated background */
+.card.bg-light-orange {
+  background: linear-gradient(45deg, #ff7e00, #eeee4e, #f77af7, #4f4d49);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  border: none; /* Remove border if you prefer */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for better visibility */
+  padding: 30px; /* Increase padding for larger cards */
+  font-size: 1.25rem; /* Increase font size for better readability */
+}
+
+/* Ensure card content is centered */
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+}
 
   
