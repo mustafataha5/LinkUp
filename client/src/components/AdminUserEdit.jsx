@@ -40,22 +40,41 @@ const AdminUserEdit = ({ onDeactive, onActive, users }) => {
                                 </TableCell>
                                 <TableCell>
                                     {
-                                        user.role === 'user' && (user.status === "deactive" ?
-                                            <IconButton onClick={() => handleDeactive(user._id)} 
+                                        
+                                            user.role === 'user' &&( user.status === "active" ?
+                                                <IconButton onClick={() => handleDeactive(user._id)} 
+                                                color="success"
+                                                sx={{ display: 'flex', alignItems: 'flex-end' }}
+                                                >
+                                                    <div><DomainVerificationIcon /></div>
+                                                    <small className='mx-1'>Active</small>
+                                                </IconButton>
+                                           :
+                                           <IconButton  onClick={() => handleActive(user._id)} 
                                             color="error"
                                             sx={{ display: 'flex', alignItems: 'flex-end' }}
                                             >
                                                 <div><DoDisturbOnIcon /></div> 
                                                 <small className='mx-1'>Deactive</small>
                                             </IconButton>
-                                            :
-                                            <IconButton onClick={() => handleActive(user._id)} 
-                                            color="success"
-                                            sx={{ display: 'flex', alignItems: 'flex-end' }}
-                                            >
-                                                <div><DomainVerificationIcon /></div>
-                                                <small className='mx-1'>Active</small>
-                                            </IconButton>
+
+
+                                        // user.role === 'user' && (user.status !== "active" ?
+                                            // <IconButton onClick={() => handleDeactive(user._id)} 
+                                            // color="error"
+                                            // sx={{ display: 'flex', alignItems: 'flex-end' }}
+                                            // >
+                                            //     <div><DoDisturbOnIcon /></div> 
+                                            //     <small className='mx-1'>Deactive</small>
+                                            // </IconButton>
+                                            // :
+                                            // <IconButton onClick={() => handleActive(user._id)} 
+                                            // color="success"
+                                            // sx={{ display: 'flex', alignItems: 'flex-end' }}
+                                            // >
+                                            //     <div><DomainVerificationIcon /></div>
+                                            //     <small className='mx-1'>Active</small>
+                                            // </IconButton>
                                         )}
                                 </TableCell>
                                 <TableCell>
