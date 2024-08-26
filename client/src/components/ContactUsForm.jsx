@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
+import '../css/Contact.css'
 
 function ContactUsForm({ setAcknowledgmentMessage }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -25,11 +26,11 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
 
   return (
     <>
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" className='animated-frame-contact'>
       <Box 
         component="form" 
         onSubmit={handleSubmit} 
-        sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}
+        sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2, height:'75%' }}
       >
         <Typography variant="h5" component="h1" gutterBottom>
           Contact Us
