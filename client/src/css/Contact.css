@@ -1,0 +1,23 @@
+.animated-frame-contact {
+    position: relative;
+    width: 500px;
+    height: 650px;
+    border-radius: 50px 5px;
+    overflow: hidden;
+    padding: 5px;
+  }
+  
+  .animated-frame-contact::before {
+    content: '';
+    position: absolute;
+    top: 33px;
+    left: 18px;
+    width: 94%;
+    height: 75%;
+    border: 5px solid transparent;
+    border-radius: inherit;
+    box-sizing: border-box;
+    border-top-color: #fd8a29;
+    animation: animate-border 8s linear infinite;
+  }
+  
