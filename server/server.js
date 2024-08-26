@@ -13,7 +13,7 @@ const server = http.createServer(app);
 // Configure Socket.io with CORS settings
 const socketIo = io(server, {
   cors: {
-    origin: ['http://localhost:3000', 'http://your-public-ip-or-domain'], // Add your public IP or domain here
+    origin: ['http://localhost:3000', 'http://51.20.56.131/'], // Add your public IP or domain here
     methods: ['GET', 'POST'],
     credentials: true
   }
