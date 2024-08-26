@@ -357,7 +357,7 @@ const Profile = () => {
                             </Box>
                         </Grid>
                         <Grid item xs={6}>
-                            {urlUser._id === user._id && (
+                            {urlUser && (
                                 <>
                                     <CreatePostSection user={urlUser} getPosts={getPosts} />
                                     <Box
