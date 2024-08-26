@@ -77,7 +77,7 @@
 
 /* Card with animated background */
 .card.bg-light-orange {
-  background: linear-gradient(45deg, #ff7e00, #eeee4e, #f77af7, #4f4d49);
+  background: linear-gradient(45deg, #FF5F6D, #FFC371, #fbf4e5);
   background-size: 400% 400%;
   animation: gradientAnimation 15s ease infinite;
   border: none; /* Remove border if you prefer */
