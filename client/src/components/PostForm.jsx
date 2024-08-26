@@ -25,7 +25,7 @@ const PostForm = ({ postId,
   initialContent = '', initialImage = '', isEdit = false, setNewPost }) => {
   const [content, setContent] = useState(initialContent);
   const [imageUrl, setImageURL] = useState(initialImage);
-  const [isSubmit, setIssubmited] = useState(false)
+  const [isSubmit, setIsSubmited] = useState(false)
   const handleContentChange = (event) => {
     setContent(event.target.value);
   };
@@ -49,11 +49,13 @@ const PostForm = ({ postId,
     if (content.length > 0) {
       setContent('');
       setImageURL('');
-      setIssubmited(true)
+      setIsSubmited(true)
       toast.success(`🎉 ${isEdit ? 'Post updated' : 'Post created'} successfully!`, {
         position: 'top-center',
         autoClose: 3000,
       });
+    } else {
+      setIsSubmited(false)
     }
 
   };
@@ -90,7 +92,7 @@ const PostForm = ({ postId,
           value={content}
           onChange={handleContentChange}
         />
-        {!isSubmit&& errors && <small className="text-danger">{errors.content.message}</small>}
+        {!isSubmit && errors && <small className="text-danger">{errors.content.message}</small>}
 
         {imageUrl &&(
           <Box sx={{ mt: 2 }}>
