@@ -25,7 +25,7 @@ const PostForm = ({ postId,
   initialContent = '', initialImage = '', isEdit = false, setNewPost }) => {
   const [content, setContent] = useState(initialContent);
   const [imageUrl, setImageURL] = useState(initialImage);
-
+  const [isSubmit, setIssubmited] = useState(false)
   const handleContentChange = (event) => {
     setContent(event.target.value);
   };
@@ -38,29 +38,25 @@ const PostForm = ({ postId,
   };
 
   const handleSubmit = () => {
-    // if( imageUrl.length >1 && content.length < 1){
-    //   setContent('.') ;
-    // }
-
     if (isEdit) {
       console.log('-------**********************************')
       console.log(content, '---------------', imageUrl)
-      onPostSubmit(postId, { content, imageUrl })
+      onPostSubmit(postId, { content })
     }
     else {
-
       onPostSubmit({ user: userId, content, imageUrl });
     }
-    if (Object.keys(errors).length === 0) {
+    if (content.length > 0) {
       setContent('');
       setImageURL('');
-      toast.success(`${isEdit ? 'Post updated' : 'Post submitted'} successfully!`, {
+      setIssubmited(true)
+      toast.success(`🎉 ${isEdit ? 'Post updated' : 'Post created'} successfully!`, {
         position: 'top-center',
         autoClose: 3000,
       });
     }
+
   };
-  console.log("errors=====================", errors)
   return (
     <Card sx={{ maxWidth: 500, margin: '20px auto', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', borderRadius: '8px' }}>
 
@@ -88,19 +84,19 @@ const PostForm = ({ postId,
           fullWidth
           multiline
           rows={4}
+          required
           variant="outlined"
           label="What's on your mind?"
           value={content}
           onChange={handleContentChange}
         />
-        {/* {errors.content && <small className="text-danger">{errors.content.message}</small>} */}
+        {!isSubmit&& errors && <small className="text-danger">{errors.content.message}</small>}
 
-        {imageUrl && (
+        {imageUrl &&(
           <Box sx={{ mt: 2 }}>
             <img src={imageUrl} alt="Selected" style={{ width: '100%' }} />
           </Box>
         )}
-        {errors.image && <small className="text-danger">{errors.image.message}</small>}
 
         <Box sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
           <Input

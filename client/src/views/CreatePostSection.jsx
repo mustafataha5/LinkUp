@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom'
 
 const CreatePostSection = ({ user, getPosts }) => {
 
-    // To handle form errors
-    const [errors, setErrors] = useState([]);
+    // To handle form error
+    const [error, setError] = useState("");
     const navigate = useNavigate() ;
     // This function is used to create an post
     const createPost = post => {
@@ -29,14 +29,14 @@ const CreatePostSection = ({ user, getPosts }) => {
                     navigate('/403'); // Redirect to a 403 Forbidden page
                 }
                 console.log("create err ======",err.response)
-                const errorResponse = err.response.data.errors;
-                setErrors(errorResponse);
+                const errorResponse = err.response.data.err.errors;
+                setError(errorResponse);
             })
     }
     return (
         <>
             <div className="container mt-5">
-                <PostForm userId={user._id} onPostSubmit={createPost} errors={errors} userImage={user.imageUrl} name={user.firstName + " " + user.lastName} initialContent='' initialImage={null} />
+                <PostForm userId={user._id} onPostSubmit={createPost} errors={error} userImage={user.imageUrl} name={user.firstName + " " + user.lastName} initialContent='' initialImage={null} />
             </div>
         </>
     )

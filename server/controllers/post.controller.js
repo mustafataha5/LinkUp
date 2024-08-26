@@ -3,9 +3,9 @@ const User = require('../models/user.model');
 
 module.exports.updatePost = (request, response) => {
     // {new: true}: returns the NEWLY updated document, not original one
-    const {user,content,imageUrl} = request.body ;
+    const {content} = request.body ;
     console.log(request.body)
-    Post.findOneAndUpdate({_id: request.params.id,user:user}, {content:content},{new:true})
+    Post.findOneAndUpdate({_id: request.params.id}, {content:content},{new:true})
         // handles & returns successful update:
         .then(updatedPost  => response.json({post:updatedPost} ))
         // handles & returns any error during the process as JSON response
@@ -87,10 +87,10 @@ module.exports.createPost = async (req, res) => {
         }
 
         // Create the post
-        const post = await Post.create({ user: userId, content, imageUrl });
+        const post = await Post.create({ user, content, imageUrl });
 
         return res.status(201).json({ post });
     } catch (err) {
-        return res.status(400).json({ error: err.message });
+        return res.status(400).json({err});
     }
 };
