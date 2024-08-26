@@ -21,16 +21,16 @@ const MainPage = () => {
   const [suggested, setSuggested] = useState([]);    // Suggested list 
   const navigate = useNavigate();
   const resposive = useMediaQuery('(max-width: 600px)')
-  const resposive1= useMediaQuery('(max-width: 900px)')
+  const resposive1 = useMediaQuery('(max-width: 900px)')
   const socketUrl = 'http://51.20.56.131:8000'; // Update this to your public IP or domain
-const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websocket'] }));
+  const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websocket'] }));
 
   const [isScreenSmall, setSmallScreen] = useState(window.innerWidth <= 900);
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     const handleResize = () => {
       setSmallScreen(window.innerWidth <= 900)
-    
+
     }
 
     window.addEventListener('resize', handleResize)
@@ -70,14 +70,14 @@ const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websock
         LogOut();
       }
     };
-  
+
     socket.on('status', handleStatus);
-  
+
     socket.on('disconnect', () => {
       console.log('Socket disconnected');
       // Optionally, you can attempt to reconnect or show a message to the user
     });
-  
+
     // Cleanup on component unmount
     return () => {
       socket.off('status', handleStatus); // Remove the status event listener
@@ -113,14 +113,14 @@ const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websock
       console.error('Error fetching suggested users:', error);
     }
   };
-  const deleteFollowed =async (followId) => {
+  const deleteFollowed = async (followId) => {
     console.log(followId)
-    await axios.delete('http://localhost:8000/api/follows/'+followId)
-    .then(res =>{
+    await axios.delete('http://localhost:8000/api/follows/' + followId)
+      .then(res => {
         console.log(res)
-    } )    
-    .catch(err => console.log(err)) ; 
-}
+      })
+      .catch(err => console.log(err));
+  }
   const LogOut = () => {
     axios.post('http://localhost:8000/api/logout', {}, { withCredentials: true })
       .then(() => {
@@ -133,9 +133,9 @@ const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websock
   if (loading) {
     return (
       <div>
-        
+
         <Navbar />
-      
+
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
           <Container>
             <Grid container spacing={5}>
@@ -162,23 +162,22 @@ const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websock
     <div>
       <ToastContainer />
       {
-          user.role === 'user' ? 
-        <Navbar />
-        :
-        <AdminNavbar />
-        }
+        user.role === 'user' ?
+          <Navbar />
+          :
+          <AdminNavbar />
+      }
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
         <Container>
           <Grid container spacing={5}>
-          <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
-    {!resposive && (
-
-
-<Box 
-                  sx={{ 
-                    position: 'fixed', 
-                    borderRight: '4px solid #dede', 
-                    maxHeight: '470px', 
+            <Grid item xs={3} sx={{ marginLeft: '-30px', marginTop: 6, marginRight: 3 }}>
+              {!resposive && (
+                <Box
+                  sx={{
+                    position: 'fixed',
+                    borderRight: '4px solid #dede',
+                    maxHeight: '470px',
+                    minWidth: '300px', // Added to ensure the box does not shrink too much
                     backgroundColor: '#ffffff', // Adjusted to match your other components
                     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // Consistent box shadow
                     borderRadius: '8px',
@@ -187,29 +186,29 @@ const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websock
                     flexDirection: 'column',
                   }}
                 >
-                  <Typography 
-                    variant='h6' 
-                    sx={{ 
-                      textAlign: 'center', 
-                      borderBottom: '2px solid #dede', 
-                      marginBottom: '16px', 
-                      paddingBottom: '8px', 
+                  <Typography
+                    variant='h6'
+                    sx={{
+                      textAlign: 'center',
+                      borderBottom: '2px solid #dede',
+                      marginBottom: '16px',
+                      paddingBottom: '8px',
                       fontWeight: 'bold',
                       color: '#333'
                     }}
                   >
                     Following
                   </Typography>
-                  <Box 
-                    sx={{ 
-                      flex: 1, 
-                      overflow: 'hidden', 
-                      display: 'flex', 
-                      flexDirection: 'column' 
+                  <Box
+                    sx={{
+                      flex: 1,
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column'
                     }}
                   >
-                    <Box 
-                      sx={{ 
+                    <Box
+                      sx={{
                         maxHeight: `calc(470px - 50px)`, // Subtract space for button
                         overflow: 'hidden',
                         display: 'flex',
@@ -246,40 +245,40 @@ const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websock
                     </Box>
                     {users.length > followersLimit && (
                       <Typography
-  variant="body1"
-  sx={{
-    marginTop: '16px',
-    alignSelf: 'center',
-    cursor: 'pointer',
-    color: '#fe520a', // Initial color
-    fontWeight: 'bold',
-    textDecoration: 'underline',
-    display: 'flex',
-    alignItems: 'center',
-    position: 'relative',
-    '&:hover': {
-      color: '#fe520a', // Maintain the color on hover
-      textDecoration: 'none',
-    },
-    '&:hover::after': {
-      content: '"→"', // Unicode arrow
-      position: 'absolute',
-      right: '-20px',
-      opacity: 1,
-      transition: 'opacity 0.3s ease',
-    },
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      right: '-20px',
-      opacity: 0,
-      transition: 'opacity 0.3s ease',
-    },
-  }}
-  onClick={() => navigate('/people')}
->
-  View More
-</Typography>
+                        variant="body1"
+                        sx={{
+                          marginTop: '16px',
+                          alignSelf: 'center',
+                          cursor: 'pointer',
+                          color: '#fe520a', // Initial color
+                          fontWeight: 'bold',
+                          textDecoration: 'underline',
+                          display: 'flex',
+                          alignItems: 'center',
+                          position: 'relative',
+                          '&:hover': {
+                            color: '#fe520a', // Maintain the color on hover
+                            textDecoration: 'none',
+                          },
+                          '&:hover::after': {
+                            content: '"→"', // Unicode arrow
+                            position: 'absolute',
+                            right: '-20px',
+                            opacity: 1,
+                            transition: 'opacity 0.3s ease',
+                          },
+                          '&::after': {
+                            content: '""',
+                            position: 'absolute',
+                            right: '-20px',
+                            opacity: 0,
+                            transition: 'opacity 0.3s ease',
+                          },
+                        }}
+                        onClick={() => navigate('/people')}
+                      >
+                        View More
+                      </Typography>
 
                     )}
                   </Box>
@@ -300,18 +299,18 @@ const [socket, setSocket] = useState(() => io(socketUrl, { transports: ['websock
             {!resposive1 && (
 
               <Grid item xs={3} container direction="column" spacing={2} sx={{ marginRight: -10 }}>
-              <Box sx={{ position: 'fixed' }}>
-                <Grid item sx={{ marginTop: 8, position: 'sticky'}}>
-                  <Ads />
-                </Grid>
-                {/* <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
+                <Box sx={{ position: 'fixed' }}>
+                  <Grid item sx={{ marginTop: 8, position: 'sticky' }}>
+                    <Ads />
+                  </Grid>
+                  {/* <Grid item sx={{ marginTop: 2, position: 'sticky', top: '500px' }}>
                   <UserList initialUsers={suggested} index={2} sx={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)' }} />
                   </Grid> */}
-              </Box>
-                  </Grid>
-                )}
-                  </Grid>
-                </Container>
+                </Box>
+              </Grid>
+            )}
+          </Grid>
+        </Container>
       </Box>
     </div>
   );
