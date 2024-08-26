@@ -17,8 +17,8 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const message = `Dear ${formData.name},\n\nThank you for contacting us! We have received your message and are reviewing your inquiry. One of our team members will get back to you as soon as possible.\n\nThank you for your patience and for reaching out to us!\n\nBest regards,\nThe LinkUp`;
-    
+    const message = `Dear ${formData.name},\n\nThank you for contacting us! We have received your message and are reviewing your inquiry. One of our team members will get back to you as soon as possible.\n\nThank you for your patience and for reaching out to us!\n\nBest regards,\nThe LinkUp Team.`;
+
     setAcknowledgmentMessage(message);
     setFormData({ name: '', email: '', message: '' }); // Reset the form
     navigate('/contact/response');
@@ -26,57 +26,57 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
 
   return (
     <>
-    <Container maxWidth="sm" className='animated-frame-contact'>
-      <Box 
-        component="form" 
-        onSubmit={handleSubmit} 
-        sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2, height:'75%' }}
-      >
+      <Container maxWidth="sm" className='animated-frame-contact'>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2, height: '75%' }}
+        >
           <Typography
             variant="h1"
             sx={{ textAlign: 'center', fontSize: 50, mb: 2 }}
           >
             Contact Us
           </Typography>
-        <TextField  
-          label="Name"  
-          name="name"  
-          value={formData.name} 
-          onChange={handleChange}  
-          required  
-          fullWidth        
-        />
-        <TextField
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          fullWidth
-          type="email"
-        />
-        <TextField
-          label="Message"
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          required
-          fullWidth
-          multiline
-          rows={4}
+          <TextField
+            label="Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            fullWidth
           />
-        <Button 
-          type="submit" 
-          variant="contained" 
-          sx={{ backgroundColor: 'orange', '&:hover': { backgroundColor: 'darkorange' } }}
+          <TextField
+            label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            fullWidth
+            type="email"
+          />
+          <TextField
+            label="Message"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            fullWidth
+            multiline
+            rows={4}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ backgroundColor: 'orange', '&:hover': { backgroundColor: 'darkorange' } }}
           >
-          Submit
-        </Button>
-      </Box>
-      
-    </Container>
-    
-    <Footer/>
+            Submit
+          </Button>
+        </Box>
+
+      </Container>
+
+      <Footer />
     </>
   );
 }
@@ -112,9 +112,9 @@ export default ContactUsForm;
 
 //   return (
 //     <Container maxWidth="sm">
-//       <Box 
-//         component="form" 
-//         onSubmit={handleSubmit} 
+//       <Box
+//         component="form"
+//         onSubmit={handleSubmit}
 //         sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}
 //       >
 //         <Typography variant="h5" component="h1" gutterBottom>
