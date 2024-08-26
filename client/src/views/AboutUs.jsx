@@ -1,37 +1,44 @@
 import * as React from 'react';
-import { Container, Grid, Typography, Card, CardContent, Box, Avatar, Divider } from '@mui/material';
+import { Container, Grid, Typography, Card, CardContent, Box, Avatar, Divider, IconButton, Link } from '@mui/material';
+import { GitHub, LinkedIn } from '@mui/icons-material';
 import Footer from '../components/Footer';
-import Muath from '../images/Muath.jpg'
-import Mustafa from '../images/Mustafa.jpeg'
-import Rand2 from '../images/Rand2.jfif'
-import Randa from '../images/Randa.png'
+import Muath from '../images/Muath.jpg';
+import Mustafa from '../images/Mustafa.jpeg';
+import Rand2 from '../images/Rand.jpg';
+import Randa from '../images/Randa.png';
 
 const teamMembers = [
     {
         name: 'Rand Farhoud',
         position: 'Full Stack Developer',
-        description: `A junior full stack developer seeking an entry-level web development role, eager to refine software engineering skills and apply logical thinking to craft innovative website solutions`,
-        imageUrl: Rand2
+        githubUrl: 'https://github.com/Farhoud-Rand',
+        linkedinUrl: 'https://www.linkedin.com/in/rand-farhoud-301b64184/',
+        imageUrl: Rand2,
+        shadowColor: 'rgb(138, 19, 180, 0.4)' // Yellow shadow for Rand
     },
     {
         name: 'Mustafa Taha',
         position: 'Full Stack Developer',
-        description: `
-
-I'm a full stack developer with expertise in Python and JavaScript, passionate about solving complex problems and delivering innovative, impactful projects.` ,
-        imageUrl: Mustafa
+        githubUrl: 'https://github.com/mustafataha5',
+        linkedinUrl: 'https://www.linkedin.com/in/mustafa-taha-3b87771b4/',
+        imageUrl: Mustafa,
+        shadowColor: 'rgba(0, 0, 255, 0.4)' // Blue shadow for Mustafa
     },
     {
         name: 'Randa Twasha',
         position: 'Full Stack Developer',
-        description: 'Alice is responsible for product development, focusing on creating features that enhance user engagement and make our platform user-friendly and effective.',
-        imageUrl: Randa
+        githubUrl: 'https://github.com/rtawasha',
+        linkedinUrl: 'https://www.linkedin.com/in/rtawasha/',
+        imageUrl: Randa,
+        shadowColor: 'rgb(11, 192, 174, 0.4)'
     },
     {
         name: 'Muath Ez Zughayyar',
         position: 'Full Stack Developer',
-        description: `I'm a Junior Full Stack Developer with a Business Administration background and expertise in Java, Python, and MERN from an intensive 14-week bootcamp.`,
-        imageUrl: Muath
+        githubUrl: 'https://github.com/Muath-Ademar',
+        linkedinUrl: 'https://www.linkedin.com/in/muath-ez-zughayyar-b6b567277/',
+        imageUrl: Muath,
+        shadowColor: 'rgba(255, 0, 0, 0.4)' // Red shadow for Muath
     }
 ];
 
@@ -43,36 +50,46 @@ const AboutUsPage = () => {
                     <Typography variant="h2" gutterBottom>
                         About Us
                     </Typography>
-                    <Typography variant="h5" sx={{ mb: 4 }}>
+                    <Typography variant="h6" sx={{ mb: 4 }}>
                         At LinkUp, we're committed to revolutionizing the way people connect and share their lives. Meet the passionate team behind our social media platform.
                     </Typography>
                 </Box>
                 <Grid container spacing={4} justifyContent="center">
                     {teamMembers.map((member, index) => (
                         <Grid item xs={12} sm={6} md={3} key={index}>
-                            <Card sx={{ display: 'flex',
-                                 flexDirection: 'column',
-                                  alignItems: 'center',
-                                   p: 2,
-                                    borderRadius: '16px',
-                                     boxShadow: 3,
-                                     height:"400px" 
-                                     }}>
+                            <Card sx={{ 
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                p: 2,
+                                borderRadius: '16px',
+                                boxShadow: `0px 4px 20px ${member.shadowColor}`, // Custom shadow color for each card
+                                height: "300px", // Reduced height only
+                                }}>
                                 <Avatar
                                     alt={member.name}
                                     src={member.imageUrl}
-                                    sx={{ width: 120, height: 120, mb: 2, border: '3px solid #ddd' }}
+                                    sx={{ width: 120, height: 120, mb: 2, border: '2px solid #ddd' }}
                                 />
-                                <CardContent>
+                                <CardContent sx={{ textAlign: 'center', p: 1 }}>
                                     <Typography variant="h6" gutterBottom>
                                         {member.name}
                                     </Typography>
                                     <Typography variant="subtitle1" color="textSecondary" gutterBottom>
                                         {member.position}
                                     </Typography>
-                                    <Typography variant="body2" color="textSecondary">
-                                        {member.description}
-                                    </Typography>
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 1 }}>
+                                        <Link href={member.githubUrl} target="_blank" rel="noopener">
+                                            <IconButton aria-label="github" size="small">
+                                                <GitHub sx={{ color: 'black' }} />
+                                            </IconButton>
+                                        </Link>
+                                        <Link href={member.linkedinUrl} target="_blank" rel="noopener">
+                                            <IconButton aria-label="linkedin" color="primary" size="small">
+                                                <LinkedIn />
+                                            </IconButton>
+                                        </Link>
+                                    </Box>
                                 </CardContent>
                             </Card>
                         </Grid>
