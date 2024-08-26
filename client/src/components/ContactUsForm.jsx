@@ -32,9 +32,12 @@ function ContactUsForm({ setAcknowledgmentMessage }) {
         onSubmit={handleSubmit} 
         sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2, height:'75%' }}
       >
-        <Typography variant="h5" component="h1" gutterBottom>
-          Contact Us
-        </Typography>
+          <Typography
+            variant="h1"
+            sx={{ textAlign: 'center', fontSize: 50, mb: 2 }}
+          >
+            Contact Us
+          </Typography>
         <TextField  
           label="Name"  
           name="name"  
