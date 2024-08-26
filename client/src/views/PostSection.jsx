@@ -49,7 +49,7 @@ const PostSection = ({ posts, user, setPosts }) => {
         console.log(res)
       })
       .catch(err => {
-        const errorResponse = err.response.data.errors;
+        const errorResponse = err.response.data.err.errors;
         setErrors(errorResponse);
       });
   }
