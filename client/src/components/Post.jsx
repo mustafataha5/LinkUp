@@ -236,7 +236,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
             style={{ flexGrow: 1, fontWeight: 'bold', color: 'black' }}
           >
             <Link
-              to={`/profile/${user._id}`}
+              to={`/profile/${post.user._id}`}
               style={{
                 textDecoration: 'none',
                 color: 'inherit',

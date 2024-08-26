@@ -359,7 +359,13 @@ const Profile = () => {
                         <Grid item xs={6}>
                             {urlUser && (
                                 <>
+                                {console.log("url....",urlUser._id==user._id)}
+                                {
+                                    urlUser._id==user._id ?
                                     <CreatePostSection user={urlUser} getPosts={getPosts} />
+                                    :
+                                    <CreatePostSection user={user} getPosts={getPosts} />
+                                }
                                     <Box
 
                                     >
