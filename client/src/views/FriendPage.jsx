@@ -124,7 +124,7 @@ function BasicTabs() {
                     <Tab label="Suggestion" {...a11yProps(2)} />
                 </Tabs>
             </Box>
-            <Grid sx={{ border: '1px solid #777', margin: '9px', borderRadius: '10px' }}>
+            <Grid sx={{ border: '1px solid #777', margin: '9px', borderRadius: '10px', backgroundColor: 'white' }}>
                 <CustomTabPanel value={value} index={0}>
                     <UserList onClickTab={delFollow} initialUsers={users} index={0} />
                 </CustomTabPanel>
