@@ -15,7 +15,7 @@ export default function AdminStatPie({genderCounts}) {
         ]}
         width={600}
         height={300}
-        colors={['yellow', 'violet']}  // Set the colors here
+        colors={['rgb(73 72 71)', 'rgb(255 165 0)']}  // Set the colors here
         style={{ margin: '0 auto' }} 
       />
     </div>
