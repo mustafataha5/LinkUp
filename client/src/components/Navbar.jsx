@@ -137,7 +137,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem>
         <IconButton size="large" aria-label="show new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+          <Badge  color="error">
             <MailIcon />
           </Badge>
         </IconButton>
@@ -145,7 +145,7 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
       <MenuItem>
         <IconButton size="large" aria-label="show new notifications" color="inherit">
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={'+'} color="error">
             <PeopleIcon />
           </Badge>
         </IconButton>
@@ -195,7 +195,7 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
                 onClick={mailClick}
               >
-                <Badge badgeContent={17} color="error">
+                <Badge  color="error">
                   <MailIcon />
                 </Badge>
               </IconButton>

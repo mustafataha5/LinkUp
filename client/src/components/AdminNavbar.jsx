@@ -110,10 +110,10 @@ export default function PrimarySearchAppBar() {
   const statisticsClick = () => {
     navigate("/admin/dashboard");
   };
-  const superVisor = () =>{
+  const superVisor = () => {
     navigate("/admin/users");
   }
- 
+
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -142,17 +142,41 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem onClick={statisticsClick}>
+        <IconButton
+          size="large"
+          aria-label="home"
+          color="inherit"
+          sx={{ mr: 2 }}
+        >
+          <EqualizerIcon />
+        </IconButton>
+      </MenuItem>
+      <MenuItem onClick={superVisor}>
+        <IconButton
+          size="large"
+          aria-label="home"
+          color="inherit"
+          sx={{ mr: 2 }}
+          
+        >
+          <AdminPanelSettingsIcon />
+        </IconButton>
+      </MenuItem>
+     
       <MenuItem onClick={mailClick}>
         <IconButton size="large" aria-label="show new mails" color="inherit">
-          <Badge badgeContent={60} color="error">
+          {/* <Badge badgeContent={''} color="error"> */}
+          <Badge color="error">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
+     
       <MenuItem onClick={peopleClick}>
         <IconButton size="large" aria-label="show new notifications" color="inherit">
-          <Badge badgeContent={18} color="error">
+          <Badge badgeContent={'+'} color="error">
             <PeopleIcon />
           </Badge>
         </IconButton>
@@ -216,7 +240,7 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
                 onClick={mailClick}
               >
-                <Badge badgeContent={17} color="error">
+                <Badge  color="error">
                   <MailIcon />
                 </Badge>
               </IconButton>

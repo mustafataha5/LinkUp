@@ -54,7 +54,8 @@ module.exports.getAllPostOfUserByUserID = (request, response) => {
     console.log("User ID:", userId);
 
     Post.find({ user: userId })
-    .populate('user', 'firstName lastName imageUrl') // Populate user with specific fields
+        .populate('user', 'firstName lastName imageUrl') // Populate user with specific fields
+        .sort({ timestamp: -1 }) // Sort posts by createdAt in descending order
         .then(posts => {
             if (posts.length === 0) {
                 return response.status(404).json({ message: 'No posts found for this user' });

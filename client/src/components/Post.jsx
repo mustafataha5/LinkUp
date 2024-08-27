@@ -48,7 +48,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
     const fetchData = async () => {
       try {
         // Fetch the likes for the post
-        const response = await axios.get(`http://localhost:8000/api/likes/${post._id}`);
+        const response = await axios.get(`http://localhost:8000/api/likes/${post._id}`,{withCredentials:true});
 
         // Update the number of likes and the list of users who liked the post
         const likedUsers = response.data.Like;
@@ -87,7 +87,7 @@ const Post = ({ post, userId, onDelete, onUpdate, errors }) => {
   const handleLike = () => {
     // If user is already liked the post then he/she wants to dislike the post 
     if (isLiked) {
-      axios.delete('http://localhost:8000/api/likes/' + post._id + "/" + userId)
+      axios.delete('http://localhost:8000/api/likes/' + post._id + "/" + userId,{withCredentials:true})
         .then(res => {
           console.log(res.data)
         })
