@@ -21,6 +21,11 @@ The goal of this project is to develop a simple social media platform that allow
 - *Real-Time Updates:* Socket.io
 - *Styling:* Bootstrap or Material-UI, CSS/SCSS
 
+## Demo
+<div align="center">
+  <img src="linkup.gif" alt="Introduction" >
+</div>
+
 ## Features
 1. *User Authentication*
    - *Sign-Up:* Users can register with an email, username, and password.
