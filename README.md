@@ -121,13 +121,19 @@ The goal of this project is to develop a simple social media platform that allow
 - *Analytics:* Provide insights into user engagement and activity.
 
 ## ERD (Entity-Relationship Diagram)
-[Include ERD Image Here]
+<div align="center">
+  <img src="ERD.png" alt="Introduction" >
+</div>
 
 ## User Journey
-[Include User Journey Details Here]
+<div align="center">
+  <img src="User.png" alt="Introduction" >
+</div>
 
 ## Admin Journey
-[Include Admin Journey Details Here]
+<div align="center">
+  <img src="Admin.png" alt="Introduction" >
+</div>
 
 ## Conclusion
 By following this plan, the team will be able to create a basic but functional social media platform in just five days. The project will offer a foundation for further development and enhancements in the future.
