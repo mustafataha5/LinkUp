@@ -13,6 +13,9 @@ The goal of this project is to develop a simple social media platform that allow
 *Timeframe:*  
 5 Days
 
+**Deployment Link:**  
+[Live Demo](http://51.20.56.131/)
+
 ## Tech Stack
 - *Frontend:* React
 - *Backend:* Node.js, Express.js
@@ -95,24 +98,6 @@ The goal of this project is to develop a simple social media platform that allow
   - Deploy the application to a cloud platform like AWS.
 - *Documentation:*
   - Prepare documentation and project summary for future expansion or demonstration.
-
-## Task Distribution
-- *Programmer 1 - Frontend Developer*
-  - Set up the React app and design UI components.
-  - Implement profile management, post creation, and feed display.
-  - Integrate API responses into the UI.
-- *Programmer 2 - Backend Developer*
-  - Set up the Express server and database with MongoDB.
-  - Implement API routes for user authentication, post management, and follow system.
-  - Handle data validation and error handling.
-- *Programmer 3 - Full Stack Developer / Integration Specialist*
-  - Assist with frontend-backend integration.
-  - Implement real-time features like notifications.
-  - Conduct testing and debugging.
-- *Programmer 4 (Optional) - UI/UX Designer & Tester*
-  - Design a cohesive and responsive user interface.
-  - Conduct usability testing and gather feedback.
-  - Help with final testing and bug fixes.
 
 ## Future Enhancements
 - *Direct Messaging:* Implement a private messaging system between users.
