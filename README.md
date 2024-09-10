@@ -1,4 +1,4 @@
-# Social Media Platform - Project Documentation
+# Social Media Platform - LinkUp
 
 ## Project Overview
 *Objective:*  
